@@ -53,18 +53,20 @@ public class MyCommandPostprocessor implements CommandPostprocessor {
     public byte[] process(PreparedCommand pc) {
         byte[] binary = pc.getBinary();
 
-        // Set CCSDS packet length
-        ByteArrayUtils.encodeUnsignedShort(binary.length - 7, binary, 4);
+        // Calculate the length of the binary data starting from index 7
+        int lengthAfterIndex7 = binary.length - 7;
 
-        // Set CCSDS sequence count
-        int seqCount = seqFiller.fill(binary);
+        // Check if the length is within the unsigned short range
+        if (lengthAfterIndex7 < 0 || lengthAfterIndex7 > 65535) {
+            throw new IllegalArgumentException("The length of the data after index 7 is out of range");
+        }
 
-        // Publish the sequence count to Command History. This has no special
-        // meaning to Yamcs, but it shows how to store custom information specific
-        // to a command.
-        commandHistory.publish(pc.getCommandId(), "ccsds-seqcount", seqCount);
+        // Encode this length into the binary at positions 4 and 5
+        ByteArrayUtils.encodeUnsignedShort(lengthAfterIndex7, binary, 4);
 
-        // Since we modified the binary, update the binary in Command History too.
+        // You can include your existing code here for other modifications if necessary
+
+        // Publish the modified binary in Command History too.
         commandHistory.publish(pc.getCommandId(), PreparedCommand.CNAME_BINARY, binary);
 
         return binary;

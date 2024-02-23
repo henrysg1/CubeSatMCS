@@ -342,8 +342,8 @@
 			<MetaCommand name="MyProjectPacket" abstract="true">
 				<BaseMetaCommand metaCommandRef="FullPacket">
 					<ArgumentAssignmentList>
-						<ArgumentAssignment argumentName="Radio_Sync_Characters" argumentValue="0xAAAA" />
-						<ArgumentAssignment argumentName="Radio_Command" argumentValue="0x0001" />
+						<ArgumentAssignment argumentName="Radio_Sync_Characters" argumentValue="0x4865" />
+						<ArgumentAssignment argumentName="Radio_Command" argumentValue="0x1003" />
 						<ArgumentAssignment argumentName="Radio_Payload_Size" argumentValue="0x0000" />
 						<ArgumentAssignment argumentName="Radio_Header_Checksum" argumentValue="0x0000" />
 
