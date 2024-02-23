@@ -2,34 +2,6 @@
 <SpaceSystem name="myproject" xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd">
 	<TelemetryMetaData>
 		<ParameterTypeSet>
-			<AggregateParameterType name="Radio_Packet_Header_Type">
-				<MemberList>
-					<Member name="SyncCharacters" typeRef="Radio_Sync_Characters_Type" />
-					<Member name="Command" typeRef="Radio_Command_Type" />
-					<Member name="PayloadSize" typeRef="Radio_Payload_Size_Type" />
-					<Member name="HeaderCheckSum" typeRef="Radio_Header_Checksum_Type" />
-				</MemberList>
-			</AggregateParameterType>
-			<IntegerParameterType name="Radio_Sync_Characters_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerParameterType>
-			<IntegerParameterType name="Radio_Command_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerParameterType>
-			<IntegerParameterType name="Radio_Payload_Size_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerParameterType>
-			<IntegerParameterType name="Radio_Header_Checksum_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerParameterType>
-			<IntegerParameterType name="Radio_Packet_Footer_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerParameterType>
 			<AggregateParameterType name="CCSDS_Packet_ID_Type">
 				<MemberList>
 					<Member name="Version" typeRef="CCSDS_Version_Type" />
@@ -115,8 +87,6 @@
 			</EnumeratedParameterType>
 		</ParameterTypeSet>
 		<ParameterSet>
-			<Parameter name="Radio_Packet_Header" parameterTypeRef="Radio_Packet_Header_Type" />
-			<Parameter name="Radio_Packet_Footer" parameterTypeRef="Radio_Packet_Footer_Type" />
 			<Parameter name="CCSDS_Packet_ID" parameterTypeRef="CCSDS_Packet_ID_Type" />
 			<Parameter name="CCSDS_Packet_Sequence" parameterTypeRef="CCSDS_Packet_Sequence_Type" />
 			<Parameter name="CCSDS_Packet_Length" parameterTypeRef="CCSDS_Packet_Length_Type" />
@@ -177,15 +147,6 @@
 						</ComparisonList>
 					</RestrictionCriteria>
 				</BaseContainer>
-			</SequenceContainer>
-			<SequenceContainer name="FullPacket">
-				<EntryList>
-					<ParameterRefEntry parameterRef="Radio_Packet_Header" />
-					<ParameterRefEntry parameterRef="CCSDS_Packet_ID" />
-					<ParameterRefEntry parameterRef="CCSDS_Packet_Sequence" />
-					<ParameterRefEntry parameterRef="CCSDS_Packet_Length" />
-					<ParameterRefEntry parameterRef="Radio_Packet_Footer" />
-				</EntryList>
 			</SequenceContainer>
 			<SequenceContainer name="Spacecraft">
 				<EntryList>
@@ -252,22 +213,6 @@
 	</TelemetryMetaData>
 	<CommandMetaData>
 		<ArgumentTypeSet>
-			<IntegerArgumentType name="Radio_Sync_Characters_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerArgumentType>
-			<IntegerArgumentType name="Radio_Command_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerArgumentType>
-			<IntegerArgumentType name="Radio_Payload_Size_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerArgumentType>
-			<IntegerArgumentType name="Radio_Header_Checksum_Type" signed="false">
-				<UnitSet />
-				<IntegerDataEncoding sizeInBits="16" />
-			</IntegerArgumentType>
 			<IntegerArgumentType name="CCSDS_Version_Type" signed="false">
 				<UnitSet />
 				<IntegerDataEncoding sizeInBits="3" />
@@ -305,28 +250,32 @@
 					<ValidRange minInclusive="1" maxInclusive="3" />
 				</ValidRangeSet>
 			</IntegerArgumentType>
+			<IntegerArgumentType name="Memory_Location_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+				<ValidRangeSet>
+					<ValidRange minInclusive="0" maxInclusive="255" />
+				</ValidRangeSet>
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Memory_Length_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+				<ValidRangeSet>
+					<ValidRange minInclusive="1" maxInclusive="255" />
+				</ValidRangeSet>
+			</IntegerArgumentType>
 		</ArgumentTypeSet>
 		<MetaCommandSet>
-			<MetaCommand name="FullPacket" abstract="true">
+			<MetaCommand name="CCSDSPacket" abstract="true">
 				<ArgumentList>
-					<Argument argumentTypeRef="Radio_Sync_Characters_Type" name="Radio_Sync_Characters" />
-					<Argument argumentTypeRef="Radio_Command_Type" name="Radio_Command" />
-					<Argument argumentTypeRef="Radio_Payload_Size_Type" name="Radio_Payload_Size" />
-					<Argument argumentTypeRef="Radio_Header_Checksum_Type" name="Radio_Header_Checksum" />
-
 					<Argument argumentTypeRef="CCSDS_Version_Type" name="CCSDS_Version" />
 					<Argument argumentTypeRef="CCSDS_Type_Type" name="CCSDS_Type" />
 					<Argument argumentTypeRef="CCSDS_Sec_Hdr_Flag_Type" name="CCSDS_Sec_Hdr_Flag" />
 					<Argument argumentTypeRef="CCSDS_APID_Type" name="CCSDS_APID" />
 					<Argument argumentTypeRef="CCSDS_Group_Flags_Type" name="CCSDS_Group_Flags" />
 				</ArgumentList>
-				<CommandContainer name="FullPacket">
+				<CommandContainer name="CCSDSPacket">
 					<EntryList>
-						<ArgumentRefEntry argumentRef="Radio_Sync_Characters" />
-						<ArgumentRefEntry argumentRef="Radio_Command" />
-						<ArgumentRefEntry argumentRef="Radio_Payload_Size" />
-						<ArgumentRefEntry argumentRef="Radio_Header_Checksum" />
-
 						<ArgumentRefEntry argumentRef="CCSDS_Version" />
 						<ArgumentRefEntry argumentRef="CCSDS_Type" />
 						<ArgumentRefEntry argumentRef="CCSDS_Sec_Hdr_Flag" />
@@ -340,13 +289,8 @@
 				</CommandContainer>
 			</MetaCommand>
 			<MetaCommand name="MyProjectPacket" abstract="true">
-				<BaseMetaCommand metaCommandRef="FullPacket">
+				<BaseMetaCommand metaCommandRef="CCSDSPacket">
 					<ArgumentAssignmentList>
-						<ArgumentAssignment argumentName="Radio_Sync_Characters" argumentValue="0x4865" />
-						<ArgumentAssignment argumentName="Radio_Command" argumentValue="0x1003" />
-						<ArgumentAssignment argumentName="Radio_Payload_Size" argumentValue="0x0000" />
-						<ArgumentAssignment argumentName="Radio_Header_Checksum" argumentValue="0x0000" />
-
 						<ArgumentAssignment argumentName="CCSDS_Version" argumentValue="0" />
 						<ArgumentAssignment argumentName="CCSDS_Type" argumentValue="TC" />
 						<ArgumentAssignment argumentName="CCSDS_Sec_Hdr_Flag" argumentValue="NotPresent" />
@@ -361,63 +305,49 @@
 					<EntryList>
 						<ArgumentRefEntry argumentRef="Packet_ID" />
 					</EntryList>
-					<BaseContainer containerRef="FullPacket" />
-				</CommandContainer>
-			</MetaCommand>
-			<MetaCommand name="Reboot">
-				<BaseMetaCommand metaCommandRef="MyProjectPacket">
-					<ArgumentAssignmentList>
-						<ArgumentAssignment argumentName="Packet_ID" argumentValue="1" />
-					</ArgumentAssignmentList>
-				</BaseMetaCommand>
-				<CommandContainer name="Reboot">
-					<EntryList />
-					<BaseContainer containerRef="MyProjectPacket" />
-				</CommandContainer>
-				<DefaultSignificance consequenceLevel="vital" />
-			</MetaCommand>
-			<MetaCommand name="SwitchVoltageOn" shortDescription="Switches a battery on">
-				<BaseMetaCommand metaCommandRef="MyProjectPacket">
-					<ArgumentAssignmentList>
-						<ArgumentAssignment argumentName="Packet_ID" argumentValue="2" />
-					</ArgumentAssignmentList>
-				</BaseMetaCommand>
-				<ArgumentList>
-					<Argument argumentTypeRef="Battery_Type" name="Battery" shortDescription="Number of the battery" />
-				</ArgumentList>
-				<CommandContainer name="SwitchVoltageOn">
-					<EntryList>
-						<ArgumentRefEntry argumentRef="Battery" />
-					</EntryList>
-					<BaseContainer containerRef="MyProjectPacket" />
-				</CommandContainer>
-			</MetaCommand>
-			<MetaCommand name="SwitchVoltageOff" shortDescription="Switches a battery off">
-				<BaseMetaCommand metaCommandRef="MyProjectPacket">
-					<ArgumentAssignmentList>
-						<ArgumentAssignment argumentName="Packet_ID" argumentValue="3" />
-					</ArgumentAssignmentList>
-				</BaseMetaCommand>
-				<ArgumentList>
-					<Argument argumentTypeRef="Battery_Type" name="Battery" shortDescription="Number of the battery" />
-				</ArgumentList>
-				<CommandContainer name="SwitchVoltageOff">
-					<EntryList>
-						<ArgumentRefEntry argumentRef="Battery" />
-					</EntryList>
-					<BaseContainer containerRef="MyProjectPacket" />
+					<BaseContainer containerRef="CCSDSPacket" />
 				</CommandContainer>
 			</MetaCommand>
 			<MetaCommand name="SystemStatus" shortDescription="Gets the status of the system">
 				<BaseMetaCommand metaCommandRef="MyProjectPacket">
 					<ArgumentAssignmentList>
-						<ArgumentAssignment argumentName="Packet_ID" argumentValue="4" />
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="0" />
 					</ArgumentAssignmentList>
 				</BaseMetaCommand>
 				<CommandContainer name="SystemStatus">
 					<EntryList />
 					<BaseContainer containerRef="MyProjectPacket" />
 				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="Housekeeping" shortDescription="Does Housekeeping">
+				<BaseMetaCommand metaCommandRef="MyProjectPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="1" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="Housekeeping">
+					<EntryList />
+					<BaseContainer containerRef="MyProjectPacket" />
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="MemoryCheck" shortDescription="">
+				<BaseMetaCommand metaCommandRef="MyProjectPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="2" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Memory_Location_Type" name="MemoryAddress" shortDescription="Memory Address to start from" />
+					<Argument argumentTypeRef="Memory_Length_Type" name="MemoryLength" shortDescription="Number of bytes to check" />
+				</ArgumentList>
+				<CommandContainer name="MemoryCheck">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="MemoryAddress" />
+						<ArgumentRefEntry argumentRef="MemoryLength" />
+					</EntryList>
+					<BaseContainer containerRef="MyProjectPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="vital" />
 			</MetaCommand>
 		</MetaCommandSet>
 	</CommandMetaData>
