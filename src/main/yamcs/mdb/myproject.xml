@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="project-comms" xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd">
+    <TelemetryMetaData>
+        <!-- Telemetry definitions would go here -->
+    </TelemetryMetaData>
+    
+    <CommandMetaData>
+
+        <ArgumentTypeSet>
+            <IntegerArgumentType name="UnsignedShort">
+                <UnitSet />
+                <IntegerDataEncoding sizeInBits="8" />
+            </IntegerArgumentType>
+        </ArgumentTypeSet>
+
+        <MetaCommandSet>
+            <MetaCommand name="TestCommand" abstract="true">
+                <ArgumentList>
+                    <Argument argumentTypeRef="UnsignedShort" name="myarg1" />
+                    <Argument argumentTypeRef="UnsignedShort" name="myarg2" />
+                </ArgumentList>
+            </MetaCommand>
+        </MetaCommandSet>    
+    </CommandMetaData>
+</SpaceSystem>
