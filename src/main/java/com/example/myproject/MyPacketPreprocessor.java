@@ -1,4 +1,4 @@
-package com.example.myproject;
+package com.uoncubesat;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import org.yamcs.utils.TimeEncoding;
  * <p>
  * A single instance of this class is created, scoped to the link udp-in.
  * <p>
- * This is specified in the configuration file yamcs.myproject.yaml:
+ * This is specified in the configuration file yamcs.UoNCubeSat.yaml:
  * 
  * <pre>
  * ...
@@ -25,7 +25,7 @@ import org.yamcs.utils.TimeEncoding;
  *     stream: tm_realtime
  *     host: localhost
  *     port: 10015
- *     packetPreprocessorClassName: com.example.myproject.MyPacketPreprocessor
+ *     packetPreprocessorClassName: com.uoncubes.MyPacketPreprocessor
  * ...
  * </pre>
  */

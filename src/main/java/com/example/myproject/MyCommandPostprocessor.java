@@ -1,4 +1,4 @@
-package com.example.myproject;
+package com.uoncubesat;
 
 import org.yamcs.YConfiguration;
 import org.yamcs.cmdhistory.CommandHistoryPublisher;
@@ -12,7 +12,7 @@ import org.yamcs.utils.ByteArrayUtils;
  * <p>
  * A single instance of this class is created, scoped to the link udp-out.
  * <p>
- * This is specified in the configuration file yamcs.myproject.yaml:
+ * This is specified in the configuration file yamcs.UoNCubeSat.yaml:
  * 
  * <pre>
  * ...
@@ -22,7 +22,7 @@ import org.yamcs.utils.ByteArrayUtils;
  *     stream: tc_realtime
  *     host: localhost
  *     port: 10025
- *     commandPostprocessorClassName: com.example.myproject.MyCommandPostprocessor
+ *     commandPostprocessorClassName: com.UoNCubeSat.MyCommandPostprocessor
  * ...
  * </pre>
  */
