@@ -2,6 +2,8 @@ import binascii
 import io
 import socket
 import sys
+import platform
+import serial
 from struct import unpack_from
 from threading import Thread
 from time import sleep
@@ -34,6 +36,9 @@ def receive_tc(simulator):
         simulator.last_tc = data
         simulator.tc_counter += 1
 
+        # Write the received data to the serial port
+        ser.write(data)
+
 
 class Simulator():
 
@@ -63,6 +68,21 @@ class Simulator():
 if __name__ == '__main__':
     simulator = Simulator()
     simulator.start()
+
+    # Determine the operating system
+    os_name = platform.system()
+
+    # Set the serial port according to the operating system
+    if os_name == 'Linux':
+        port_name = '/dev/tnt0'
+    elif os_name == 'Windows':
+        port_name = 'COM1'
+    else:
+        raise EnvironmentError("Unsupported operating system")
+
+    # Assuming serial port setup is correct
+    # Open serial port (Replace '/dev/ttyUSB0' with your port name)
+    ser = serial.Serial(port_name, 9600, timeout=1)  # Adjust baud rate as necessary
 
     try:
         prev_status = None

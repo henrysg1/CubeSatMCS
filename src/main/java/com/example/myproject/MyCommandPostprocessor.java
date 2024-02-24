@@ -60,9 +60,9 @@ public class MyCommandPostprocessor implements CommandPostprocessor {
         int seqCount = seqFiller.fill(binary);
 
         // Calculate lengths and create new array for modified binary
-        int headerLength = 8; // 0x4865 (2 bytes) + 0x1003 (2 bytes) + binary.length (2 bytes) + 2 bytes for header checksum
+        int headerLength = 6; // 0x4865 (2 bytes) + 0x1003 (2 bytes) + binary.length (2 bytes) 
         int footerLength = 2; // payload_checksum (2 bytes)
-        int newLength = headerLength + binary.length + footerLength; // Additional 4 bytes for checksums
+        int newLength = headerLength + binary.length + footerLength + 2; // + 2 bytes for header checksum
         byte[] modifiedBinary = new byte[newLength];
 
         // Construct the header
@@ -100,12 +100,13 @@ public class MyCommandPostprocessor implements CommandPostprocessor {
     }
 
     private byte[] calculateChecksum(byte[] data) {
-        byte CK_A = 0;
-        byte CK_B = 0;
+        int CK_A = 0; // Use int to handle unsigned byte operations
+        int CK_B = 0;
         for (byte b : data) {
-            CK_A = (byte) ((CK_A + b) % 255);
-            CK_B = (byte) ((CK_B + CK_A) % 255);
+            CK_A = (CK_A + (b & 0xFF)) % 255;
+            CK_B = (CK_B + CK_A) % 255;
         }
-        return new byte[]{CK_A, CK_B};
+        return new byte[]{(byte)CK_A, (byte)CK_B};
     }
+    
 }
