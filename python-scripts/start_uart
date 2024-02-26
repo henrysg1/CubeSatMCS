@@ -1,0 +1,5 @@
+#!/bin/bash
+echo "Enabling UART"
+sudo modprobe tty0tty
+sudo chmod 666 /dev/tnt0
+sudo chmod 666 /dev/tnt1

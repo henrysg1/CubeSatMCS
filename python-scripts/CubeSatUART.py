@@ -267,7 +267,7 @@ os_name = platform.system()
 
 # Set the serial port according to the operating system
 if os_name == 'Linux':
-    port_name = '/dev/tnt0'
+    port_name = '/dev/tnt1'
 elif os_name == 'Windows':
     port_name = 'COM2'
 else:
