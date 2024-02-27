@@ -12,20 +12,29 @@ from time import sleep
 def send_tm(simulator):
     tm_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-    with io.open('testdata.ccsds', 'rb') as f:
-        simulator.tm_counter = 1
-        header = bytearray(6)
-        while f.readinto(header) == 6:
-            (len,) = unpack_from('>H', header, 4)
-
-            packet = bytearray(len + 7)
-            f.seek(-6, io.SEEK_CUR)
-            f.readinto(packet)
-
-            tm_socket.sendto(packet, ('127.0.0.1', 10015))
+    while True:
+        if ser.in_waiting > 0:  # Check if data is available
+            incoming_data = ser.read(ser.in_waiting)  # Read all available data
+            tm_socket.sendto(incoming_data, ('127.0.0.1', 10015))
             simulator.tm_counter += 1
+        sleep(0.1)  # Small delay to prevent CPU overload
 
-            sleep(1)
+    # with io.open('testdata.ccsds', 'rb') as f:
+    #     simulator.tm_counter = 1
+    #     header = bytearray(6)
+    #     while f.readinto(header) == 6:
+    #         (len,) = unpack_from('>H', header, 4)
+
+    #         packet = bytearray(len + 7)
+    #         f.seek(-6, io.SEEK_CUR)
+    #         f.readinto(packet)
+
+    #         print('Packet data:', binascii.hexlify(packet).decode('ascii'))
+
+    #         tm_socket.sendto(packet, ('127.0.0.1', 10015))
+    #         simulator.tm_counter += 1
+
+    #         sleep(5)
 
 
 def receive_tc(simulator):
@@ -66,8 +75,6 @@ class Simulator():
 
 
 if __name__ == '__main__':
-    simulator = Simulator()
-    simulator.start()
 
     # Determine the operating system
     os_name = platform.system()
@@ -83,6 +90,9 @@ if __name__ == '__main__':
     # Assuming serial port setup is correct
     # Open serial port (Replace '/dev/ttyUSB0' with your port name)
     ser = serial.Serial(port_name, 9600, timeout=1)  # Adjust baud rate as necessary
+
+    simulator = Simulator()
+    simulator.start()
 
     try:
         prev_status = None

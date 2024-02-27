@@ -167,11 +167,6 @@ def receive_and_send_response(data, acknowledgment_operations_dict):
         received_header_bytes = struct.pack('!HHH', sync_chars, op_code, packet_length)
         header_check_sum_A, header_check_sum_B = calculate_checksum(received_header_bytes)
 
-        for byte in data:
-            print(f"{byte:02X}", end=' ')
-
-        print(f"Header Checksum A: {header_check_sum_A}, Header Checksum B: {header_check_sum_B}, Received Checksum A: {received_check_sum_A}, Received Checksum B: {received_check_sum_B}")
-
         if header_check_sum_A != received_check_sum_A or header_check_sum_B != received_check_sum_B:
             print("Invalid Checksum")
             return
@@ -179,61 +174,132 @@ def receive_and_send_response(data, acknowledgment_operations_dict):
         # Prepare response based on whether the op_code is recognized
         if (op_code in acknowledgment_operations_dict and random.randrange(10) != 0):
             # Recognized operation, send success response
-            command_type = acknowledgment_operations_dict[op_code].op_code
-            success_bytes = struct.pack('HHH', SYNC_CHARS, command_type, command_success_bytes)
-            header_check_sum_A, header_check_sum_B = calculate_checksum(success_bytes)
-            success_packet = struct.pack(packet_format, SYNC_CHARS, command_type, command_success_bytes, header_check_sum_A, header_check_sum_B)
-            ser.write(success_packet)
+            #command_type = acknowledgment_operations_dict[op_code].op_code
+            #success_bytes = struct.pack('HHH', SYNC_CHARS, command_type, command_success_bytes)
+            #header_check_sum_A, header_check_sum_B = calculate_checksum(success_bytes)
+            #success_packet = struct.pack(packet_format, SYNC_CHARS, command_type, command_success_bytes, header_check_sum_A, header_check_sum_B)
+            #ser.write(success_packet)
             # Assuming this part of your code is where you need to modify
             if (op_code == 0x1003):
-                command_mapping = declare_command_dict()
-                packet_command_type = struct.unpack('!B', data[8:9])[0]
+                # command_mapping = declare_command_dict()
+                packet_command_type = struct.unpack('!H', data[8:10])[0]
 
-                if packet_command_type == 0xFF:
-                    resend_lost_packets(data)
-                    send_termination_packet(packet_command_type)
-                    return
+                if packet_command_type == 0x1065:
 
-                if packet_command_type == 0xFA:
-                    remove_buffered_data(data)
-                    return
+                    ccsds_packet_version = "000"
+                    ccsds_packet_type = "0"
+                    ccsds_secondary_header_flag = "0"
+                    ccsds_apid = "00001100100"
+                    packet_sequence_flags = "11"
+                    packet_sequence_count = "00000000000000"
 
-                if packet_command_type in command_mapping:
-                    command = command_mapping[packet_command_type]
+                    ccsds_packet_identifier = ccsds_packet_version + ccsds_packet_type + ccsds_secondary_header_flag + ccsds_apid
+                    ccsds_packet_sequence = packet_sequence_flags + packet_sequence_count
 
-                    # Buffer data in case of packet loss
-                    DATA_BUFFER_DICT[packet_command_type] = {}
+                    ccsds_packet_identifier = ccsds_packet_identifier.ljust(16, '0')  # Pad with zeros to the right if necessary
+                    ccsds_packet_sequence = ccsds_packet_sequence.ljust(16, '0')  # Pad with zeros to the right if necessary
 
-                    try:
-                        return_bytes = command['return'].encode()
-                    except (UnicodeEncodeError, AttributeError):
-                        return_bytes = command['return']
+                    # Convert the bit string to an integer
+                    ccsds_packet_identifier_val = int(ccsds_packet_identifier, 2)
+                    ccsds_packet_sequence_val = int(ccsds_packet_sequence, 2)
 
-                    chunks = [return_bytes[i:i+250] for i in range(0, len(return_bytes), 250)]
+                    EpochUNSO = 0x00000000
+                    OrbitalNumberCumulative = 0x00000001
+                    ElapsedSeconds = 0x00000002
+                    A = 0x00000003
+                    Height = 0x00000004
+                    Position = (0x00000005, 0x00000006, 0x00000007)
+                    Velocity = (0x00000008, 0x00000009, 0x0000000A)
+                    Latitude = 0x0000000B
+                    Longitude = 0x0000000C
+                    Battery1_Voltage = 0x0000000D
+                    Battery2_Voltage = 0x0000000E
+                    Battery1_Temp = 0x0000000F
+                    Battery2_Temp = 0x00000010
+                    Magnetometer = (0x00000011, 0x00000012, 0x00000013)
+                    Sunsensor = 0x00000014
+                    Gyro = (0x00000015, 0x00000016, 0x00000017)
+                    Detector_Temp = 0x00000018
+                    Shadow = 0x01
+                    Contact_Golbasi_GS = 0x01
+                    Contact_Svalbard = 0x00
+                    Payload_Status = 0x01
+                    Payload_Error_Flag = 0x00
+                    ADCS_Error_Flag = 0x00
+                    CDHS_Error_Flag = 0x00
+                    COMMS_Error_Flag = 0x00
+                    EPS_Error_Flag = 0x00
+                    COMMS_Status = 0x01
+                    CDHS_Status = 0x01
+                    Mode_Night = 0x00
+                    Mode_Day = 0x01
+                    Mode_Payload = 0x00
+                    Mode_XBand = 0x01
+                    Mode_SBand = 0x00
+                    Mode_Safe = 0x01
+                    Enum_Test = "001010100"
+                    Enum_Test = Enum_Test.ljust(16, '0')  # Pad with zeros to the right if necessary
+                    Enum_Test_val = int(Enum_Test, 2)
 
-                    for packet_number, chunk in enumerate(chunks):
-                        return_length = len(chunk)
-                        packet_bytes = struct.pack('HHH', SYNC_CHARS, 0x2004, return_length + 5) # +5 for command_type, packet_number and payload checksums
-                        header_check_sum_A, header_check_sum_B = calculate_checksum(packet_bytes)
-                        payload_header_packet = struct.pack('!HHHBB', SYNC_CHARS, 0x2004, return_length + 5, header_check_sum_A, header_check_sum_B)
+                    telemetry_bytes = struct.pack('IIIIIIIIIIIIIIIHHIIIIIHHHBBIIBBBBIBBBBIBBHH', EpochUNSO, OrbitalNumberCumulative, ElapsedSeconds, A, Height, *Position, *Velocity, Latitude, Longitude, Battery1_Voltage, Battery2_Voltage, Battery1_Temp, Battery2_Temp, *Magnetometer, Sunsensor, *Gyro, Detector_Temp, Shadow, Contact_Golbasi_GS, Contact_Svalbard, Payload_Status, Payload_Error_Flag, ADCS_Error_Flag, CDHS_Error_Flag, COMMS_Error_Flag, EPS_Error_Flag, COMMS_Status, CDHS_Status, Mode_Night, Mode_Day, Mode_Payload, Mode_XBand, Mode_SBand, Mode_Safe, Enum_Test_val)
 
-                        data_header_bytes = struct.pack('!BH', packet_command_type, packet_number)
-                        data_check_sum_A, data_check_sum_B = calculate_checksum(data_header_bytes + chunk)
-                        data_packet = data_header_bytes + chunk + struct.pack('!BB', data_check_sum_A, data_check_sum_B)
-                        payload_check_sum_A, payload_check_sum_B = calculate_checksum(payload_header_packet + data_packet)
+                    ccsds_packet_length = len(telemetry_bytes)
 
-                        packet = payload_header_packet + data_packet + struct.pack('!BB', payload_check_sum_A, payload_check_sum_B)
+                    ccsds_packet_header = struct.pack('!HHH', ccsds_packet_identifier_val, ccsds_packet_sequence_val, ccsds_packet_length)
 
-                        if random.randrange(10) != 0:
-                            time.sleep(0.2)
-                            ser.write(packet)
-                            print(f"Sent packet number: {packet_number} with length: {len(packet)} bytes")
-                        else:
-                            print(f"Packet number: {packet_number} lost")
-                        DATA_BUFFER_DICT[packet_command_type][packet_number] = packet
+                    return_bytes = ccsds_packet_header + telemetry_bytes
                     
-                    # Send termination packet
-                    send_termination_packet(packet_command_type)
+                    ser.write(return_bytes)
+                
+
+
+
+
+                # if packet_command_type == 0xFF:
+                #     resend_lost_packets(data)
+                #     send_termination_packet(packet_command_type)
+                #     return
+
+                # if packet_command_type == 0xFA:
+                #     remove_buffered_data(data)
+                #     return
+
+                # if packet_command_type in command_mapping:
+                #     command = command_mapping[packet_command_type]
+
+                #     # Buffer data in case of packet loss
+                #     DATA_BUFFER_DICT[packet_command_type] = {}
+
+                #     try:
+                #         return_bytes = command['return'].encode()
+                #     except (UnicodeEncodeError, AttributeError):
+                #         return_bytes = command['return']
+
+                #     chunks = [return_bytes[i:i+250] for i in range(0, len(return_bytes), 250)]
+
+                #     for packet_number, chunk in enumerate(chunks):
+                #         return_length = len(chunk)
+                #         packet_bytes = struct.pack('HHH', SYNC_CHARS, 0x2004, return_length + 5) # +5 for command_type, packet_number and payload checksums
+                #         header_check_sum_A, header_check_sum_B = calculate_checksum(packet_bytes)
+                #         payload_header_packet = struct.pack('!HHHBB', SYNC_CHARS, 0x2004, return_length + 5, header_check_sum_A, header_check_sum_B)
+
+                #         data_header_bytes = struct.pack('!BH', packet_command_type, packet_number)
+                #         data_check_sum_A, data_check_sum_B = calculate_checksum(data_header_bytes + chunk)
+                #         data_packet = data_header_bytes + chunk + struct.pack('!BB', data_check_sum_A, data_check_sum_B)
+                #         payload_check_sum_A, payload_check_sum_B = calculate_checksum(payload_header_packet + data_packet)
+
+                #         packet = payload_header_packet + data_packet + struct.pack('!BB', payload_check_sum_A, payload_check_sum_B)
+
+                #         if random.randrange(10) != 0:
+                #             time.sleep(0.2)
+                #             ser.write(packet)
+                #             print(f"Sent packet number: {packet_number} with length: {len(packet)} bytes")
+                #         else:
+                #             print(f"Packet number: {packet_number} lost")
+                #         DATA_BUFFER_DICT[packet_command_type][packet_number] = packet
+                    
+                #     # Send termination packet
+                #     send_termination_packet(packet_command_type)
 
         else:
             # Unrecognized operation, send failure response
@@ -241,6 +307,7 @@ def receive_and_send_response(data, acknowledgment_operations_dict):
             header_check_sum_A, header_check_sum_B = calculate_checksum(failed_bytes)
             failed_packet = struct.pack(packet_format, SYNC_CHARS, command_type, command_failed_bytes, header_check_sum_A, header_check_sum_B)
             ser.write(failed_packet)
+            print("Failed")
     return
 
 acknowledgment_operations_dict = {
@@ -282,5 +349,3 @@ while True:
         # Read all available data
         data = ser.read(ser.in_waiting)
         receive_and_send_response(data, acknowledgment_operations_dict)
-
-    
