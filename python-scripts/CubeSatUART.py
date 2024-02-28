@@ -167,6 +167,9 @@ def receive_and_send_response(data, acknowledgment_operations_dict):
         received_header_bytes = struct.pack('!HHH', sync_chars, op_code, packet_length)
         header_check_sum_A, header_check_sum_B = calculate_checksum(received_header_bytes)
 
+        for byte in data:
+            print(f"{byte:02X}", end=" ")
+
         if header_check_sum_A != received_check_sum_A or header_check_sum_B != received_check_sum_B:
             print("Invalid Checksum")
             return
@@ -303,10 +306,10 @@ def receive_and_send_response(data, acknowledgment_operations_dict):
 
         else:
             # Unrecognized operation, send failure response
-            failed_bytes = struct.pack('HHH', SYNC_CHARS, command_type, command_failed_bytes)
-            header_check_sum_A, header_check_sum_B = calculate_checksum(failed_bytes)
-            failed_packet = struct.pack(packet_format, SYNC_CHARS, command_type, command_failed_bytes, header_check_sum_A, header_check_sum_B)
-            ser.write(failed_packet)
+            # failed_bytes = struct.pack('HHH', SYNC_CHARS, command_type, command_failed_bytes)
+            # header_check_sum_A, header_check_sum_B = calculate_checksum(failed_bytes)
+            # failed_packet = struct.pack(packet_format, SYNC_CHARS, command_type, command_failed_bytes, header_check_sum_A, header_check_sum_B)
+            # ser.write(failed_packet)
             print("Failed")
     return
 
