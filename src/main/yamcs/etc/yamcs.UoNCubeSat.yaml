@@ -91,6 +91,8 @@ mdb:
     spec: mdb/xtce.xml
   - type: "sheet"
     spec: "cfdp-pdu.xls"
+  - type: "sheet"
+    spec: "mdb/refmdb.xls"
 
 # Configuration for streams created at server startup
 streamConfig:
