@@ -93,6 +93,8 @@ mdb:
     spec: "cfdp-pdu.xls"
   - type: "sheet"
     spec: "mdb/refmdb.xls"
+  - type: "sheet"
+    spec: "mdb/service.xls"
 
 # Configuration for streams created at server startup
 streamConfig:
