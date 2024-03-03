@@ -67,6 +67,12 @@ mdb:
 - type: xtce
   spec: "mdb/frames/frames.xml"
 - type: xtce
+  spec: "mdb/obc/obc-dt.xml" 
+- type: xtce
+  spec: "mdb/obc/obc-xtce.xml"
+- type: xtce
+  spec: "mdb/adcs/adcs-xtce.xml"
+- type: xtce
   spec: "mdb/services/ST[01].xml"
 - type: xtce
   spec: "mdb/services/ST[03].xml"

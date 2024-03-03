@@ -13,7 +13,8 @@ services:
 dataDir: yamcs-data
 
 instances:
-  - UoNCubeSat
+  - OBC
+  - ADCS
 
 # Secret key unique to a particular Yamcs installation.
 # This is used to provide cryptographic signing.
