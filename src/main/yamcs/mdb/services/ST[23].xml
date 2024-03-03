@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="ST[23]" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+    
+    <xtce:TelemetryMetaData>
+        <ParameterSet>
+            <Parameter name="repository_path" parameterTypeRef="/base-dt/string_t"/>
+            <Parameter name="file_name" parameterTypeRef="/base-dt/string_t"/>
+            <Parameter name="file_size" parameterTypeRef="/base-dt/uint32_t"/>
+            <Parameter name="file_locked_status" parameterTypeRef="/base-dt/bool_t"/>
+        </ParameterSet>
+        <ContainerSet>
+            <SequenceContainer name="TM(23,4)_file_attribute_report">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="repository_path" />
+                    <ParameterRefEntry parameterRef="file_name" />
+                    <ParameterRefEntry parameterRef="file_size" />
+                    <ParameterRefEntry parameterRef="file_locked_status" />
+                </EntryList>
+                <BaseContainer containerRef="/pus/packet_header_TM">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="23" parameterRef="/pus/service_type_ID_TM" />
+                            <Comparison value="4" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+        </ContainerSet>
+    </xtce:TelemetryMetaData>
+
+    <xtce:CommandMetaData>
+        <MetaCommandSet>
+
+            <MetaCommand name="TC(23,1)_create_a_file">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="23" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/string_t" name="repository_path" />
+                    <Argument argumentTypeRef="/base-dt/string_t" name="file_name" />
+                    <Argument argumentTypeRef="/base-dt/uint32_t" name="maximum_size" />
+                    <Argument argumentTypeRef="/base-dt/bool_t" name="file_locked_status" />
+                </ArgumentList>
+                <CommandContainer name="TC(23,1)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="repository_path" />
+                        <ArgumentRefEntry argumentRef="file_name" />
+                        <ArgumentRefEntry argumentRef="maximum_size" />
+                        <ArgumentRefEntry argumentRef="file_locked_status" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(23,2)_delete_a_file">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="23" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="2" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/string_t" name="repository_path" />
+                    <Argument argumentTypeRef="/base-dt/string_t" name="file_name" />
+                </ArgumentList>
+                <CommandContainer name="TC(23,2)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="repository_path" />
+                        <ArgumentRefEntry argumentRef="file_name" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(23,3)_report_the_attributes_of_a_file">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="23" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="3" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/string_t" name="repository_path" />
+                    <Argument argumentTypeRef="/base-dt/string_t" name="file_name" />
+                </ArgumentList>
+                <CommandContainer name="TC(23,3)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="repository_path" />
+                        <ArgumentRefEntry argumentRef="file_name" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+            
+        </MetaCommandSet>
+    </xtce:CommandMetaData>
+</SpaceSystem>

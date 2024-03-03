@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="ST[01]-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+    
+    <xtce:TelemetryMetaData>
+        <ParameterTypeSet>
+
+            <!-- ST[01] params -->
+
+			<EnumeratedParameterType name="AcceptanceErrorType_t">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+				<EnumerationList>
+					<Enumeration value="0" label="UnknownAcceptanceError" />
+					<Enumeration value="1" label="MessageTooShort" />
+					<Enumeration value="2" label="TooManyBitsRead" />
+					<Enumeration value="4" label="StringTooShort" />
+					<Enumeration value="5" label="UnacceptableMessage" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+
+			<EnumeratedParameterType name="ExecutionStartErrorType_t">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+				<EnumerationList>
+					<Enumeration value="0" label="UnknownExecutionStartError" />
+					<Enumeration value="1" label="EventActionDefinitionIDExistsError" />
+					<Enumeration value="2" label="EventActionDeleteEnabledDefinitionError" />
+					<Enumeration value="3" label="EventActionUnknownEventDefinitionError" />
+					<Enumeration value="4" label="EventActionUnknownEventActionDefinitionIDError" />
+					<Enumeration value="5" label="SubServiceExecutionStartError" />
+					<Enumeration value="6" label="InstructionExecutionStartError" />
+					<Enumeration value="7" label="SetNonExistingParameter" />
+					<Enumeration value="8" label="GetNonExistingParameter" />
+					<Enumeration value="9" label="NonExistingPacketStore" />
+					<Enumeration value="10" label="SetPacketStoreWithOpenRetrievalInProgress" />
+					<Enumeration value="11" label="SetPacketStoreWithByTimeRangeRetrieval" />
+					<Enumeration value="12" label="GetPacketStoreWithByTimeRangeRetrieval" />
+					<Enumeration value="13" label="GetPacketStoreWithOpenRetrievalInProgress" />
+					<Enumeration value="14" label="ByTimeRangeRetrievalAlreadyEnabled" />
+					<Enumeration value="15" label="AlreadyExistingPacketStore" />
+					<Enumeration value="16" label="MaxNumberOfPacketStoresReached" />
+					<Enumeration value="17" label="GetPacketStoreWithStorageStatusEnabled" />
+					<Enumeration value="18" label="DeletionOfPacketWithByTimeRangeRetrieval" />
+					<Enumeration value="19" label="DeletionOfPacketWithOpenRetrievalInProgress" />
+					<Enumeration value="20" label="InvalidTimeWindow" />
+					<Enumeration value="21" label="DestinationPacketStoreNotEmtpy" />
+					<Enumeration value="22" label="InvalidReportingRateError" />
+					<Enumeration value="23" label="EventActionDefinitionsMapIsFull" />
+					<Enumeration value="24" label="RequestedNonExistingStructure" />
+					<Enumeration value="25" label="RequestedAlreadyExistingStructure" />
+					<Enumeration value="26" label="RequestedDeletionOfEnabledHousekeeping" />
+					<Enumeration value="27" label="AlreadyExistingParameter" />
+					<Enumeration value="28" label="RequestedAppendToEnabledHousekeeping" />
+					<Enumeration value="29" label="ExceededMaxNumberOfHousekeepingStructures" />
+					<Enumeration value="30" label="ExceededMaxNumberOfSimplyCommutatedParameters" />
+					<Enumeration value="31" label="InvalidSamplingRateError" />
+					<Enumeration value="32" label="MaxStatisticDefinitionsReached" />
+					<Enumeration value="33" label="InvalidVirtualChannel" />
+					<Enumeration value="34" label="DeletionOfPacketStoreWithStorageStatusEnabled" />
+					<Enumeration value="35" label="CopyOfPacketsFailed" />
+					<Enumeration value="36" label="UnableToHandlePacketStoreSize" />
+					<Enumeration value="37" label="InvalidRequestToDeleteAllParameterMonitoringDefinitions" />
+					<Enumeration value="38" label="InvalidRequestToDeleteParameterMonitoringDefinition" />
+					<Enumeration value="39" label="AddAlreadyExistingParameter" />
+					<Enumeration value="40" label="ParameterMonitoringListIsFull" />
+					<Enumeration value="41" label="HighLimitIsLowerThanLowLimit" />
+					<Enumeration value="42" label="HighThresholdIsLowerThanLowThreshold" />
+					<Enumeration value="43" label="ModifyParameterNotInTheParameterMonitoringList" />
+					<Enumeration value="44" label="DifferentParameterMonitoringDefinitionAndMonitoredParameter" />
+					<Enumeration value="45" label="GetNonExistingParameterMonitoringDefinition" />
+					<Enumeration value="46" label="ReportParameterNotInTheParameterMonitoringList" />
+					<Enumeration value="47" label="AllServiceTypesAlreadyAllowed" />
+					<Enumeration value="48" label="MaxReportTypesReached" />
+					<Enumeration value="49" label="MaxServiceTypesReached" />
+					<Enumeration value="50" label="NotControlledApplication" />
+					<Enumeration value="51" label="ParameterValueMissing" />
+					<Enumeration value="52" label="ParameterReadOnly" />
+					<Enumeration value="53" label="ParameterWriteOnly" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+
+			<EnumeratedParameterType name="ExecutionProgressErrorType_t">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+				<EnumerationList>
+					<Enumeration value="0" label="UnknownExecutionProgressError" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+
+			<EnumeratedParameterType name="ExecutionCompletionErrorType_t">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+				<EnumerationList>
+					<Enumeration value="0" label="UnknownExecutionCompletionError" />
+					<Enumeration value="1" label="ChecksumFailed" />
+					<Enumeration value="2" label="AddressOutOfRange" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+
+			<EnumeratedParameterType name="RoutingErrorType_t">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+				<EnumerationList>
+					<Enumeration value="0" label="UnknownRoutingError" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+
+        </ParameterTypeSet>
+    </xtce:TelemetryMetaData>
+</SpaceSystem>

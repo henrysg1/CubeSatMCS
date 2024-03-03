@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="ST[04]" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is the parameter statistics reporting database."
+    operationalStatus="unittest">
+    
+    <xtce:TelemetryMetaData>
+        <ParameterSet>
+             <!-- Parameters used in TM(4,2) Container -->
+            <Parameter name="start_time_ST04" parameterTypeRef="/base-dt/uint32_t">
+                <LongDescription>
+                    the start time of the time interval over which the time
+                    interval over which the
+                    evaluation of the parameter statistics was performed
+                </LongDescription>
+            </Parameter>
+
+            <Parameter name="end_time_ST04" parameterTypeRef="/base-dt/uint32_t">
+                <LongDescription>
+                    the end time of the time interval over which the
+                    evaluation of the parameter statistics was performed
+                </LongDescription>
+            </Parameter>
+
+            <Parameter name="number_of_structures" parameterTypeRef="/base-dt/uint16_t">
+                <LongDescription>
+                    The number of the statistics report structures received
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="parameterId" />
+
+            <Parameter name="ParameterStatisticsStructure" parameterTypeRef="/dt/statistic_report_array" />
+        </ParameterSet>
+
+        <ContainerSet>
+
+             <SequenceContainer name="TM(4,2)_parameter_statistics_report">
+                <LongDescription>
+                    The formats of the max value field, the min value field, the mean value field
+                    and the standard
+                    deviation value
+                    field, contained in the ParameterStatisticsStructure array, are specific to
+                    the parameter
+                    identified by the associated parameter ID field.
+                </LongDescription>
+                <EntryList>
+                    <ParameterRefEntry parameterRef="start_time_ST04" />
+                    <ParameterRefEntry parameterRef="end_time_ST04" />
+                    <ParameterRefEntry parameterRef="number_of_structures" />
+                    <ArrayParameterRefEntry parameterRef="ParameterStatisticsStructure">
+                        <DimensionList>
+                            <Dimension>
+                                <StartingIndex>
+                                    <FixedValue>0</FixedValue>
+                                </StartingIndex>
+                                <EndingIndex>
+                                    <DynamicValue>
+                                        <ParameterInstanceRef parameterRef="number_of_structures" />
+                                        <LinearAdjustment intercept="-1" />
+                                    </DynamicValue>
+                                </EndingIndex>
+                            </Dimension>
+                        </DimensionList>
+                    </ArrayParameterRefEntry>
+                </EntryList>
+                <BaseContainer containerRef="/pus/packet_header_TM">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="4" parameterRef="/pus/service_type_ID_TM" />
+                            <Comparison value="2" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+        </ContainerSet>
+
+    </xtce:TelemetryMetaData>
+
+    <xtce:CommandMetaData>
+         <MetaCommandSet>
+            
+            <MetaCommand name="TC(4,1)_report_the_parameter_statistics">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="4" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/dt/reset_flag_ST04" name="reset_flag" />
+                </ArgumentList>
+                <CommandContainer name="TC(4,1)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="reset_flag" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+        </MetaCommandSet>
+    </xtce:CommandMetaData>
+</SpaceSystem>

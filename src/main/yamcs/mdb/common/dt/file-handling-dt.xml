@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="file-handling-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <xtce:TelemetryMetaData>
+        <ParameterTypeSet>
+
+            <AggregateParameterType name="objectMemorySegment_t" shortDescription="File segment for downlink">
+                <MemberList>
+                    <Member name="offset" typeRef="/base-dt/uint32_t" />
+                    <Member name="length" typeRef="/base-dt/uint16_t" />
+                    <Member name="data" typeRef="/base-dt/binaryData_t" />
+                </MemberList>
+            </AggregateParameterType>
+
+            <ArrayParameterType name="objectMemorySegmentArray_t" arrayTypeRef="objectMemorySegment_t">
+                <LongDescription>
+                    This array type contains file segments number_of_objects
+                </LongDescription>
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <FixedValue>0</FixedValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayParameterType>
+
+        </ParameterTypeSet>
+    </xtce:TelemetryMetaData>
+
+    <xtce:CommandMetaData>
+        <ArgumentTypeSet>
+
+            <AggregateArgumentType name="TC(6,3)_dump_object_memory_data_aggregate">
+                <MemberList>
+                    <Member typeRef="/base-dt/uint32_t" name="offset" />
+                    <Member typeRef="/base-dt/uint16_t" name="length" />
+                </MemberList>
+            </AggregateArgumentType>
+
+            <ArrayArgumentType arrayTypeRef="TC(6,3)_dump_object_memory_data_aggregate" name="memory_data_aggregate_array">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <DynamicValue>
+                                <ArgumentInstanceRef argumentRef="number_of_objects" />
+                                <LinearAdjustment intercept="-1" />
+                            </DynamicValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayArgumentType>
+
+        </ArgumentTypeSet>
+    </xtce:CommandMetaData>
+</SpaceSystem>
+    

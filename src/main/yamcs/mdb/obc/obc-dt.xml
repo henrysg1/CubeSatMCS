@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="obc-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+	shortDescription="This is a bogus satellite telemetry and telecommand database."
+	operationalStatus="unittest">
+
+    <!-- Contains OBC's non primitive parameters and arguments -->
+
+    <xtce:TelemetryMetaData>
+
+        <ParameterTypeSet>
+
+             <EnumeratedParameterType name="OBCMemoryPartition_t">
+                <IntegerDataEncoding sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="Used" />
+                    <Enumeration value="1" label="NotUsed" />
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="OBCCANBUSActive_t">
+                <IntegerDataEncoding sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="Main" />
+                    <Enumeration value="1" label="Reductant" />
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+
+            <EnumeratedParameterType name="OBCOperationalMode_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="CommissionMode" />
+                    <Enumeration value="1" label="NominalMode" />
+                    <Enumeration value="2" label="ScienceMode" />
+                    <Enumeration value="3" label="SafeMode" />
+                </EnumerationList>
+            </EnumeratedParameterType>
+            
+            <EnumeratedParameterType name="OBCSpacecraftTimeRef_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="Spacecraft" />
+                    <Enumeration value="1" label="GroundStation" />
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+        </ParameterTypeSet>        
+    </xtce:TelemetryMetaData>
+
+    <xtce:CommandMetaData>
+        <ArgumentTypeSet>
+
+         <EnumeratedArgumentType name="OBCMemoryPartition_t">
+                <IntegerDataEncoding sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="Used" />
+                    <Enumeration value="1" label="NotUsed" />
+                </EnumerationList>
+        </EnumeratedArgumentType>
+
+        <EnumeratedArgumentType name="OBCOperationalMode_t">
+            <IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+            <EnumerationList>
+                <Enumeration value="0" label="CommissionMode" />
+                <Enumeration value="1" label="NominalMode" />
+                <Enumeration value="2" label="ScienceMode" />
+                <Enumeration value="3" label="SafeMode" />
+            </EnumerationList>
+        </EnumeratedArgumentType>
+
+            <EnumeratedArgumentType name="OBCSpacecraftTimeRef_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="Spacecraft" />
+                    <Enumeration value="1" label="GroundStation" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+        </ArgumentTypeSet>
+    </xtce:CommandMetaData>
+
+</SpaceSystem>

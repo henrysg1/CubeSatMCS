@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <!--Contains all ParameterTypes for Telemetry and ArgumentTypes for Telecommanding.-->
+    <TelemetryMetaData>
+        <ParameterTypeSet>
+            <EnumeratedParameterType name="parameterId_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="6" label="ReportParametersUnusedStack" />
+                    <Enumeration value="7" label="AvailableHeap" />
+                    <Enumeration value="8" label="OBCuseRTT" />
+                    <Enumeration value="9" label="OBCuseUART" />
+                    <Enumeration value="10" label="OBCuseCAN" />
+                    <Enumeration value="11" label="ADCSuseRTT" />
+                    <Enumeration value="12" label="ADCSuseUART" />
+                    <Enumeration value="13" label="ADCSuseCAN" />
+                    <Enumeration value="1013" label="MagnetometerRawX" />
+                    <Enumeration value="1014" label="MagnetometerRawY" />
+                    <Enumeration value="1015" label="MagnetometerRawZ" />
+                    <Enumeration value="1016" label="MagnetometerFrequency" />
+                    <Enumeration value="1017" label="MagnetometerCycleCountX" />
+                    <Enumeration value="1018" label="MagnetometerCycleCountY" />
+                    <Enumeration value="1019" label="MagnetometerCycleCountZ" />
+                    <Enumeration value="1020" label="MagnetometerSelfTest" />
+                    <Enumeration value="1043" label="GyroscopeX" />
+                    <Enumeration value="1044" label="GyroscopeY" />
+                    <Enumeration value="1045" label="GyroscopeZ" />
+                    <Enumeration value="1089" label="GyroscopeXTemperature" />
+                    <Enumeration value="1090" label="GyroscopeYTemperature" />
+                    <Enumeration value="1091" label="GyroscopeZTemperature" />
+                    <Enumeration value="1092" label="ADCSBoardTemperature1" />
+                    <Enumeration value="1093" label="ADCSBoardTemperature2" />
+                    <Enumeration value="1158" label="MagnetometerSignX" />
+                    <Enumeration value="1159" label="MagnetometerSignY" />
+                    <Enumeration value="1160" label="MagnetometerSignZ" />
+                    <Enumeration value="1164" label="GyroSignX" />
+                    <Enumeration value="1165" label="GyroSignY" />
+                    <Enumeration value="1166" label="GyroSignZ" />
+                    <Enumeration value="1189" label="GyroBiasX" />
+                    <Enumeration value="1190" label="GyroBiasY" />
+                    <Enumeration value="1191" label="GyroBiasZ" />
+                    <Enumeration value="1218" label="ADCSMCUTemperature" />
+                    <Enumeration value="1220" label="ADCSMCUBootCounter" />
+                    <Enumeration value="1221" label="ADCSMCUOnBoardTime" />
+                    <Enumeration value="1224" label="ADCSSystick" />
+                    <Enumeration value="1227" label="ADCSFlashInt" />
+                    <Enumeration value="1228" label="ADCSSRAMInt" />
+                    <Enumeration value="5000" label="OBDHBoardTemperature1" />
+                    <Enumeration value="5001" label="OBDHBoardTemperature2" />
+                    <Enumeration value="5002" label="OBCMCUTemperature" />
+                    <Enumeration value="5004" label="OBCBootCounter" />
+                    <Enumeration value="5009" label="OBCSpacecraftTimeRef" />
+                    <Enumeration value="5010" label="OBCOnBoardTime" />
+                    <Enumeration value="5011" label="OBCOperationalMode" />
+                    <Enumeration value="5012" label="OBCMemoryPartition" />
+                    <Enumeration value="5013" label="OBCReconfigurationTimer" />
+                    <Enumeration value="5014" label="ObcLastFailedEvent" />
+                    <Enumeration value="5015" label="OBCSystick" />
+                    <Enumeration value="5016" label="CANBusLoad1" />
+                    <Enumeration value="5017" label="CANBusLoad2" />
+                    <Enumeration value="5018" label="ActiveCAN" />
+                    <Enumeration value="5021" label="NANDLCLThreshold" />
+                    <Enumeration value="5022" label="MRAMLCLThreshold" />
+                    <Enumeration value="5023" label="OBCNANDOn" />
+                    <Enumeration value="5024" label="OBCMRAMOn" />
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <ArrayParameterType name="parameterIdArray_t" arrayTypeRef="parameterId_t">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <FixedValue>0</FixedValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayParameterType>
+
+			<EnumeratedParameterType name="response_band">
+				<IntegerDataEncoding sizeInBits="1" />
+				<EnumerationList>
+					<Enumeration value="0" label="UHF" />
+					<Enumeration value="1" label="S" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+
+            <AggregateParameterType name="statistics_report_structure" shortDescription="The Statistics Report Structure">
+                <MemberList>
+                    <Member name="parameterId" typeRef="parameterId_t" />
+                    <Member name="number_of_samples" typeRef="/base-dt/uint16_t" />
+                    <Member name="max_value" typeRef="/base-dt/float_t" />
+                    <Member name="max_time" typeRef="/base-dt/uint32_t" />
+                    <Member name="min_value" typeRef="/base-dt/float_t" />
+                    <Member name="min_time" typeRef="/base-dt/uint32_t" />
+                    <Member name="mean_value" typeRef="/base-dt/float_t" />
+                    <Member name="standard_deviation_value" typeRef="/base-dt/float_t" />
+                </MemberList>
+            </AggregateParameterType>
+
+            <ArrayParameterType name="statistic_report_array" arrayTypeRef="statistics_report_structure">
+                <LongDescription>
+                    This array type contains all parameter statistics structures sent in a single TM
+                </LongDescription>
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <FixedValue>0</FixedValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayParameterType>
+
+            <!--ST[05] types-->
+
+            <EnumeratedParameterType name="event_ID">
+                <xtce:IntegerDataEncoding sizeInBits="16"/>
+                <xtce:EnumerationList>
+                    <Enumeration value="0" label="InformativeUnknownEvent"/>
+                    <Enumeration value="1" label="WWDGReset"/>
+                    <Enumeration value="2" label="AssertionFail"/>
+                    <Enumeration value="3" label="MCUStart"/>
+                    <Enumeration value="4" label="LowSeverityUnknownEvent"/>
+                    <Enumeration value="5" label="MediumSeverityUnknownEvent"/>
+                    <Enumeration value="6" label="HighSeverityUnknownEvent"/>
+                    <Enumeration value="7" label="FailedStartOfExecution"/>
+                </xtce:EnumerationList>
+            </EnumeratedParameterType>
+
+            <ArrayParameterType name="event_ID_array" arrayTypeRef="event_ID">
+                <xtce:DimensionList>
+                    <Dimension>
+                        <xtce:StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </xtce:StartingIndex>
+                        <xtce:EndingIndex>
+                            <FixedValue>0</FixedValue>
+                        </xtce:EndingIndex>
+                    </Dimension>
+                </xtce:DimensionList>
+            </ArrayParameterType>
+
+            
+        </ParameterTypeSet>
+    </TelemetryMetaData>
+
+    <CommandMetaData>
+        <ArgumentTypeSet>
+
+            <EnumeratedArgumentType name="parameterId_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="6" label="ReportParametersUnusedStack" />
+                    <Enumeration value="7" label="AvailableHeap" />
+                    <Enumeration value="8" label="OBCuseRTT" />
+                    <Enumeration value="9" label="OBCuseUART" />
+                    <Enumeration value="10" label="OBCuseCAN" />
+                    <Enumeration value="11" label="ADCSuseRTT" />
+                    <Enumeration value="12" label="ADCSuseUART" />
+                    <Enumeration value="13" label="ADCSuseCAN" />
+                    <Enumeration value="1013" label="MagnetometerRawX" />
+                    <Enumeration value="1014" label="MagnetometerRawY" />
+                    <Enumeration value="1015" label="MagnetometerRawZ" />
+                    <Enumeration value="1016" label="MagnetometerFrequency" />
+                    <Enumeration value="1017" label="MagnetometerCycleCountX" />
+                    <Enumeration value="1018" label="MagnetometerCycleCountY" />
+                    <Enumeration value="1019" label="MagnetometerCycleCountZ" />
+                    <Enumeration value="1020" label="MagnetometerSelfTest" />
+                    <Enumeration value="1043" label="GyroscopeX" />
+                    <Enumeration value="1044" label="GyroscopeY" />
+                    <Enumeration value="1045" label="GyroscopeZ" />
+                    <Enumeration value="1089" label="GyroscopeXTemperature" />
+                    <Enumeration value="1090" label="GyroscopeYTemperature" />
+                    <Enumeration value="1091" label="GyroscopeZTemperature" />
+                    <Enumeration value="1092" label="ADCSBoardTemperature1" />
+                    <Enumeration value="1093" label="ADCSBoardTemperature2" />
+                    <Enumeration value="1158" label="MagnetometerSignX" />
+                    <Enumeration value="1159" label="MagnetometerSignY" />
+                    <Enumeration value="1160" label="MagnetometerSignZ" />
+                    <Enumeration value="1164" label="GyroSignX" />
+                    <Enumeration value="1165" label="GyroSignY" />
+                    <Enumeration value="1166" label="GyroSignZ" />
+                    <Enumeration value="1189" label="GyroBiasX" />
+                    <Enumeration value="1190" label="GyroBiasY" />
+                    <Enumeration value="1191" label="GyroBiasZ" />
+                    <Enumeration value="1218" label="ADCSMCUTemperature" />
+                    <Enumeration value="1220" label="ADCSMCUBootCounter" />
+                    <Enumeration value="1221" label="ADCSMCUOnBoardTime" />
+                    <Enumeration value="1224" label="ADCSSystick" />
+                    <Enumeration value="1227" label="ADCSFlashInt" />
+                    <Enumeration value="1228" label="ADCSSRAMInt" />
+                    <Enumeration value="5000" label="OBDHBoardTemperature1" />
+                    <Enumeration value="5001" label="OBDHBoardTemperature2" />
+                    <Enumeration value="5002" label="OBCMCUTemperature" />
+                    <Enumeration value="5004" label="OBCBootCounter" />
+                    <Enumeration value="5009" label="OBCSpacecraftTimeRef" />
+                    <Enumeration value="5010" label="OBCOnBoardTime" />
+                    <Enumeration value="5011" label="OBCOperationalMode" />
+                    <Enumeration value="5012" label="OBCMemoryPartition" />
+                    <Enumeration value="5013" label="OBCReconfigurationTimer" />
+                    <Enumeration value="5014" label="ObcLastFailedEvent" />
+                    <Enumeration value="5015" label="OBCSystick" />
+                    <Enumeration value="5016" label="CANBusLoad1" />
+                    <Enumeration value="5017" label="CANBusLoad2" />
+                    <Enumeration value="5018" label="ActiveCAN" />
+                    <Enumeration value="5021" label="NANDLCLThreshold" />
+                    <Enumeration value="5022" label="MRAMLCLThreshold" />
+                    <Enumeration value="5023" label="OBCNANDOn" />
+                    <Enumeration value="5024" label="OBCMRAMOn" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <EnumeratedArgumentType name="active_CAN">
+                <IntegerDataEncoding sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="1" label="Main" />
+                    <Enumeration value="2" label="Redundant" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <EnumeratedArgumentType name="activeCAN_t">
+                <IntegerDataEncoding sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="Main" />
+                    <Enumeration value="1" label="Reductant" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+			
+			<EnumeratedArgumentType name="response_band">
+				<IntegerDataEncoding sizeInBits="1" />
+				<EnumerationList>
+					<Enumeration value="0" label="UHF" />
+					<Enumeration value="1" label="S" />
+				</EnumerationList>
+			</EnumeratedArgumentType>
+
+            <BooleanArgumentType name="reset_flag_ST04" zeroStringValue="0" oneStringValue="1">
+                <IntegerDataEncoding sizeInBits="1" />
+            </BooleanArgumentType>
+
+            <EnumeratedArgumentType name="structureId_t">
+                <IntegerDataEncoding sizeInBits="8" />
+                <EnumerationList>
+                    <Enumeration value="0" label="Housekeeping OBC 1sec" />
+                    <Enumeration value="1" label="Housekeeping OBC 3sec" />
+                    <Enumeration value="3" label="Housekeeping ADCS 0.01sec" />
+                    <Enumeration value="4" label="Housekeeping ADCS 3sec" />
+                    <Enumeration value="5" label="Housekeeping ADCS 5sec" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <ArrayArgumentType name="structureIdArray_t" arrayTypeRef="structureId_t">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <DynamicValue>
+                                <ArgumentInstanceRef argumentRef="total_structures" />
+                                <LinearAdjustment intercept="-1" />
+                            </DynamicValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayArgumentType>
+
+            <ArrayArgumentType name="parameterIdArray_t" arrayTypeRef="parameterId_t">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <DynamicValue>
+                                <ArgumentInstanceRef argumentRef="total_parameters" />
+                                <LinearAdjustment intercept="-1" />
+                            </DynamicValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayArgumentType>
+
+            <!-- ST[05] types-->
+
+            <EnumeratedArgumentType name="event_ID">
+                <xtce:IntegerDataEncoding sizeInBits="16"/>
+                <xtce:EnumerationList>
+                    <Enumeration value="0" label="InformativeUnknownEvent"/>
+                    <Enumeration value="1" label="WWDGReset"/>
+                    <Enumeration value="2" label="AssertionFail"/>
+                    <Enumeration value="3" label="MCUStart"/>
+                    <Enumeration value="4" label="LowSeverityUnknownEvent"/>
+                    <Enumeration value="5" label="MediumSeverityUnknownEvent"/>
+                    <Enumeration value="6" label="HighSeverityUnknownEvent"/>
+                    <Enumeration value="7" label="FailedStartOfExecution"/>
+                </xtce:EnumerationList>
+            </EnumeratedArgumentType>
+
+            <ArrayArgumentType name="event_ID_array" arrayTypeRef="event_ID">
+                <xtce:DimensionList>
+                    <Dimension>
+                        <xtce:StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </xtce:StartingIndex>
+                        <xtce:EndingIndex>
+                            <DynamicValue>
+                                <xtce:ArgumentInstanceRef argumentRef="N" />
+                                <xtce:LinearAdjustment intercept="-1"/>
+                            </DynamicValue>
+                        </xtce:EndingIndex>
+                    </Dimension>
+                </xtce:DimensionList>
+            </ArrayArgumentType>
+
+
+            <!-- ST[08] types-->
+
+            <StringArgumentType name="string_32"> 
+				<StringDataEncoding encoding="UTF-8">
+					<SizeInBits>
+						<Fixed>
+							<FixedValue>256</FixedValue>
+						</Fixed>
+					</SizeInBits>
+				</StringDataEncoding>
+			</StringArgumentType>
+
+        </ArgumentTypeSet>
+    </CommandMetaData>
+</SpaceSystem>

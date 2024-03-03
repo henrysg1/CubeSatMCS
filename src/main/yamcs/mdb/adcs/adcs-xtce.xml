@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="adcs-xtce" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <xtce:TelemetryMetaData>
+        <ParameterSet>
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSUseRTT" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSUseUART" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSUseCAN" />
+            <!--ADCS Parameters that will be used in the Environmental Campaign-->
+            <Parameter parameterTypeRef="/base-dt/uint8_t" name="ADCSMagnetometerRawX" />
+            <Parameter parameterTypeRef="/base-dt/uint8_t" name="ADCSMagnetometerRawY" />
+            <Parameter parameterTypeRef="/base-dt/uint8_t" name="ADCSMagnetometerRawZ" />
+            <Parameter parameterTypeRef="/base-dt/uint8_t" name="ADCSMagnetometerFrequency" />
+            <Parameter parameterTypeRef="/base-dt/int8_t" name="ADCSMagnetometerCycleCountX" />
+            <Parameter parameterTypeRef="/base-dt/int8_t" name="ADCSMagnetometerCycleCountY" />
+            <Parameter parameterTypeRef="/base-dt/int8_t" name="ADCSMagnetometerCycleCountZ" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSMagnetometerSelfTest" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSGyroscopeX" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSGyroscopeY" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSGyroscopeZ" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSMagnetometerSignX" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSMagnetometerSignY" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSMagnetometerSignZ" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSGyroscopeXTemperature" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSGyroscopeYTemperature" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSGyroscopeZTemperature" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSBoardTemperature1" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSBoardTemperature2" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSGyroSignX" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSGyroSignY" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSGyroSignZ" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSGyroBiasX" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSGyroBiasY" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSGyroBiasZ" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSFlashInt" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSSRAMInt" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSMCUTemperature" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="ADCSMCUOnBoardTime" />
+            <Parameter parameterTypeRef="/base-dt/uint64_t" name="ADCSSystick" />
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="ADCSBootCounter" />
+        </ParameterSet>
+    </xtce:TelemetryMetaData>
+
+</SpaceSystem>

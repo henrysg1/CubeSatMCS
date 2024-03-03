@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="ST[01]" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is the request verification database."
+    operationalStatus="unittest">
+
+    <!-- Request Verification Service (ST(01]) TM and TC -->
+    <TelemetryMetaData>
+        <ParameterSet>
+
+            <Parameter parameterTypeRef="/base-dt/packet_version_number" name="source_packet_version_number" />
+            <Parameter parameterTypeRef="/base-dt/packet_type" name="source_packet_type" />
+            <Parameter parameterTypeRef="/base-dt/secondary_header_flag" name="source_secondary_header_flag" />
+            <Parameter parameterTypeRef="/base-dt/application_process_ID" name="source_application_process_ID" />
+            <Parameter parameterTypeRef="/base-dt/sequence_flags" name="source_sequence_flags" />
+            <Parameter parameterTypeRef="/base-dt/packet_sequence_count_or_packet_name" name="source_packet_sequence_count" />
+            <Parameter parameterTypeRef="/ST[01]-dt/AcceptanceErrorType_t" name="AcceptanceErrorType" />
+            <Parameter parameterTypeRef="/ST[01]-dt/ExecutionStartErrorType_t" name="ExecutionStartErrorType" />
+            <Parameter parameterTypeRef="/base-dt/uint8_t" name="stepID" />
+            <Parameter parameterTypeRef="/ST[01]-dt/ExecutionProgressErrorType_t" name="ExecutionProgressErrorType" />
+            <Parameter parameterTypeRef="/ST[01]-dt/ExecutionCompletionErrorType_t" name="ExecutionCompletionErrorType" />
+            <Parameter parameterTypeRef="/ST[01]-dt/RoutingErrorType_t" name="RoutingErrorType" />
+
+        </ParameterSet>
+        <ContainerSet>
+
+            <SequenceContainer name="verification_data">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="source_packet_version_number" />
+                    <ParameterRefEntry parameterRef="source_packet_type" />
+                    <ParameterRefEntry parameterRef="source_secondary_header_flag" />
+                    <ParameterRefEntry parameterRef="source_application_process_ID" />
+                    <ParameterRefEntry parameterRef="source_sequence_flags" />
+                    <ParameterRefEntry parameterRef="source_packet_sequence_count" />
+                </EntryList>
+            </SequenceContainer>
+
+            <SequenceContainer name="verification_base_container">
+                <EntryList>
+                    <ContainerRefEntry containerRef="verification_data" />
+                </EntryList>
+                <BaseContainer containerRef="/pus/packet_header_TM">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="1" parameterRef="/pus/service_type_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,1)_successful_acceptance_verification_report">
+                <LongDescription>
+                    Provides the capability to report the successful acceptance verification of requests.
+                </LongDescription>
+                <EntryList />
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="1" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,2)_failed_acceptance_verification_report">
+                <LongDescription>
+                    Provides the capability to report the failed acceptance of requests.
+                </LongDescription>
+                <EntryList>
+                    <ParameterRefEntry parameterRef="AcceptanceErrorType" />
+                </EntryList>
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="2" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,3)_successful_start_of_execution_verification_report">
+                <LongDescription>
+                    Provides the capability to generate the successful start of execution verification reports.
+                </LongDescription>
+                <EntryList />
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="3" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,4)_failed_start_of_execution_verification_report">
+                <LongDescription>
+                    Provides the capability to generate the failed start of execution verification reports.
+                </LongDescription>
+                <EntryList>
+                    <ParameterRefEntry parameterRef="ExecutionStartErrorType" />
+                </EntryList>
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="4" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,5)_successful_progress_of_execution_verification_report">
+                <LongDescription>
+                    Provides the capability to generate the successful progress of execution verification reports.
+                </LongDescription>
+                <EntryList>
+                    <ParameterRefEntry parameterRef="stepID" />
+                </EntryList>
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="5" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,6)_failed_progress_of_execution_verification_report">
+                <LongDescription>
+                    Provides the capability to generate the failed progress of execution verification reports.
+                </LongDescription>
+                <EntryList>
+                    <ParameterRefEntry parameterRef="stepID" />
+                    <ParameterRefEntry parameterRef="ExecutionProgressErrorType" />
+                </EntryList>
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="6" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,7)_successful_completion_of_execution_verification_report">
+                <LongDescription>
+                    Provides the capability to generate the successful completion of execution verification reports.
+                </LongDescription>
+                <EntryList />
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="7" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,8)_failed_completion_of_execution_verification_report">
+                <LongDescription>
+                    Provides the capability to generate the failed completion of execution verification reports.
+                </LongDescription>
+                <EntryList>
+                    <ParameterRefEntry parameterRef="ExecutionCompletionErrorType" />
+                </EntryList>
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="8" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="TM(1,10)_failed_routing_verification_report">
+                <LongDescription>
+                    Provides the capability to report the failed routing of requests.
+                </LongDescription>
+                <EntryList>
+                    <ParameterRefEntry parameterRef="RoutingErrorType" />
+                </EntryList>
+                <BaseContainer containerRef="verification_base_container">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="10" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+        </ContainerSet>
+    </TelemetryMetaData>
+</SpaceSystem>
