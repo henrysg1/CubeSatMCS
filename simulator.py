@@ -7,34 +7,9 @@ from struct import unpack_from
 from threading import Thread
 from time import sleep
 
+from command_interpreter import hex_to_command
+
 HOST = "localhost"
-
-def hex_to_command(hex_input):
-    # Dictionary mapping (service_type, service_subtype) to command names
-    command_map = {
-        (3, 1): "TC(3,1)_create_a_parameter_report_structure",
-        (3, 27): "TC(3,27)_generate_a_one_shot_report_for_housekeeping_parameter_report_structures",
-        (4, 1): "TC(4,1)_report_the_parameter_statistics",
-        (11, 12): "TC(11,12)_summary_report_by_id",
-        # Add more mappings as needed
-    }
-
-    # Remove the first 8 bytes (16 hex characters) and the last 2 bytes (4 hex characters)
-    core_hex = hex_input[16:-4]
-
-    # Extract service_type and service_subtype from the core_hex
-    # Assuming they are located at a specific offset and are each one byte long
-
-    service_type = int(core_hex[14:16], 16)
-    service_subtype = int(core_hex[16:18], 16)
-
-    print(service_type, service_subtype)
-
-    # Use the extracted values to get the command name from the mapping
-    command_key = (service_type, service_subtype)
-    command_name = command_map.get(command_key, "Unknown Command")
-
-    return command_name
 
 def send_tm(simulator):
 
