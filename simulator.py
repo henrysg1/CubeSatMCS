@@ -7,7 +7,7 @@ from struct import unpack_from
 from threading import Thread
 from time import sleep
 
-from command_interpreter import hex_to_command
+from command_interpreter import hex_to_command, send_telemetry
 
 HOST = "localhost"
 
@@ -57,38 +57,49 @@ def send_tm(simulator):
 
     # sending 2000 packets
     while packetCounter < 400:
-        with io.open("ecsspackets.raw", "rb") as f:
-            header = bytearray(6)
+        # with io.open("ecsspackets.raw", "rb") as f:
+        #     header = bytearray(6)
 
-            while f.readinto(header) == 6:
-                (len,) = unpack_from(">H", header, 4)
-                packet = bytearray(len + 7)
+        #     while f.readinto(header) == 6:
+        #         (len,) = unpack_from(">H", header, 4)
+        #         packet = bytearray(len + 7)
 
-                f.seek(-6, io.SEEK_CUR)
-                f.readinto(packet)
+        #         f.seek(-6, io.SEEK_CUR)
+        #         f.readinto(packet)
 
-                if SEQUENTIAL_SENDING:
-                    n = random.randint(0, 2)
-                    # OBC UART
-                    if n == 0:
-                        clientconnOBC.send(packet)
-                        simulator.tm_counter += 1
-                    # ADSC UART
-                    elif n == 1:
-                        clientconnADCS.send(packet)
-                        simulator.tm_counter += 1
-                    # CAN BUS
-                    else:
-                        # clientconnCAN.send(packet)
-                        simulator.tm_counter += 1
-                else:
-                    clientconnOBC.send(packet)
-                    clientconnADCS.send(packet)
-                    # clientconnCAN.send(packet)
-                    simulator.tm_counter += 1
+        #         if SEQUENTIAL_SENDING:
+        #             n = random.randint(0, 2)
+        #             # OBC UART
+        #             if n == 0:
+        #                 clientconnOBC.send(packet)
+        #                 simulator.tm_counter += 1
+        #             # ADSC UART
+        #             elif n == 1:
+        #                 clientconnADCS.send(packet)
+        #                 simulator.tm_counter += 1
+        #             # CAN BUS
+        #             else:
+        #                 # clientconnCAN.send(packet)
+        #                 simulator.tm_counter += 1
+        #         else:
+        #             clientconnOBC.send(packet)
+        #             clientconnADCS.send(packet)
+        #             # clientconnCAN.send(packet)
+        #             simulator.tm_counter += 1
 
-                sleep(1)
+        #         sleep(1)
+
+        #         packetCounter += 1
+
+        packet = send_telemetry()
+
+        clientconnOBC.send(packet)
+        clientconnADCS.send(packet)
+        simulator.tm_counter += 1
+
         packetCounter += 1
+
+        sleep(1)
 
     clientconnOBC.close()
     clientconnADCS.close()

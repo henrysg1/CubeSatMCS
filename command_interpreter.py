@@ -1,3 +1,8 @@
+import struct
+
+def binary(num):
+    return ''.join('{:0>8b}'.format(c) for c in struct.pack('!f', num))
+
 def hex_to_command(data):
     # Dictionary mapping (service_type, service_subtype) to command names
     command_map = {
@@ -55,3 +60,60 @@ def hex_to_command(data):
     command_name = command_map.get(command_key, "Unknown Command")
 
     return command_name
+
+def send_telemetry():
+    
+    # Define CCSDS header
+
+    packet_version_number = '000'
+    packet_type = '0'
+    secondary_header_flag = '1'
+    apid = '00000000001'
+    sequence_flags = '11'
+    packet_name = '00000000000010'
+
+    # To be determined from data
+    packet_data_length = '0000000000000000'
+
+    # Define TM packet secondary header
+
+    tm_packet_pus_version_number = '0010'
+    spacecraft_time_reference_status = '0000'
+    service_type = '00000011'
+    service_subtype = '00011001'
+    message_type_counter = '0000000000000000'
+    destination_ID = '0000000000000001'
+    time = '00001111001010111101000101101100'
+
+    enum_type = '00000011'
+
+    adcs_magnetometer_raw_x = binary(5.4)
+    adcs_magnetometer_raw_y = binary(6.4)
+    adcs_magnetometer_raw_z = binary(7.4)
+    adcs_gyroscope_x = binary(8.4)
+    adcs_gyroscope_y = binary(9.4)
+    adcs_gyroscope_z = binary(10.4)
+
+    # Calculate the length of the bit string
+
+    bit_length = len(tm_packet_pus_version_number + spacecraft_time_reference_status + service_type + service_subtype + message_type_counter + destination_ID + time
+                        + enum_type + adcs_magnetometer_raw_x + adcs_magnetometer_raw_y + adcs_magnetometer_raw_z + adcs_gyroscope_x + adcs_gyroscope_y + adcs_gyroscope_z)
+    
+    # Calculate the number of bytes
+    packet_data_length = format(bit_length // 8, 'b').zfill(16)
+
+    packet_bits = packet_version_number + packet_type + secondary_header_flag + apid + sequence_flags + packet_name + packet_data_length
+    packet_bits += tm_packet_pus_version_number + spacecraft_time_reference_status + service_type + service_subtype + message_type_counter + destination_ID + time
+    packet_bits += enum_type + adcs_magnetometer_raw_x + adcs_magnetometer_raw_y + adcs_magnetometer_raw_z + adcs_gyroscope_x + adcs_gyroscope_y + adcs_gyroscope_z
+
+    expected_hex_length = (len(packet_bits) // 8) * 2
+
+    tm_packet = hex(int(packet_version_number + packet_type + secondary_header_flag + apid + sequence_flags + packet_name + packet_data_length
+                        + tm_packet_pus_version_number + spacecraft_time_reference_status + service_type + service_subtype + message_type_counter + destination_ID + time
+                        + enum_type + adcs_magnetometer_raw_x + adcs_magnetometer_raw_y + adcs_magnetometer_raw_z + adcs_gyroscope_x + adcs_gyroscope_y + adcs_gyroscope_z, 2))[2:]
+
+    tm_packet_hex_padded = tm_packet.zfill(expected_hex_length)
+
+    tm_packet_bytes = bytes.fromhex(tm_packet_hex_padded)
+
+    return tm_packet_bytes
