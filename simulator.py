@@ -40,7 +40,7 @@ def receive_tc(simulator):
         data, _ = clientconnTC.recvfrom(4096)
         simulator.last_tc = data
         if data != b"":
-            print(hex_to_command(binascii.hexlify(data).decode("ascii")))
+            hex_to_command(binascii.hexlify(data).decode("ascii"))
             simulator.tc_counter += 1
 
 
