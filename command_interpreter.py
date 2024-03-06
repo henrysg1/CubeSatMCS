@@ -5,45 +5,100 @@ import random
 
 HOST = "localhost"
 
+CLIENT_CONN_OBC = None
+CLIENT_CONN_ADCS = None
+SIMULATOR = None
+
 def float_to_binary_32(num):
     return ''.join('{:0>8b}'.format(c) for c in struct.pack('!f', num))
 
-#ST3_TM_DICT = {
-#    (3, 25): { "name": "TM(3,25)_report_housekeeping_parameter_report_structure", "send_interval": 1, "data": Housekeeping_ADCS_0_01 },
-#}
+def scheduler():
+
+    while True:
+        current_time = time.time()
+        schedule = SCHEDULE
+        for task in schedule:
+            if (current_time - task["last_executed"]) >= task["interval"]:
+                task["function"]()
+                task["last_executed"] = current_time
+        time.sleep(1)
+
+def initialize_sockets():
+    global CLIENT_CONN_OBC, CLIENT_CONN_ADCS
+
+    portOBC = 10015
+    tm_socket_OBC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tm_socket_OBC.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    tm_socket_OBC.bind((HOST, portOBC))
+    tm_socket_OBC.listen(1)
+    print(f"\nServer {portOBC} listening")
+
+    portADCS = 10016
+    tm_socket_ADCS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    tm_socket_ADCS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    tm_socket_ADCS.bind((HOST, portADCS))
+    tm_socket_ADCS.listen(1)
+    print(f"Server {portADCS} listening")
+
+    CLIENT_CONN_OBC, _ = tm_socket_OBC.accept()
+    CLIENT_CONN_ADCS, _ = tm_socket_ADCS.accept()
+
+def send_packet(data):
+    
+    tm_secondary_header = create_tm_secondary_header(3, 25)
+    ccsds_header = create_ccsds_header(data, tm_secondary_header)
+    packet = combine_packet_information(ccsds_header, tm_secondary_header, data)
+
+    CLIENT_CONN_OBC.send(packet)
+    CLIENT_CONN_ADCS.send(packet) 
+
+    SIMULATOR.tm_counter += 1
+
+def unimplemented_command(packet_data):
+    print("Unimplemented command")
+
+def TC_3_27_generate_a_one_shot_report_for_housekeeping_parameter_report_structures(packet_data):
+
+    # Use the first byte to determine the loop count
+    loop_count = packet_data[0]
+
+    # Iterate over the remaining data, one byte at a time
+    for i in range(1, 1 + loop_count):
+        #current_byte = packet_data[i]
+        Housekeeping_ADCS_5()
 
 def hex_to_command(data):
     # Dictionary mapping (service_type, service_subtype) to command names
     command_map = {
-        (3, 1): "TC(3,1)_create_a_parameter_report_structure",
-        (3, 9): "TC(3,9)_report_housekeeping_parameter_report_structure",
-        (3, 27): "TC(3,27)_generate_a_one_shot_report_for_housekeeping_parameter_report_structures",
+        (3, 1): unimplemented_command,
+        (3, 9): unimplemented_command,
+        (3, 27): TC_3_27_generate_a_one_shot_report_for_housekeeping_parameter_report_structures,
 
-        (4, 1): "TC(4,1)_report_the_parameter_statistics",
+        (4, 1): unimplemented_command,
 
-        (6, 1): "TC(6,1)_load_object_memory_data",
-        (6, 3): "TC(6,3)_dump_object_memory_data",
+        (6, 1): unimplemented_command,
+        (6, 3): unimplemented_command,
 
-        (11, 1): "TC(11,1)_enable_time_based_scheduling",
-        (11, 2): "TC(11,2)_disable_time_based_scheduling",
-        (11, 3): "TC(11,3)_reset_time_based_scheduling",
-        (11, 4): "TC(11,4)_time_based_scheduled_x",
-        (11, 5): "TC(11,5)_delete_activities_by_id_single",
-        (11, 7): "TC(11,7)_time_shift_activities_by_id_single",
-        (11, 9): "TC(11,9)_report_activities_by_id_single",
-        (11, 12): "TC(11,12)_summary_report_by_id",
-        (11, 15): "TC(11,15)_time_shift_all_activities",
-        (11, 16): "TC(11,16)_summary_report_all_activities",
+        (11, 1): unimplemented_command,
+        (11, 2): unimplemented_command,
+        (11, 3): unimplemented_command,
+        (11, 4): unimplemented_command,
+        (11, 5): unimplemented_command,
+        (11, 7): unimplemented_command,
+        (11, 9): unimplemented_command,
+        (11, 12): unimplemented_command,
+        (11, 15): unimplemented_command,
+        (11, 16): unimplemented_command,
         
-        (17,1): "TC(17,1)_are_you_alive_connection",
-        (17,3): "TC(17,3)_on_board_connection",
+        (17,1): unimplemented_command,
+        (17,3): unimplemented_command,
 
-        (20,1): "TC(20,1)_report_value_x",
-        (20,3): "TC(20,3)_set_parameter_vals",
+        (20,1): unimplemented_command,
+        (20,3): unimplemented_command,
 
-        (23,1): "TC(23,1)_create_a_file",
-        (23,2): "TC(23,2)_delete_a_file",
-        (23,3): "TC(23,3)_report_the_attributes_of_a_file",
+        (23,1): unimplemented_command,
+        (23,2): unimplemented_command,
+        (23,3): unimplemented_command,
     }
 
     # Numbers are hex characters (2 per byte)
@@ -54,128 +109,27 @@ def hex_to_command(data):
 
     tc_packet_secondary_header = data[28:38]
 
-    packet_data = data[38:-4]
-
-    # Extract service_type and service_subtype from the core_hex
-    # Assuming they are located at a specific offset and are each one byte long
+    packet_data = bytes.fromhex(data[38:-4])
 
     service_type = int(tc_packet_secondary_header[2:4], 16)
     service_subtype = int(tc_packet_secondary_header[4:6], 16)
 
-    print(service_type, service_subtype)
-
-    # Use the extracted values to get the command name from the mapping
     command_key = (service_type, service_subtype)
-    command_name = command_map.get(command_key, "Unknown Command")
+    command_function = command_map.get(command_key, unimplemented_command)
 
-    return command_name
+    command_function(packet_data)
 
 def send_telemetry(simulator):
+    global SIMULATOR
 
-    SEQUENTIAL_SENDING = False
 
-    portOBC = 10015
-    tm_socket_OBC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tm_socket_OBC.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-    portADCS = 10016
-    tm_socket_ADCS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tm_socket_ADCS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-    # portCAN = 10017
-    # tm_socket_CAN = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # tm_socket_CAN.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-
-    tm_socket_OBC.bind((HOST, portOBC))
-    tm_socket_OBC.listen(1)
-    print("\nserver "+str(portOBC)+" listening")
-
-    tm_socket_ADCS.bind((HOST, portADCS))
-    tm_socket_ADCS.listen(1)
-    print("server "+str(portADCS)+" listening")
-
-    # tm_socket_CAN.bind((HOST, portCAN))
-    # tm_socket_CAN.listen(1)
-    # print("server  10017 listening")
-
-    clientconnOBC, _ = tm_socket_OBC.accept()
-
-    clientconnADCS, _ = tm_socket_ADCS.accept()
-
-    # clientconnCAN, _ = tm_socket_CAN.accept()
-
-    packetCounter = 0
     simulator.tm_counter = 0
+
+    SIMULATOR = simulator
     
-    last_obc_send_time = time.time() - 3  # Ensures an OBC packet is sent on the first iteration
+    initialize_sockets()
 
-    packetCounter = 0
-
-    while packetCounter < 400:
-        current_time = time.time()
-
-        # Determine which packet to send
-        if current_time - last_obc_send_time >= 3:
-            # Time to send Housekeeping_OBC_3
-            data = Housekeeping_OBC_3()
-            last_obc_send_time = current_time
-        else:
-            # Send Housekeeping_ADCS_0_01
-            data = Housekeeping_ADCS_0_01()
-
-        # Construct and send the telemetry packet
-        tm_secondary_header = create_tm_secondary_header(3, 25)
-        ccsds_header = create_ccsds_header(data, tm_secondary_header)
-        packet = combine_packet_information(ccsds_header, tm_secondary_header, data)
-        
-        acceptance = acceptance_packets()
-        confirmation = confirmation_packets()
-
-        # for binary_packet in acceptance:
-
-        #     expected_hex_length = (len(binary_packet) // 8) * 2
-
-        #     tm_packet = hex(int(binary_packet, 2))[2:]
-
-        #     tm_packet_hex_padded = tm_packet.zfill(expected_hex_length)
-
-        #     packet = bytes.fromhex(tm_packet_hex_padded)
-
-        #     clientconnOBC.send(packet)
-        #     clientconnADCS.send(packet)
-        #     simulator.tm_counter += 1
-        #     packetCounter += 1
-
-        clientconnOBC.send(packet)
-        clientconnADCS.send(packet)
-        simulator.tm_counter += 1
-
-        packetCounter += 1
-
-        # for binary_packet in confirmation:
-
-        #     expected_hex_length = (len(binary_packet) // 8) * 2
-
-        #     tm_packet = hex(int(binary_packet, 2))[2:]
-
-        #     tm_packet_hex_padded = tm_packet.zfill(expected_hex_length)
-
-        #     packet = bytes.fromhex(tm_packet_hex_padded)
-
-        #     clientconnOBC.send(packet)
-        #     clientconnADCS.send(packet)
-        #     simulator.tm_counter += 1
-        #     packetCounter += 1
-
-        # Adjust sleep to ensure timing accuracy, considering execution time
-        sleep_time = 1 - (time.time() - current_time)
-        if sleep_time > 0:
-            time.sleep(sleep_time)
-
-    clientconnOBC.close()
-    clientconnADCS.close()
-    # clientconnCAN.close()
-    print("communication ended")
+    scheduler()
 
     return
 
@@ -236,7 +190,7 @@ def Housekeeping_ADCS_0_01():
 
     data = enum_type + adcs_magnetometer_raw_x + adcs_magnetometer_raw_y + adcs_magnetometer_raw_z + adcs_gyroscope_x + adcs_gyroscope_y + adcs_gyroscope_z
 
-    return data
+    send_packet(data)
 
 def Housekeeping_OBC_3():
     enum_type = '00000001'
@@ -252,22 +206,28 @@ def Housekeeping_OBC_3():
 
     data = enum_type + obc_pcb_board_temperature_1 + obc_pcb_board_temperature_2 + obc_spacecraft_time_ref + obc_operational_mode + obc_memory_partition + obc_reconfiguration_timer + obc_last_failed_event + obc_mcu_sys_tick
 
-    return data
+    send_packet(data)
 
-def acceptance_packets():
-    return [
-        '000010000000000111000000000010110000000000001110001000000000000100000001000000000000000000000000000000010000111100101011110100011101000000011000000000111100000000000000',
-        '0000100000000001110000000000110000000000000100000010000000000001000000100000000000000000000000000000000100001111001010111101000111010000000110000000001111000000000000000000000000000000'
-    ]
+def Housekeeping_ADCS_5():
+    enum_type = '00000101'
 
-def confirmation_packets():
+    adcs_magnetometer_sign_x = '00000001'
+    adcs_magnetometer_sign_y = '00000000'
+    adcs_magnetometer_sign_z = '00000001'
+    adcs_gyroscope_sign_x = '00000001'
+    adcs_gyroscope_sign_y = '00000000'
+    adcs_gyroscope_sign_z = '00000000'
+    adcs_gyroscope_bias_x = float_to_binary_32(random.uniform(0, 1))
+    adcs_gyroscope_bias_y = float_to_binary_32(random.uniform(0, 1))
+    adcs_gyroscope_bias_z = float_to_binary_32(random.uniform(0, 1))
+    adcs_flash_int = format(random.randint(0, 1000000), '032b')
+    adcs_sram_int = format(random.randint(0, 1000000), '032b')
 
-    return [
-        '000010000000000111000000000011010000000000001110001000000000000100000011000000000000000000000000000000010000111100101011110100011101000000011000000000111100000000000000',
-        '0000100000000001110000000000001100000000000100000010000000000001000001000000000000000000000000000000000100001111001010111101000110011110000110000000000111000000000000000000000000001000',
-        '00001000000000011100000000001111000000000000111100100000000000010000010100000000000000000000000000000001000011110010101111010001110100000001100000000011110000000000000000000000',
-        '000010000000000111000000000100000000000000010001001000000000000100000110000000000000000000000000000000010000111100101011110100011101000000011000000000111100000000000000000000000000000000000000',
-        '000010000000000111000000000100010000000000001110001000000000000100000111000000000000000000000000000000010000111100101011110100011101000000011000000000111100000000000000',
-        '0000100000000001110000000001001000000000000100000010000000000001000010000000000000000000000000000000000100001111001010111101000111010000000110000000001111000000000000000000000000000000',
-        '0000100000000001110000000001001100000000000100000010000000000001000010100000000000000000000000000000000100001111001010111101000111010000000110000000001111000000000000000000000000000000',
-    ]
+    data = enum_type + adcs_magnetometer_sign_x + adcs_magnetometer_sign_y + adcs_magnetometer_sign_z + adcs_gyroscope_sign_x + adcs_gyroscope_sign_y + adcs_gyroscope_sign_z + adcs_gyroscope_bias_x + adcs_gyroscope_bias_y + adcs_gyroscope_bias_z + adcs_flash_int + adcs_sram_int
+
+    send_packet(data)
+
+SCHEDULE = [
+    {"interval": 3, "function": Housekeeping_OBC_3, "last_executed": 0},
+    {"interval": 1, "function": Housekeeping_ADCS_0_01, "last_executed": 0},
+]  
