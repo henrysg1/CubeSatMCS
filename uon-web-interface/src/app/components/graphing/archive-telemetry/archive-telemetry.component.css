@@ -1,0 +1,31 @@
+mat-cell,
+mat-cell button {
+  color: #34ff19;
+  font-size: 15px;
+  cursor: pointer;
+}
+.mat-mdc-table {
+  /* min-width: auto !important; */
+  width: 100% !important;
+}
+
+.mat-mdc-button.stepper {
+  min-width: auto !important;
+  width: 100% !important;
+  text-align: left;
+}
+
+mat-form-field {
+  display: flex;
+  direction: column; /* horizontally align inputs */
+}
+
+mat-icon {
+  color: #34ff19;
+}
+
+h1,
+h2 {
+  padding: 10px;
+  font-weight: inherit;
+}

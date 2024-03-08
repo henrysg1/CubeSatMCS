@@ -1,0 +1,27 @@
+<div class="container">
+  <span *ngIf="telecommandsArray.length > 0" class="view table-view">
+    <mat-form-field>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Filter"
+      /><mat-icon matPrefix> search</mat-icon>
+    </mat-form-field>
+    <table mat-table [dataSource]="tableDataSource">
+      <ng-container matColumnDef="telecommands">
+        <mat-header-cell *matHeaderCellDef>Pick a Telecommand</mat-header-cell>
+        <mat-cell
+          class="name_column"
+          *matCellDef="let telecommand"
+          (click)="this.onViewChange()"
+          [routerLink]="['/telecommands', telecommand.qualifiedName]"
+          >{{ telecommand.qualifiedName }}</mat-cell
+        >
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedCol">
+        <mat-row *matRowDef="let myRowData; columns: displayedCol"></mat-row>
+      </mat-header-row>
+    </table>
+  </span>
+  <router-outlet class="view tc-view"></router-outlet>
+</div>

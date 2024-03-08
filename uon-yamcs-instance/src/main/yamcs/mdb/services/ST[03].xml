@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="ST[03]" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is the housekeeping database."
+    operationalStatus="unittest">
+
+    <xtce:TelemetryMetaData>
+
+        <ParameterSet>
+            <!-- Parameters used in TM(3,10) Container -->
+            <Parameter name="periodic_generation_action_status_ST03" parameterTypeRef="/base-dt/uint8_t" />
+            <Parameter name="collection_interval_ST03" parameterTypeRef="/base-dt/uint32_t" />
+            <Parameter name="parameter_ID_ST03" parameterTypeRef="/dt/parameterIdArray_t" />
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="AvailableHeap" />
+            <Parameter name="number_of_simply_commutated_parameters" parameterTypeRef="/base-dt/uint16_t">
+                <LongDescription>
+                    The number of simply commutated parameters contained in the housekeeping parameter report
+                </LongDescription>
+            </Parameter>
+            <Parameter name="housekeeping_parameter_report_structure_ID_ST03" parameterTypeRef="/base-dt/uint8_t">
+                <LongDescription>
+                    The housekeeping report structure ID
+                </LongDescription>
+            </Parameter>
+        </ParameterSet>
+
+        <ContainerSet>
+
+            <SequenceContainer name="TM(3,10)_housekeeping_parameter_report">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="housekeeping_parameter_report_structure_ID_ST03" />
+                    <ParameterRefEntry parameterRef="periodic_generation_action_status_ST03" />
+                    <ParameterRefEntry parameterRef="collection_interval_ST03" />
+                    <ParameterRefEntry parameterRef="number_of_simply_commutated_parameters" />
+                    <ArrayParameterRefEntry parameterRef="parameter_ID_ST03">
+                        <DimensionList>
+                            <Dimension>
+                                <StartingIndex>
+                                    <FixedValue>0</FixedValue>
+                                </StartingIndex>
+                                <EndingIndex>
+                                    <DynamicValue>
+                                        <ParameterInstanceRef parameterRef="number_of_simply_commutated_parameters" />
+                                        <LinearAdjustment intercept="-1" />
+                                    </DynamicValue>
+                                </EndingIndex>
+                            </Dimension>
+                        </DimensionList>
+                    </ArrayParameterRefEntry>
+                </EntryList>
+                <BaseContainer containerRef="/pus/packet_header_TM">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="3" parameterRef="/pus/service_type_ID_TM" />
+                            <Comparison value="10" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+            
+            <SequenceContainer name="TM(3,25)_housekeeping_parameter_report">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="housekeeping_parameter_report_structure_ID_ST03" />
+                </EntryList>
+                <BaseContainer containerRef="/pus/packet_header_TM">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="3" parameterRef="/pus/service_type_ID_TM" />
+                            <Comparison value="25" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+         <SequenceContainer name="Housekeeping_OBC_1">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCPCBBoardTemperature1" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCPCBBoardTemperature2" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCMCUTemperature" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCBootCounter" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCMemoryPartition" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCMCUSysTick" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCCANBUSLoad1" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCCANBUSLoad2" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCCANBUSActive" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCNANDFLASHLCLThreshold" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCMRAMLCLThreshold" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCNANDFLASHON" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCMRAMON" />
+                    <ParameterRefEntry parameterRef="AvailableHeap" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCUseCAN" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCUseUART" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCUseRTT" />
+                </EntryList>
+                <BaseContainer containerRef="TM(3,25)_housekeeping_parameter_report">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="0" parameterRef="housekeeping_parameter_report_structure_ID_ST03" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="Housekeeping_OBC_3">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCPCBBoardTemperature1" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCPCBBoardTemperature2" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCSpacecraftTimeRef" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCOperationalMode" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCMemoryPartition" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCReconfigurationTimer" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCLastFailedEvent" />
+                    <ParameterRefEntry parameterRef="/obc-xtce/OBCMCUSysTick" />
+                </EntryList>
+                <BaseContainer containerRef="TM(3,25)_housekeeping_parameter_report">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="1" parameterRef="housekeeping_parameter_report_structure_ID_ST03" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="Housekeeping_ADCS_0,01">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerRawX" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerRawY" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerRawZ" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeX" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeY" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeZ" />
+                </EntryList>
+                <BaseContainer containerRef="TM(3,25)_housekeeping_parameter_report">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="3" parameterRef="housekeeping_parameter_report_structure_ID_ST03" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="Housekeeping_ADCS_3">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerFrequency" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerCycleCountX" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerCycleCountY" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerCycleCountZ" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSelfTest" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeXTemperature" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeYTemperature" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeZTemperature" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSBoardTemperature1" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSBoardTemperature2" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMCUTemperature" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSBootCounter" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMCUOnBoardTime" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSSystick" />
+                </EntryList>
+                <BaseContainer containerRef="TM(3,25)_housekeeping_parameter_report">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="4" parameterRef="housekeeping_parameter_report_structure_ID_ST03" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+
+            <SequenceContainer name="Housekeeping_ADCS_5">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSignX" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSignY" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSignZ" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroSignX" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroSignY" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroSignZ" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroBiasX" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroBiasY" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroBiasZ" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSFlashInt" />
+                    <ParameterRefEntry parameterRef="/adcs-xtce/ADCSSRAMInt" />
+                </EntryList>
+                <BaseContainer containerRef="TM(3,25)_housekeeping_parameter_report">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="5" parameterRef="housekeeping_parameter_report_structure_ID_ST03" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+            
+        </ContainerSet>
+    </xtce:TelemetryMetaData>
+
+    <xtce:CommandMetaData>
+        <MetaCommandSet>
+
+            <MetaCommand name="TC(3,1)_create_a_parameter_report_structure">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="3" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint8_t" name="new_structure_id" />
+                    <Argument argumentTypeRef="/base-dt/uint32_t" name="collection_interval_milliseconds" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t{1-10}" name="total_parameters" />
+                    <Argument argumentTypeRef="/dt/parameterIdArray_t" name="parameters" />
+                </ArgumentList>
+                <CommandContainer name="TC(3,1)_create_a_parameter_report_structure">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="new_structure_id" />
+                        <ArgumentRefEntry argumentRef="collection_interval_milliseconds" />
+                        <ArgumentRefEntry argumentRef="total_parameters" />
+                        <ArgumentRefEntry argumentRef="parameters" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(3,9)_report_housekeeping_parameter_report_structures">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="3" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="9" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint8_t{1-5}" name="total_structures" />
+                    <Argument argumentTypeRef="/dt/structureIdArray_t" name="structures" />
+                </ArgumentList>
+                <CommandContainer name="TC(3,9)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="total_structures" />
+                        <ArgumentRefEntry argumentRef="structures" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="custom_TC(3,9)_report_housekeeping_parameter_report_structures">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="3" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="9" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint8_t{1-10}" name="total_structures" />
+                    <Argument argumentTypeRef="/base-dt/uint8Array_t" name="structures" />
+                </ArgumentList>
+                <CommandContainer name="custom_TC(3,9)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="total_structures" />
+                        <ArgumentRefEntry argumentRef="structures" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(3,27)_generate_a_one_shot_report_for_housekeeping_parameter_report_structures">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="3" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="27" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint8_t{1-5}" name="total_structures" />
+                    <Argument argumentTypeRef="/dt/structureIdArray_t" name="structures" />
+                </ArgumentList>
+                <CommandContainer name="TC(3,27)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="total_structures" />
+                        <ArgumentRefEntry argumentRef="structures" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="custom_TC(3,27)_generate_a_one_shot_report_for_housekeeping_parameter_report_structures">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="3" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="27" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint8_t{1-10}" name="total_structures" />
+                    <Argument argumentTypeRef="/base-dt/uint8Array_t" name="structures" />
+                </ArgumentList>
+                <CommandContainer name="custom_TC(3,27)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="total_structures" />
+                        <ArgumentRefEntry argumentRef="structures" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+        </MetaCommandSet>
+    </xtce:CommandMetaData>
+
+</SpaceSystem>

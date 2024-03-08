@@ -1,0 +1,31 @@
+
+  <div  class="graphs" id="graph_color_test" _nghost-c0=""> 
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <div> {{instanceName + " instance/" +parameterName}}</div>
+            </mat-panel-title>
+            <mat-panel-description class="right-aligned">
+                <button mat-icon-button class="whiteButton">{{ currentValue }}</button>
+                <button mat-icon-button class="redButton" (click)="removeWidget(qualifiedName)"><mat-icon>clear</mat-icon></button>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+            <ngx-charts-line-chart *ngIf="isOfType"
+            [view]="view1"
+            [gradient]="true"
+            [autoScale]="true"
+            [timeline]='timeline'
+            [scheme]='scheme'
+            [legendTitle]="'Legend'"
+            [legend]="true"
+            [results]="results.data"
+            [showXAxisLabel]="true"
+            [showYAxisLabel]="false"
+            [xAxisLabel]="'Time'"
+            [xAxis]="true"
+            [yAxis]="true"
+            >
+            </ngx-charts-line-chart>
+        <h3>Current Value: {{ currentValue }}</h3>
+    </mat-expansion-panel>
+   </div> 

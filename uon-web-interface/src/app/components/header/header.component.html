@@ -1,0 +1,36 @@
+<!-- Toolbar -->
+
+<mat-toolbar color="primary" class="app-header">
+  <mat-icon>rocket_launch</mat-icon>
+
+  <div class="username">
+    Spacecraft Operations
+    <mat-select
+      id="header"
+      [(ngModel)]="instance"
+      (selectionChange)="onInstanceClick(instance)"
+    >
+      <mat-option
+        *ngFor="let instance of instances?.instances"
+        [value]="instance.name"
+        >{{ instance.name }}</mat-option
+      >
+    </mat-select>
+  </div>
+
+  <div class="images">
+    <a target="_blank" href="https://spacedot.gr/">
+      <img
+        class="spacedot"
+        src="https://cdn.freebiesupply.com/logos/large/2x/the-university-of-nottingham-1-logo-png-transparent.png"
+      />
+    </a>
+
+    <button mat-button class="acube">
+      <mat-icon>query_builder</mat-icon>
+      <a> {{ utcTime | date : "dd/MM/YYYY HH:mm:ss" }} UTC</a>
+    </button>
+  </div>
+</mat-toolbar>
+
+<!-- "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css", in angular.json instead of themes-->

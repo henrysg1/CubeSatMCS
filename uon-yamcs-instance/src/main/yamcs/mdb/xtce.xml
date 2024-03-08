@@ -1,0 +1,775 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="UoNCubeSat" xmlns="http://www.omg.org/spec/XTCE/20180204" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd">
+	<TelemetryMetaData>
+		<ParameterTypeSet>
+			<AggregateParameterType name="CCSDS_Packet_ID_Type">
+				<MemberList>
+					<Member name="Version" typeRef="CCSDS_Version_Type" />
+					<Member name="Type" typeRef="CCSDS_Type_Type" />
+					<Member name="SecHdrFlag" typeRef="CCSDS_Sec_Hdr_Flag_Type" />
+					<Member name="APID" typeRef="CCSDS_APID_Type" />
+				</MemberList>
+			</AggregateParameterType>
+			<IntegerParameterType name="CCSDS_Version_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="3" />
+			</IntegerParameterType>
+			<BooleanParameterType name="CCSDS_Type_Type" zeroStringValue="TM" oneStringValue="TC">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="1" />
+			</BooleanParameterType>
+			<BooleanParameterType name="CCSDS_Sec_Hdr_Flag_Type" zeroStringValue="NotPresent" oneStringValue="Present">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="1" />
+			</BooleanParameterType>
+			<IntegerParameterType name="CCSDS_APID_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="11" />
+			</IntegerParameterType>
+			<AggregateParameterType name="CCSDS_Packet_Sequence_Type">
+				<MemberList>
+					<Member name="GroupFlags" typeRef="CCSDS_Group_Flags_Type" />
+					<Member name="Count" typeRef="CCSDS_Source_Sequence_Count_Type" />
+				</MemberList>
+			</AggregateParameterType>
+			<EnumeratedParameterType name="CCSDS_Group_Flags_Type">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="2" />
+				<EnumerationList>
+					<Enumeration value="0" label="Continuation" />
+					<Enumeration value="1" label="First" />
+					<Enumeration value="2" label="Last" />
+					<Enumeration value="3" label="Standalone" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+			<IntegerParameterType name="CCSDS_Source_Sequence_Count_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="14" />
+			</IntegerParameterType>
+			<IntegerParameterType name="CCSDS_Packet_Length_Type" signed="false" initialValue="0">
+				<UnitSet>
+					<Unit description="Size">Octets</Unit>
+				</UnitSet>
+				<IntegerDataEncoding sizeInBits="16" />
+			</IntegerParameterType>
+			<IntegerParameterType name="uint32_t" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="32" />
+			</IntegerParameterType>
+			<FloatParameterType name="float_t">
+				<UnitSet />
+				<FloatDataEncoding sizeInBits="32" />
+			</FloatParameterType>
+			<BooleanParameterType name="bool_t">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="8" />
+			</BooleanParameterType>
+			<AggregateParameterType name="vec3_t">
+				<MemberList>
+					<Member name="x" typeRef="float_t" />
+					<Member name="y" typeRef="float_t" />
+					<Member name="z" typeRef="float_t" />
+				</MemberList>
+			</AggregateParameterType>
+			<EnumeratedParameterType name="EnumerationTest">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="3" />
+				<EnumerationList>
+					<Enumeration value="0" label="ENUM_VALUE_0" />
+					<Enumeration value="1" label="ENUM_VALUE_1" />
+					<Enumeration value="2" label="ENUM_VALUE_2" />
+					<Enumeration value="3" label="ENUM_VALUE_3" />
+					<Enumeration value="4" label="ENUM_VALUE_4" />
+					<Enumeration value="5" label="ENUM_VALUE_5" />
+					<Enumeration value="6" label="ENUM_VALUE_6" />
+					<Enumeration value="7" label="ENUM_VALUE_7" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+		</ParameterTypeSet>
+		<ParameterSet>
+			<Parameter name="CCSDS_Packet_ID" parameterTypeRef="CCSDS_Packet_ID_Type" />
+			<Parameter name="CCSDS_Packet_Sequence" parameterTypeRef="CCSDS_Packet_Sequence_Type" />
+			<Parameter name="CCSDS_Packet_Length" parameterTypeRef="CCSDS_Packet_Length_Type" />
+			<Parameter name="EpochUSNO" parameterTypeRef="float_t" />
+			<Parameter name="OrbitNumberCumulative" parameterTypeRef="uint32_t" />
+			<Parameter name="ElapsedSeconds" parameterTypeRef="uint32_t" />
+			<Parameter name="A" parameterTypeRef="float_t" />
+			<Parameter name="Height" parameterTypeRef="float_t" />
+			<Parameter name="Position" parameterTypeRef="vec3_t" />
+			<Parameter name="Velocity" parameterTypeRef="vec3_t" />
+			<Parameter name="Latitude" parameterTypeRef="float_t" />
+			<Parameter name="Longitude" parameterTypeRef="float_t" />
+			<Parameter name="Battery1_Voltage" parameterTypeRef="float_t" />
+			<Parameter name="Battery2_Voltage" parameterTypeRef="float_t" />
+			<Parameter name="Battery1_Temp" parameterTypeRef="float_t" />
+			<Parameter name="Battery2_Temp" parameterTypeRef="float_t" />
+			<Parameter name="Magnetometer" parameterTypeRef="vec3_t" />
+			<Parameter name="Sunsensor" parameterTypeRef="float_t" />
+			<Parameter name="Gyro" parameterTypeRef="vec3_t" />
+			<Parameter name="Detector_Temp" parameterTypeRef="float_t" />
+			<Parameter name="Shadow" parameterTypeRef="bool_t" />
+			<Parameter name="Contact_Golbasi_GS" parameterTypeRef="bool_t" />
+			<Parameter name="Contact_Svalbard" parameterTypeRef="bool_t" />
+			<Parameter name="Payload_Status" parameterTypeRef="bool_t" />
+			<Parameter name="Payload_Error_Flag" parameterTypeRef="bool_t" />
+			<Parameter name="ADCS_Error_Flag" parameterTypeRef="bool_t" />
+			<Parameter name="CDHS_Error_Flag" parameterTypeRef="bool_t" />
+			<Parameter name="COMMS_Error_Flag" parameterTypeRef="bool_t" />
+			<Parameter name="EPS_Error_Flag" parameterTypeRef="bool_t" />
+			<Parameter name="COMMS_Status" parameterTypeRef="bool_t" />
+			<Parameter name="CDHS_Status" parameterTypeRef="bool_t" />
+			<Parameter name="Mode_Night" parameterTypeRef="bool_t" />
+			<Parameter name="Mode_Day" parameterTypeRef="bool_t" />
+			<Parameter name="Mode_Payload" parameterTypeRef="bool_t" />
+			<Parameter name="Mode_XBand" parameterTypeRef="bool_t" />
+			<Parameter name="Mode_SBand" parameterTypeRef="bool_t" />
+			<Parameter name="Mode_Safe" parameterTypeRef="bool_t" />
+
+			<Parameter name="Enum_Para_1" parameterTypeRef="EnumerationTest" />
+			<Parameter name="Enum_Para_2" parameterTypeRef="EnumerationTest" />
+			<Parameter name="Enum_Para_3" parameterTypeRef="EnumerationTest" />
+		</ParameterSet>
+		<ContainerSet>
+			<SequenceContainer abstract="true" name="CCSDSPacket">
+				<EntryList>
+					<ParameterRefEntry parameterRef="CCSDS_Packet_ID" />
+					<ParameterRefEntry parameterRef="CCSDS_Packet_Sequence" />
+					<ParameterRefEntry parameterRef="CCSDS_Packet_Length" />
+				</EntryList>
+			</SequenceContainer>
+			<SequenceContainer name="TelemetryPacket">
+				<EntryList />
+				<BaseContainer containerRef="CCSDSPacket">
+					<RestrictionCriteria>
+						<ComparisonList>
+							<Comparison value="0" parameterRef="CCSDS_Packet_ID/Version" />
+							<Comparison value="TM" parameterRef="CCSDS_Packet_ID/Type" />
+						</ComparisonList>
+					</RestrictionCriteria>
+				</BaseContainer>
+			</SequenceContainer>
+			<SequenceContainer name="Spacecraft">
+				<EntryList>
+					<ParameterRefEntry parameterRef="EpochUSNO" />
+					<ParameterRefEntry parameterRef="OrbitNumberCumulative" />
+					<ParameterRefEntry parameterRef="ElapsedSeconds" />
+					<ParameterRefEntry parameterRef="A" />
+					<ParameterRefEntry parameterRef="Height" />
+					<ParameterRefEntry parameterRef="Position" />
+					<ParameterRefEntry parameterRef="Velocity" />
+					<ParameterRefEntry parameterRef="Latitude" />
+					<ParameterRefEntry parameterRef="Longitude" />
+					<ParameterRefEntry parameterRef="Battery1_Voltage" />
+					<ParameterRefEntry parameterRef="Battery2_Voltage" />
+					<ParameterRefEntry parameterRef="Battery1_Temp" />
+					<ParameterRefEntry parameterRef="Battery2_Temp" />
+					<ParameterRefEntry parameterRef="Magnetometer" />
+					<ParameterRefEntry parameterRef="Sunsensor" />
+					<ParameterRefEntry parameterRef="Gyro" />
+					<ParameterRefEntry parameterRef="Detector_Temp" />
+					<ParameterRefEntry parameterRef="Shadow" />
+					<ParameterRefEntry parameterRef="Contact_Golbasi_GS" />
+					<ParameterRefEntry parameterRef="Contact_Svalbard" />
+					<ParameterRefEntry parameterRef="Payload_Status" />
+					<ParameterRefEntry parameterRef="Payload_Error_Flag" />
+					<ParameterRefEntry parameterRef="ADCS_Error_Flag" />
+					<ParameterRefEntry parameterRef="CDHS_Error_Flag" />
+					<ParameterRefEntry parameterRef="COMMS_Error_Flag" />
+					<ParameterRefEntry parameterRef="EPS_Error_Flag" />
+					<ParameterRefEntry parameterRef="COMMS_Status" />
+					<ParameterRefEntry parameterRef="CDHS_Status" />
+					<ParameterRefEntry parameterRef="Mode_Night" />
+					<ParameterRefEntry parameterRef="Mode_Day" />
+					<ParameterRefEntry parameterRef="Mode_Payload" />
+					<ParameterRefEntry parameterRef="Mode_XBand" />
+					<ParameterRefEntry parameterRef="Mode_SBand" />
+					<ParameterRefEntry parameterRef="Mode_Safe" />
+					<ParameterRefEntry parameterRef="Enum_Para_1">
+						<LocationInContainerInBits referenceLocation="containerStart">
+							<FixedValue>29</FixedValue>
+						</LocationInContainerInBits>
+					</ParameterRefEntry>
+					<ParameterRefEntry parameterRef="Enum_Para_2">
+						<LocationInContainerInBits referenceLocation="containerStart">
+							<FixedValue>27</FixedValue>
+						</LocationInContainerInBits>
+					</ParameterRefEntry>
+					<ParameterRefEntry parameterRef="Enum_Para_3">
+						<LocationInContainerInBits referenceLocation="containerStart">
+							<FixedValue>25</FixedValue>
+						</LocationInContainerInBits>
+					</ParameterRefEntry>
+				</EntryList>
+				<BaseContainer containerRef="TelemetryPacket">
+					<RestrictionCriteria>
+						<ComparisonList>
+							<Comparison value="NotPresent" parameterRef="CCSDS_Packet_ID/SecHdrFlag" />
+							<Comparison value="100" parameterRef="CCSDS_Packet_ID/APID" />
+						</ComparisonList>
+					</RestrictionCriteria>
+				</BaseContainer>
+			</SequenceContainer>
+		</ContainerSet>
+	</TelemetryMetaData>
+	<CommandMetaData>
+		<ArgumentTypeSet>
+			<IntegerArgumentType name="CCSDS_Version_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="3" />
+			</IntegerArgumentType>
+			<BooleanArgumentType name="CCSDS_Type_Type" zeroStringValue="TM" oneStringValue="TC">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="1" />
+			</BooleanArgumentType>
+			<BooleanArgumentType name="CCSDS_Sec_Hdr_Flag_Type" zeroStringValue="NotPresent" oneStringValue="Present">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="1" />
+			</BooleanArgumentType>
+			<IntegerArgumentType name="CCSDS_APID_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="11" />
+			</IntegerArgumentType>
+			<EnumeratedArgumentType name="CCSDS_Group_Flags_Type">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="2" />
+				<EnumerationList>
+					<Enumeration value="0" label="Continuation" />
+					<Enumeration value="1" label="First" />
+					<Enumeration value="2" label="Last" />
+					<Enumeration value="3" label="Standalone" />
+				</EnumerationList>
+			</EnumeratedArgumentType>
+			<IntegerArgumentType name="Packet_ID_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding sizeInBits="16" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Battery_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+				<ValidRangeSet>
+					<ValidRange minInclusive="1" maxInclusive="3" />
+				</ValidRangeSet>
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Memory_Location_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+				<ValidRangeSet>
+					<ValidRange minInclusive="0" maxInclusive="255" />
+				</ValidRangeSet>
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Camera_Number_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="3" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Camera_Res_X_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Camera_Res_Y_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+			</IntegerArgumentType>
+			<!-- CCSDS Calender Segmented Time Code Month of Year/Day of month 72-bit time code, YR MO D H M S S-2 S-4 -->
+			<IntegerArgumentType name="CCSDS_Calendar_Segmented_Time_Code_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="64" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Payload_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="4" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Memory_Length_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+				<ValidRangeSet>
+					<ValidRange minInclusive="1" maxInclusive="255" />
+				</ValidRangeSet>
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Reprogram_Code_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="64" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Position_X_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Position_Y_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+			</IntegerArgumentType>
+			<IntegerArgumentType name="Position_Z_Type" signed="false">
+				<UnitSet />
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
+			</IntegerArgumentType>
+		</ArgumentTypeSet>
+		<MetaCommandSet>
+			<MetaCommand name="CCSDSPacket" abstract="true">
+				<ArgumentList>
+					<Argument argumentTypeRef="CCSDS_Version_Type" name="CCSDS_Version" />
+					<Argument argumentTypeRef="CCSDS_Type_Type" name="CCSDS_Type" />
+					<Argument argumentTypeRef="CCSDS_Sec_Hdr_Flag_Type" name="CCSDS_Sec_Hdr_Flag" />
+					<Argument argumentTypeRef="CCSDS_APID_Type" name="CCSDS_APID" />
+					<Argument argumentTypeRef="CCSDS_Group_Flags_Type" name="CCSDS_Group_Flags" />
+				</ArgumentList>
+				<CommandContainer name="CCSDSPacket">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="CCSDS_Version" />
+						<ArgumentRefEntry argumentRef="CCSDS_Type" />
+						<ArgumentRefEntry argumentRef="CCSDS_Sec_Hdr_Flag" />
+						<ArgumentRefEntry argumentRef="CCSDS_APID" />
+						<ArgumentRefEntry argumentRef="CCSDS_Group_Flags" />
+						<!-- Final value is set by post-processor after the command is submitted. -->
+						<FixedValueEntry name="CCSDS_Source_Sequence_Count" binaryValue="0000" sizeInBits="14" />
+						<!-- Final value is set by post-processor after the command is submitted. -->
+						<FixedValueEntry name="CCSDS_Packet_Length" binaryValue="0000" sizeInBits="16" />
+					</EntryList>
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="UoNCubeSatPacket" abstract="true">
+				<BaseMetaCommand metaCommandRef="CCSDSPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="CCSDS_Version" argumentValue="0" />
+						<ArgumentAssignment argumentName="CCSDS_Type" argumentValue="TC" />
+						<ArgumentAssignment argumentName="CCSDS_Sec_Hdr_Flag" argumentValue="NotPresent" />
+						<ArgumentAssignment argumentName="CCSDS_APID" argumentValue="101" />
+						<ArgumentAssignment argumentName="CCSDS_Group_Flags" argumentValue="Standalone" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Packet_ID_Type" name="Packet_ID" />
+				</ArgumentList>
+				<CommandContainer name="UoNCubeSatPacket">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="Packet_ID" />
+					</EntryList>
+					<BaseContainer containerRef="CCSDSPacket" />
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="SystemStatus" shortDescription="Gets the status of the system">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="0" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="SystemStatus">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="Housekeeping" shortDescription="Does Housekeeping">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="1" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="Housekeeping">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="MemoryCheck" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="2" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Memory_Location_Type" name="MemoryAddress" shortDescription="Memory Address to start from" />
+					<Argument argumentTypeRef="Memory_Length_Type" name="MemoryLength" shortDescription="Number of bytes to check" />
+				</ArgumentList>
+				<CommandContainer name="MemoryCheck">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="MemoryAddress" />
+						<ArgumentRefEntry argumentRef="MemoryLength" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="vital" />
+			</MetaCommand>
+			<MetaCommand name="BatteryStatus" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="3" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="BatteryStatus">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+			</MetaCommand> 
+			<MetaCommand name="MemoryStatus" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="4" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="MemoryStatus">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+			</MetaCommand> 
+			<MetaCommand name="BeaconActivate" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="5" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="BeaconActivate">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand> 
+			<MetaCommand name="BeaconDeactivate" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="6" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="BeaconDeactivate">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="SendBeaconStatus" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="7" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="SendBeaconStatus">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="RequestFiles" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="8" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Memory_Location_Type" name="MemoryAddress" shortDescription="Memory Address to start from" />
+					<Argument argumentTypeRef="Memory_Length_Type" name="MemoryLength" shortDescription="Number of bytes to check" />
+				</ArgumentList>
+				<CommandContainer name="RequestFiles">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="MemoryAddress" />
+						<ArgumentRefEntry argumentRef="MemoryLength" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="vital" />
+			</MetaCommand>
+			<MetaCommand name="SendFile" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="9" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Memory_Location_Type" name="MemoryAddress" shortDescription="Memory Address to start from" />
+					<Argument argumentTypeRef="Memory_Length_Type" name="MemoryLength" shortDescription="Number of bytes to check" />
+				</ArgumentList>
+				<CommandContainer name="SendFile">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="MemoryAddress" />
+						<ArgumentRefEntry argumentRef="MemoryLength" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="DeleteFile" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="10" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Memory_Location_Type" name="MemoryAddress" shortDescription="Memory Address to start from" />
+				</ArgumentList>
+				<CommandContainer name="DeleteFile">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="MemoryAddress" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="TakePhoto" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="11" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Camera_Number_Type" name="CameraNumber" shortDescription="Camera Number" />
+					<Argument argumentTypeRef="Camera_Res_X_Type" name="CameraResX" shortDescription="Camera Resolution X" />
+					<Argument argumentTypeRef="Camera_Res_Y_Type" name="CameraResY" shortDescription="Camera Resolution Y" />
+				</ArgumentList>
+				<CommandContainer name="TakePhoto">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="CameraNumber" />
+						<ArgumentRefEntry argumentRef="CameraResX" />
+						<ArgumentRefEntry argumentRef="CameraResY" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="vital" />
+			</MetaCommand>
+			<MetaCommand name="SchedulePhoto" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="12" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Camera_Number_Type" name="CameraNumber" shortDescription="Camera Number" />
+					<Argument argumentTypeRef="Camera_Res_X_Type" name="CameraResX" shortDescription="Camera Resolution X" />
+					<Argument argumentTypeRef="Camera_Res_Y_Type" name="CameraResY" shortDescription="Camera Resolution Y" />
+					<Argument argumentTypeRef="CCSDS_Calendar_Segmented_Time_Code_Type" name="Time" shortDescription="Time to take the photo" />
+				</ArgumentList>
+				<CommandContainer name="SchedulePhoto">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="CameraNumber" />
+						<ArgumentRefEntry argumentRef="CameraResX" />
+						<ArgumentRefEntry argumentRef="CameraResY" />
+						<ArgumentRefEntry argumentRef="Time" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="vital" />
+			</MetaCommand>
+			<MetaCommand name="PhotoStatus" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="13" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="PhotoStatus">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="ActivatePayload" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="14" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Payload_Type" name="Payload" shortDescription="" />
+				</ArgumentList>
+				<CommandContainer name="ActivatePayload">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="Payload" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="DeactivatePayload" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="15" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Payload_Type" name="Payload" shortDescription="" />
+				</ArgumentList>
+				<CommandContainer name="DeactivatePayload">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="Payload" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="PayloadStatus" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="16" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="PayloadStatus">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+			</MetaCommand>
+			<MetaCommand name="ReprogramAbacus" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="17" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Reprogram_Code_Type" name="Code" shortDescription="" />
+				</ArgumentList>
+				<CommandContainer name="ReprogramAbacus">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="Code" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="forbidden" />
+			</MetaCommand>
+			<MetaCommand name="UpdateSoftware" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="18" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Reprogram_Code_Type" name="Code" shortDescription="" />
+				</ArgumentList>
+				<CommandContainer name="UpdateSoftware">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="Code" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="forbidden" />
+			</MetaCommand>
+			<MetaCommand name="RunDiagnostics" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="19" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="RunDiagnostics">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="vital" />
+			</MetaCommand>
+			<MetaCommand name="ErrorLogRequest" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="20" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="ErrorLogRequest">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="vital" />
+			</MetaCommand>
+			<MetaCommand name="ResetSystem" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="21" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="ResetSystem">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="Forbidden" />
+			</MetaCommand>
+			<MetaCommand name="PowerUp" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="22" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Battery_Type" name="Battery" shortDescription="" />
+				</ArgumentList>
+				<CommandContainer name="PowerUp">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="Battery" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="PowerDown" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="23" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Battery_Type" name="Battery" shortDescription="" />
+					<Argument argumentTypeRef="Memory_Length_Type" name="MemoryLength" shortDescription="Number of bytes to check" />
+				</ArgumentList>
+				<CommandContainer name="PowerDown">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="Battery" />
+						<ArgumentRefEntry argumentRef="MemoryLength" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="AdjustOrientation" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="24" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Position_X_Type" name="OrientationX" shortDescription="" />
+					<Argument argumentTypeRef="Position_Y_Type" name="OrientationY" shortDescription="" />
+					<Argument argumentTypeRef="Position_Z_Type" name="OrientationZ" shortDescription="" />
+				</ArgumentList>
+				<CommandContainer name="AdjustOrientation">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="OrientationX" />
+						<ArgumentRefEntry argumentRef="OrientationY" />
+						<ArgumentRefEntry argumentRef="OrientationZ" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="MoveToCoordinates" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="25" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<ArgumentList>
+					<Argument argumentTypeRef="Position_X_Type" name="PositionX" shortDescription="" />
+					<Argument argumentTypeRef="Position_Y_Type" name="PositionY" shortDescription="" />
+					<Argument argumentTypeRef="Position_Z_Type" name="PositionZ" shortDescription="" />
+				</ArgumentList>
+				<CommandContainer name="MoveToCoordinates">
+					<EntryList>
+						<ArgumentRefEntry argumentRef="PositionX" />
+						<ArgumentRefEntry argumentRef="PositionY" />
+						<ArgumentRefEntry argumentRef="PositionZ" />
+					</EntryList>
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="EmergencyShutdown" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="26" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="EmergencyShutdown">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+			<MetaCommand name="SafeMode" shortDescription="">
+				<BaseMetaCommand metaCommandRef="UoNCubeSatPacket">
+					<ArgumentAssignmentList>
+						<ArgumentAssignment argumentName="Packet_ID" argumentValue="27" />
+					</ArgumentAssignmentList>
+				</BaseMetaCommand>
+				<CommandContainer name="SafeMode">
+					<EntryList />
+					<BaseContainer containerRef="UoNCubeSatPacket" />
+				</CommandContainer>
+				<DefaultSignificance consequenceLevel="critical" />
+			</MetaCommand>
+		</MetaCommandSet>
+	</CommandMetaData>
+</SpaceSystem>

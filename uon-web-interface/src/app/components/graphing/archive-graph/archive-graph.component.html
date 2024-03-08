@@ -1,0 +1,57 @@
+<div class="graphs" id="graph_color_test" _nghost-c0="">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div>{{instanceName + "/" +  title }}</div>
+        <mat-panel-description class="right-aligned">
+          <button
+            mat-icon-button
+            class="redButton"
+            (click)="removeWidget(title)"
+          >
+            <mat-icon>clear</mat-icon>
+          </button>
+        </mat-panel-description>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <ngx-charts-line-chart
+      [view]="view1"
+      [gradient]="true"
+      [autoScale]="true"
+      [timeline]="timeline"
+      [scheme]="scheme"
+      [legendTitle]="'Legend'"
+      [legend]="true"
+      [results]="results"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="false"
+      [xAxisLabel]="'Time'"
+      [xAxis]="true"
+      [yAxisLabel]="''"
+      [yAxis]="true"
+    >
+    </ngx-charts-line-chart>
+    <table
+      *ngIf="this.parameterType == 'enumeration'"
+      mat-table
+      [dataSource]="enumValues"
+    >
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef>Name.</mat-header-cell>
+        <mat-cell *matCellDef="let enumValues">
+          {{ enumValues.label }}
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="value">
+        <mat-header-cell *matHeaderCellDef>Value.</mat-header-cell>
+        <mat-cell *matCellDef="let enumValues">
+          {{ enumValues.value }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="folderCol"></mat-header-row>
+      <mat-row *matRowDef="let myRowData; columns: folderCol"> </mat-row>
+    </table>
+  </mat-expansion-panel>
+</div>

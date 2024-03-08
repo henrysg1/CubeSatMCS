@@ -1,0 +1,73 @@
+a[download] {
+  color: white;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+mat-card-actions button {
+  /* display: block; */
+  display: inline-block;
+  align-items: center;
+  /* margin: 10 auto !important ; */
+  background-color: #2e98a3;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 10px;
+}
+mat-card-actions {
+  display: block;
+  text-align: center;
+}
+
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version. */
+mat-card {
+  display: inline-block;
+  margin: 10px;
+  max-width: 300px;
+  min-width: 270px;
+}
+
+
+
+mat-icon.back {
+  margin: 0 0.5em;
+  color: #34ff19;
+}
+
+img {
+  max-width: inherit;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+mat-card-header {
+  display: block;
+  text-align: center;
+  padding: 0%;
+}
+mat-toolbar{
+  background-color: #303030;
+  border-bottom: 1px solid #000000;
+  
+}
+span{
+  margin-left: 3%;
+  font-size: 30px;
+  
+}
+.redButton{
+ margin-left: 83%; 
+  color: red;
+}
+
+::ng-deep .ui-fileupload-choose .fa-plus::before {
+  content: "\F0A6";
+}
+
+.p-tooltip .p-tooltip-text { 
+  background-color: aliceblue !important; 
+  color: green !important; 
+  font-size: large; 
+}

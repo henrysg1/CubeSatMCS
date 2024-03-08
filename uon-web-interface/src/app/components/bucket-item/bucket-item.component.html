@@ -1,0 +1,55 @@
+
+<mat-toolbar>
+  <span>{{this.bucketName}}</span>
+  <div class="card flex justify-content-center">
+    <p-fileUpload 
+    mode="basic"
+    name="demo[]" 
+    url="https://www.primefaces.org/cdn/api/upload.php" 
+    accept="image/*"
+    chooseLabel="" 
+    (onUpload)="this.onUpload($event)" 
+    [multiple]="true" 
+    [auto]="true"
+    pTooltip="upload file"
+    >
+  </p-fileUpload>
+  
+  </div>
+</mat-toolbar>
+
+<mat-card appearance="outlined" *ngFor="let object of objects" class="right-aligned" >
+  <button class="redButton" mat-icon-button   (click)="deleteBucketItem(object.name)" >
+    <mat-icon >close</mat-icon>
+  </button>
+  <mat-card-header >
+    <mat-card-title>{{ object.name }}</mat-card-title>
+  </mat-card-header>
+  <img mat-card-image [src]="this.bucketUrl + '/' + object.name" />
+  <mat-card-actions>
+    <a [href]="this.downloadUrl + object.name" [download]="object.name"
+      ><button mat-button disabled>
+        download<mat-icon>download</mat-icon>
+      </button></a
+    >
+    <button
+      mat-raised-button
+      (click)="
+        openDialog(
+          object.created,
+          object.size,
+          this.bucketUrl + '/' + object.name
+        )
+      "
+    >
+      View
+      <mat-icon> visibility</mat-icon>
+    </button>
+
+    
+  </mat-card-actions>
+</mat-card>
+<br />
+<button mat-button (click)="showListBucket()">
+  Back <mat-icon class="back"> undo</mat-icon>
+</button>

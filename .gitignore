@@ -8,3 +8,11 @@
 
 # VSCode
 .vscode/settings.json
+
+mcs-server/node_modules
+
+uon-web-interface/node_modules
+
+uon-web-interface/.angular
+
+uon-yamcs-instance/__pycache__

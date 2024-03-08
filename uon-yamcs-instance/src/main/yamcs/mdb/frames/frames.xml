@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="frames" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <xtce:TelemetryMetaData>
+
+       <ParameterSet>
+            <!-- Frame parameters -->
+
+             <!-- transfer frame primary packet header TM -->
+            <xtce:Parameter parameterTypeRef="/frames-dt/transfer_frame_header" name="Transfer_Frame_Header">
+                <xtce:LongDescription>A structure containing all parameters for the Transfer Frame Header
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+            <!-- transfer frame secondary packet header TM -->
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/transfer_frame_version_number" name="transfer_frame_secondary_header_version_number" initialValue="0">
+                <xtce:LongDescription>This sub-field indicates which of up to four Secondary Header versions is used. The present Recommended Standard 
+                recognizes only one version, which is Version 1.
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/transfer_frame_secondary_header_length" name="transfer_frame_secondary_header_length">
+                <xtce:LongDescription>TThis sub-field shall contain the total length of the Transfer Frame Secondary Header in octets minus one, represented 
+                as a binary number. The Transfer Frame Secondary Header Length shall be static within the associated Master or Virtual Channel throughout a
+                Mission Phase. When a Secondary Header is present, this length may be used to compute the location of the start of the field following the 
+                Secondary Header. 
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/transfer_frame_secondary_header_data_field" name="transfer_frame_secondary_header_data_field">
+                <xtce:LongDescription>The Transfer Frame Secondary Header Data Field shall contain the Transfer Frame Secondary Header data. The Transfer 
+                Frame Secondary Header Data Field shall be of fixed length within the associated Master or Virtual Channel throughout a Mission Phase.
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+             <!-- Operational Control Field TM -->
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/flag" name="type_flag">
+                <xtce:LongDescription>The Type Flag shall be ‘0’ if the Operational Control Field holds a Type-1-Report which shall contain a Communications
+                Link Control Word or ‘1’ if the Operational Control Field holds a Type-2-Report.
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/flag" name="report_type">
+                <xtce:LongDescription>In a Type-2 Report this field shall indicate the use of this report. If this bit is ‘0’, the contents of the report are project-specific 
+                and if this bit is ‘1’, the report contains an SDLS FSR. 
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/operational_control" name="operational_control">
+                <xtce:LongDescription>This field contains the remaining 30 bits of the operational control field. 
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+            <!-- CLCW -->
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/communications_link_control_word" name="CLCW">
+                <xtce:LongDescription>A structure containing all parameters for the Transfer Frame Header
+                </xtce:LongDescription>
+            </xtce:Parameter>
+
+            
+            <!--Frame Error Control Field-->
+
+            <xtce:Parameter parameterTypeRef="/frames-dt/frame_error_control" name="frame_error_control">
+                <xtce:LongDescription>The purpose of this field is to provide a capability for detecting errors which may have been introduced into the Transfer 
+                Frame during the transmission and data handling process.
+                </xtce:LongDescription>
+            </xtce:Parameter>
+        </ParameterSet>
+
+
+        <!-- Frame containers -->
+
+        <ContainerSet>
+
+             <xtce:SequenceContainer name="Transfer_Frame_Primary_Header">
+                <xtce:EntryList>
+                    <xtce:ParameterRefEntry parameterRef="Transfer_Frame_Header"/>
+                </xtce:EntryList>
+            </xtce:SequenceContainer>
+
+            <xtce:SequenceContainer name="Transfer_Frame_Secondary_Header">
+                <xtce:EntryList>
+                    <xtce:ParameterRefEntry parameterRef="transfer_frame_secondary_header_version_number"/>
+                    <xtce:ParameterRefEntry parameterRef="transfer_frame_secondary_header_length"/>
+                    <xtce:ParameterRefEntry parameterRef="transfer_frame_secondary_header_data_field"/>
+                </xtce:EntryList>
+            </xtce:SequenceContainer>
+
+            <xtce:SequenceContainer name="operational_control_field">
+                <xtce:LongDescription>The purpose of this field is to provide a standardized mechanism for reporting a small number of real-time functions,
+                </xtce:LongDescription>
+                <xtce:EntryList>
+                    <xtce:ParameterRefEntry parameterRef="type_flag"/>
+                    <xtce:ParameterRefEntry parameterRef="report_type"/>
+                    <xtce:ParameterRefEntry parameterRef="operational_control"/>
+                </xtce:EntryList>
+            </xtce:SequenceContainer>
+
+            <xtce:SequenceContainer name="communications_link_control_word">
+                <xtce:LongDescription>The Communications Link Control Word (CLCW), which is the protocol data unit transmitted from the receiving end to the sending end, 
+                shall provide the mechanism by which the FARM at the receiving end reports the status of frame acceptance to the Frame Operation Procedure (FOP) at the 
+                sending end.
+                </xtce:LongDescription>
+                <xtce:EntryList>
+                    <xtce:ParameterRefEntry parameterRef="CLCW"/>
+                </xtce:EntryList>
+            </xtce:SequenceContainer>
+
+            <xtce:SequenceContainer name="frame_error_control_field">
+                <xtce:LongDescription>The purpose of this field is to provide a capability for detecting errors which may have been introduced into the Transfer 
+                Frame during the transmission and data handling process.
+                </xtce:LongDescription>
+                <xtce:EntryList>
+                    <xtce:ParameterRefEntry parameterRef="frame_error_control"/>
+                </xtce:EntryList>
+            </xtce:SequenceContainer>
+
+        </ContainerSet>
+
+    </xtce:TelemetryMetaData>
+</SpaceSystem>

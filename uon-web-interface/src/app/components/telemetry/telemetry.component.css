@@ -1,0 +1,27 @@
+mat-cell { 
+    color:#34ff19; 
+    font-size:15px; 
+} 
+.mat-mdc-table {
+    min-width: auto !important;
+    width: 100% !important;
+    
+}
+
+.name_column {
+  font-weight: bold;
+}
+
+mat-form-field {
+  margin-left: 1%;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+  display: flex;
+  direction: column; /* horizontally align inputs */
+}
+  
+  mat-icon {
+    margin: 0 0.5em;
+    color: #34ff19;
+  }
+

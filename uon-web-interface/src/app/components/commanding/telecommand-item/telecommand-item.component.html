@@ -1,0 +1,585 @@
+<form [formGroup]="argsForm" (ngSubmit)="sendTC()" *ngIf="!response">
+  <h3>
+    Command: <span class="tcName">{{ command.qualifiedName }}</span>
+  </h3>
+  <h3 class="arguments">Arguments:</h3>
+  <div
+    *ngFor="let argument of arguments; let i = index"
+    class="necessary-arguments"
+  >
+    <div
+      *ngIf="argument.hasOwnProperty('initialValue') && showInitialValuesArgs"
+      class="initialized-args"
+    >
+      <div class="argument-info">
+        <h4>{{ argument.name }}</h4>
+        <h4>{{ argument.type.engType }}</h4>
+      </div>
+
+      <input
+        required
+        *ngIf="argument.name == 'release_time'"
+        type="datetime-local"
+        [formControlName]="argument.name"
+      />
+
+      <input
+        required
+        *ngIf="!isNotInteger(argument) || !isNotFloat(argument)"
+        matInput
+        [formControlName]="argument.name"
+        type="number"
+        class="numbers"
+        (ngModelChange)="addToFormArray(argument)"
+        [min]="getRangeMin(argument)"
+        [max]="getRangeMax(argument)"
+      />
+      <mat-hint
+        *ngIf="!isNotInteger(argument) && getRangeMax(argument) > 0"
+        align="end"
+      >
+        [{{ getRangeMin(argument) }},{{ getRangeMax(argument) }}]
+      </mat-hint>
+
+      <input
+        required
+        *ngIf="argument.type.engType == 'string'"
+        type="text"
+        [formControlName]="argument.name"
+      />
+
+      <span *ngIf="!isNotBoolean(argument)" class="boolean-inputs">
+        <mat-radio-group [formControlName]="argument.name" required>
+          <mat-radio-button [value]="true">True</mat-radio-button>
+          <mat-radio-button [value]="false">False</mat-radio-button>
+        </mat-radio-group>
+      </span>
+
+      <div
+        *ngIf="!isNotAggregate(argument)"
+        [formGroupName]="argument.name"
+        class="aggregates"
+      >
+        <span *ngFor="let member of argument.type.member; let j = index">
+          <span class="argument-info">
+            <h4>{{ member.name }}</h4>
+            <h4>{{ member.type.engType }}</h4>
+          </span>
+          <input
+            required
+            matInput
+            *ngIf="
+              member.type.engType == 'integer' || member.type.engType == 'float'
+            "
+            type="number"
+            [formControlName]="member.name"
+            [min]="getRangeMin(argument)"
+            [max]="getRangeMax(argument)"
+            required
+          />
+          <input
+            required
+            matInput
+            *ngIf="member.type.engType == 'string'"
+            type="text"
+            [formControlName]="member.name"
+          /><br />
+        </span>
+      </div>
+
+      <div *ngIf="!isNotEnum(argument)" class="enum-arguments">
+        <mat-select
+          disableRipple
+          name="EnumLabels"
+          id="EnumLabels"
+          [formControlName]="argument.name"
+          placeholder="Select an option"
+        >
+          <mat-option
+            *ngFor="let enumValue of argument.type.enumValue"
+            [value]="enumValue.label"
+          >
+            {{ enumValue.label }}
+          </mat-option>
+        </mat-select>
+      </div>
+
+      <div
+        *ngIf="!isNotEnumArray(argument)"
+        class="dynamic-enum-arrays"
+        [formArrayName]="argument.name"
+      >
+        <mat-select
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+          [disableRipple]="true"
+          [formControlName]="j"
+          placeholder="Select an option"
+        >
+          <mat-option
+            *ngFor="let enumValue of argument.type.elementType.enumValue"
+            [value]="enumValue.label"
+          >
+            {{ enumValue.label }}
+          </mat-option>
+        </mat-select>
+      </div>
+
+      <div
+        *ngIf="!isNotIntegerArray(argument) || !isNotFloatArray(argument)"
+        class="dynamic-integer-arrays"
+        [formArrayName]="argument.name"
+      >
+        <input
+          required
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+          matInput
+          [formControlName]="j"
+          type="number"
+          class="numbers"
+          [min]="getRangeMin(argument)"
+          [max]="getRangeMax(argument)"
+        />
+      </div>
+
+      <div
+        *ngIf="!isNotBinaryArray(argument)"
+        class="dynamic-binary-arrays"
+        [formArrayName]="argument.name"
+      >
+        <input
+          required
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+          matInput
+          type="text"
+          [formControlName]="j"
+        />
+      </div>
+
+      <div
+        *ngIf="!isNotAggregateArray(argument)"
+        class="dynamic-aggregate-arrays"
+        [formArrayName]="argument.name"
+      >
+        <span
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+        >
+          <span
+            *ngFor="
+              let member of argument.type.elementType.member;
+              let k = index
+            "
+            [formGroupName]="j"
+          >
+            <span class="argument-info">
+              <h4>{{ member.name }}</h4>
+              <h4>{{ member.type.engType }}</h4>
+            </span>
+
+            <input
+              required
+              matInput
+              type="number"
+              *ngIf="
+                member.type.engType == 'integer' ||
+                member.type.engType == 'float'
+              "
+              [min]="getMemberRangeMin(member)"
+              [max]="getMemberRangeMax(member)"
+              [formControlName]="member.name"
+              class="numbers"
+            />
+            <mat-hint
+              *ngIf="
+                member.type.engType == 'integer' &&
+                getMemberRangeMax(member) > 0
+              "
+              align="end"
+            >
+              [{{ getMemberRangeMin(member) }},{{ getMemberRangeMax(member) }}]
+            </mat-hint>
+
+            <input
+              required
+              matInput
+              type="text"
+              *ngIf="member.type.engType == 'string'"
+              [formControlName]="member.name"
+            />
+
+            <span
+              *ngIf="member.type.engType == 'boolean'"
+              class="boolean-inputs"
+            >
+              <mat-radio-group [formControlName]="argument.name" required>
+                <mat-radio-button [value]="true">True</mat-radio-button>
+                <mat-radio-button [value]="false">False</mat-radio-button>
+              </mat-radio-group>
+            </span>
+
+            <mat-select
+              *ngIf="!isNotEnumMember(member)"
+              [disableRipple]="true"
+              [formControlName]="member.name"
+              class="enum-arguments"
+              placeholder="Select an option"
+              required
+            >
+              <mat-option
+                *ngFor="let enumValue of member.type.enumValue"
+                [value]="enumValue.label"
+              >
+                {{ enumValue.label }}
+              </mat-option>
+            </mat-select>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="!argument.hasOwnProperty('initialValue')">
+      <span class="argument-info">
+        <h4>{{ argument.name }}</h4>
+        <h4>{{ argument.type.engType }}</h4>
+      </span>
+
+      <!-- time for time-base-scheduling-->
+      <div *ngIf="argument.name == 'release_time'">
+        <input
+          matInput
+          [ngxMatDatetimePicker]="picker"
+          type="text"
+          [formControlName]="argument.name"
+          required
+          (ngModelChange)="newCurrentTime()"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="$any(picker)"
+        ></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker></ngx-mat-datetime-picker>
+      </div>
+      <input
+        required
+        *ngIf="!isNotInteger(argument)"
+        matInput
+        [formControlName]="argument.name"
+        type="number"
+        class="numbers"
+        [min]="getRangeMin(argument)"
+        [max]="getRangeMax(argument)"
+        (ngModelChange)="addToFormArray(argument)"
+      />
+      <input
+        required
+        *ngIf="!isNotFloat(argument)"
+        matInput
+        [formControlName]="argument.name"
+        type="number"
+        class="numbers"
+        [min]="getRangeMin(argument)"
+        [max]="getRangeMax(argument)"
+        (ngModelChange)="addToFormArray(argument)"
+        step="0.5"
+        pattern="[0-9]+(\.[0-9]{1,})?%?"
+      />
+      <!-- here are the number of binary in array -->
+      <mat-hint
+        *ngIf="!isNotInteger(argument) && getRangeMax(argument) > 0"
+        align="end"
+      >
+        [{{ getRangeMin(argument) }},{{ getRangeMax(argument) }}]
+      </mat-hint>
+      <mat-error
+        *ngIf="
+          this.argsForm.get(argument.name)?.invalid &&
+          this.argsForm.get(argument.name)?.hasError('nowTime') == false
+        "
+      >
+        add correct number of elements
+      </mat-error>
+
+      <mat-error *ngIf="this.argsForm.get(argument.name)?.errors?.['nowTime']">
+        Pick a future date and time
+      </mat-error>
+      <input
+        required
+        *ngIf="argument.type.engType == 'string'"
+        type="text"
+        [formControlName]="argument.name"
+        required
+      />
+
+      <span *ngIf="!isNotBoolean(argument)" class="boolean-inputs">
+        <mat-radio-group [formControlName]="argument.name" required>
+          <mat-radio-button [value]="true">True</mat-radio-button>
+          <mat-radio-button [value]="false">False</mat-radio-button>
+        </mat-radio-group>
+      </span>
+
+      <div
+        *ngIf="!isNotAggregate(argument)"
+        [formGroupName]="argument.name"
+        class="aggregates"
+      >
+        <span *ngFor="let member of argument.type.member; let j = index">
+          <span class="argument-info">
+            <h4>{{ member.name }}</h4>
+            <h4>{{ member.type.engType }}</h4>
+          </span>
+          <input
+            required
+            matInput
+            *ngIf="
+              member.type.engType == 'integer' || member.type.engType == 'float'
+            "
+            class="numbers"
+            type="number"
+            [formControlName]="member.name"
+            [min]="getRangeMin(argument)"
+            [max]="getRangeMax(argument)"
+          />
+
+          <input
+            required
+            matInput
+            *ngIf="member.type.engType == 'string'"
+            type="text"
+            [formControlName]="member.name"
+          />
+
+          <mat-select
+            *ngIf="!isNotEnumMember(member)"
+            [disableRipple]="true"
+            [formControlName]="member.name"
+            class="enum-arguments"
+            placeholder="Select an option"
+            required
+          >
+            <mat-option
+              *ngFor="let enumValue of member.type.enumValue"
+              [value]="enumValue.label"
+            >
+              {{ enumValue.label }}
+            </mat-option>
+          </mat-select>
+        </span>
+      </div>
+
+      <div *ngIf="!isNotEnum(argument)" class="enum-arguments">
+        <mat-select
+          disableRipple
+          name="EnumLabels"
+          id="EnumLabels"
+          [formControlName]="argument.name"
+          placeholder="Select an option"
+          required
+        >
+          <mat-option
+            *ngFor="let enumValue of argument.type.enumValue"
+            [value]="enumValue.label"
+          >
+            {{ enumValue.label }}
+          </mat-option>
+        </mat-select>
+      </div>
+
+      <div
+        *ngIf="!isNotEnumArray(argument)"
+        class="dynamic-enum-arrays"
+        [formArrayName]="argument.name"
+      >
+        <mat-select
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+          [disableRipple]="true"
+          [formControlName]="j"
+          placeholder="Select an option"
+          required
+        >
+          <mat-option
+            *ngFor="let enumValue of argument.type.elementType.enumValue"
+            [value]="enumValue.label"
+          >
+            {{ enumValue.label }}
+          </mat-option>
+        </mat-select>
+      </div>
+
+      <div
+        *ngIf="!isNotIntegerArray(argument) || !isNotFloatArray(argument)"
+        class="dynamic-integer-arrays"
+        [formArrayName]="argument.name"
+      >
+        <input
+          required
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+          matInput
+          [formControlName]="j"
+          type="number"
+          class="numbers"
+          [min]="getRangeMin(argument)"
+          [max]="getRangeMax(argument)"
+        />
+      </div>
+
+      <div
+        *ngIf="!isNotBinaryArray(argument)"
+        class="dynamic-binary-arrays"
+        [formArrayName]="argument.name"
+      >
+        <div
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+        >
+          <input
+            required
+            matInput
+            type="text"
+            [formControlName]="j"
+            placeholder="A-Fa-f0-9"
+            pattern="['A-Fa-f0-9']{1,}"
+          />
+
+          <mat-error
+            *ngIf="
+              getFormArray(argument).controls[j].invalid &&
+              getFormArray(argument).controls[j].touched
+            "
+          >
+            insert hex values
+          </mat-error>
+          <!-- here are the binary data [] -->
+        </div>
+      </div>
+
+      <div
+        *ngIf="!isNotAggregateArray(argument)"
+        class="dynamic-aggregate-arrays"
+        [formArrayName]="argument.name"
+      >
+        <span
+          *ngFor="
+            let dynamicNumber of getFormArray(argument).controls;
+            let j = index
+          "
+        >
+          <span
+            *ngFor="
+              let member of argument.type.elementType.member;
+              let k = index
+            "
+            [formGroupName]="j"
+          >
+            <span class="argument-info">
+              <h4>{{ member.name }}</h4>
+              <h4>{{ member.type.engType }}</h4>
+            </span>
+
+            <input
+              required
+              matInput
+              type="number"
+              class="numbers"
+              *ngIf="
+                member.type.engType == 'integer' ||
+                member.type.engType == 'float'
+              "
+              [min]="getMemberRangeMin(member)"
+              [max]="getMemberRangeMax(member)"
+              [formControlName]="member.name"
+            />
+
+            <mat-hint
+              *ngIf="
+                member.type.engType == 'integer' &&
+                getMemberRangeMax(member) > 0
+              "
+              align="end"
+            >
+              [{{ getMemberRangeMin(member) }},{{ getMemberRangeMax(member) }}]
+            </mat-hint>
+
+            <input
+              required
+              matInput
+              type="text"
+              *ngIf="member.type.engType == 'string'"
+              [formControlName]="argument.name"
+            />
+
+            <span
+              *ngIf="member.type.engType == 'boolean'"
+              class="boolean-inputs"
+            >
+              <mat-radio-group [formControlName]="member.name" required>
+                <mat-radio-button [value]="true">True</mat-radio-button>
+                <mat-radio-button [value]="false">False</mat-radio-button>
+              </mat-radio-group>
+            </span>
+
+            <mat-select
+              *ngIf="!isNotEnumMember(member)"
+              [disableRipple]="true"
+              [formControlName]="member.name"
+              class="enum-arguments"
+              placeholder="Select an option"
+              required
+            >
+              <mat-option
+                *ngFor="let enumValue of member.type.enumValue"
+                [value]="enumValue.label"
+              >
+                {{ enumValue.label }}
+              </mat-option>
+            </mat-select>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button type="button" mat-button color="accent" routerLink="/telecommands">
+      <mat-icon>undo</mat-icon>Go Back
+    </button>
+    <button
+      [ngClass]="showInitialValuesArgs ? 'initial' : 'notinitial'"
+      type="button"
+      mat-button
+      color="accent"
+      disableRipple="true"
+      (click)="toggleInitialValues()"
+    >
+      <mat-icon>indeterminate_check_box</mat-icon>Toggle Initial Values
+    </button>
+    <button
+      type="submit"
+      mat-button
+      color="accent"
+      [disabled]="this.registrationForm.invalid"
+    >
+      <mat-icon>send</mat-icon> Send the Telecommand
+    </button>
+  </div>
+</form>
+
+<router-outlet></router-outlet>

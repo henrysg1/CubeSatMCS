@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="ST[20]-reporting" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <!-- Parameter Management Service (ST(20]) Report-Value Commands (TC(20,1]) of pre-made groups
+    of related parameters-->
+
+    <xtce:TelemetryMetaData>
+        <ParameterSet>
+            <!-- Parameters used in TM(20,2) -->
+            <Parameter name="number_of_parameters" parameterTypeRef="/base-dt/uint16_t">
+                <LongDescription>
+                    The number of parameters requested in a parameter value report
+                </LongDescription>
+            </Parameter>
+
+            <Parameter name="id" parameterTypeRef="/base-dt/uint16_t">
+                <LongDescription>
+                    This parameter holds temporarily the ID of the reported parameters by TM[20,2]
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="parameterId" />
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="ReportParametersUnusedStack" />
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="AvailableHeap" />
+        </ParameterSet>
+
+        <ContainerSet>
+
+         <SequenceContainer name="id_value_pair">
+            <EntryList>
+                <ParameterRefEntry parameterRef="parameterId" />
+                <ParameterRefEntry parameterRef="ReportParametersUnusedStack">
+                    <IncludeCondition>
+                        <Comparison value="6" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="AvailableHeap">
+                    <IncludeCondition>
+                        <Comparison value="7" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCUseRTT">
+                    <IncludeCondition>
+                        <Comparison value="8" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCUseUART">
+                    <IncludeCondition>
+                        <Comparison value="9" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCUseCAN">
+                    <IncludeCondition>
+                        <Comparison value="10" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSUseRTT">
+                    <IncludeCondition>
+                        <Comparison value="11" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSUseUART">
+                    <IncludeCondition>
+                        <Comparison value="12" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSUseCAN">
+                    <IncludeCondition>
+                        <Comparison value="13" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCBootCounter">
+                    <IncludeCondition>
+                        <Comparison value="5004" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCMCUTemperature">
+                    <IncludeCondition>
+                        <Comparison value="5002" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCPCBBoardTemperature1">
+                    <IncludeCondition>
+                        <Comparison value="5000" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCPCBBoardTemperature2">
+                    <IncludeCondition>
+                        <Comparison value="5001" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCMCUSysTick">
+                    <IncludeCondition>
+                        <Comparison value="5015" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCOnBoardTime">
+                    <IncludeCondition>
+                        <Comparison value="5010" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCMemoryPartition">
+                    <IncludeCondition>
+                        <Comparison value="5012" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCCANBUSLoad1">
+                    <IncludeCondition>
+                        <Comparison value="5016" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCCANBUSLoad2">
+                    <IncludeCondition>
+                        <Comparison value="5017" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCCANBUSActive">
+                    <IncludeCondition>
+                        <Comparison value="5018" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCNANDFLASHLCLThreshold">
+                    <IncludeCondition>
+                        <Comparison value="5021" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCMRAMLCLThreshold">
+                    <IncludeCondition>
+                        <Comparison value="5022" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCNANDFLASHON">
+                    <IncludeCondition>
+                        <Comparison value="5023" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCMRAMON">
+                    <IncludeCondition>
+                        <Comparison value="5024" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCSpacecraftTimeRef">
+                    <IncludeCondition>
+                        <Comparison value="5009" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCOperationalMode">
+                    <IncludeCondition>
+                        <Comparison value="5011" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCReconfigurationTimer">
+                    <IncludeCondition>
+                        <Comparison value="5013" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/obc-xtce/OBCLastFailedEvent">
+                    <IncludeCondition>
+                        <Comparison value="5014" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerRawX">
+                    <IncludeCondition>
+                        <Comparison value="1013" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerRawY">
+                    <IncludeCondition>
+                        <Comparison value="1014" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerRawZ">
+                    <IncludeCondition>
+                        <Comparison value="1015" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerFrequency">
+                    <IncludeCondition>
+                        <Comparison value="1016" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerCycleCountX">
+                    <IncludeCondition>
+                        <Comparison value="1017" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerCycleCountY">
+                    <IncludeCondition>
+                        <Comparison value="1018" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerCycleCountZ">
+                    <IncludeCondition>
+                        <Comparison value="1019" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSelfTest">
+                    <IncludeCondition>
+                        <Comparison value="1020" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeX">
+                    <IncludeCondition>
+                        <Comparison value="1043" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeY">
+                    <IncludeCondition>
+                        <Comparison value="1044" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeZ">
+                    <IncludeCondition>
+                        <Comparison value="1045" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSignX">
+                    <IncludeCondition>
+                        <Comparison value="1158" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSignY">
+                    <IncludeCondition>
+                        <Comparison value="1159" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMagnetometerSignZ">
+                    <IncludeCondition>
+                        <Comparison value="1160" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeXTemperature">
+                    <IncludeCondition>
+                        <Comparison value="1089" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeYTemperature">
+                    <IncludeCondition>
+                        <Comparison value="1090" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroscopeZTemperature">
+                    <IncludeCondition>
+                        <Comparison value="1091" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSBoardTemperature1">
+                    <IncludeCondition>
+                        <Comparison value="1092" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSBoardTemperature2">
+                    <IncludeCondition>
+                        <Comparison value="1093" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroSignX">
+                    <IncludeCondition>
+                        <Comparison value="1164" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroSignY">
+                    <IncludeCondition>
+                        <Comparison value="1165" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroSignZ">
+                    <IncludeCondition>
+                        <Comparison value="1166" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroBiasX">
+                    <IncludeCondition>
+                        <Comparison value="1189" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroBiasY">
+                    <IncludeCondition>
+                        <Comparison value="1190" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSGyroBiasZ">
+                    <IncludeCondition>
+                        <Comparison value="1191" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSFlashInt">
+                    <IncludeCondition>
+                        <Comparison value="1227" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSSRAMInt">
+                    <IncludeCondition>
+                        <Comparison value="1228" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMCUTemperature">
+                    <IncludeCondition>
+                        <Comparison value="1218" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSMCUOnBoardTime">
+                    <IncludeCondition>
+                        <Comparison value="1221" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSSystick">
+                    <IncludeCondition>
+                        <Comparison value="1224" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+                <ParameterRefEntry parameterRef="/adcs-xtce/ADCSBootCounter">
+                    <IncludeCondition>
+                        <Comparison value="1220" parameterRef="parameterId" />
+                    </IncludeCondition>
+                </ParameterRefEntry>
+            </EntryList>
+        </SequenceContainer>
+
+            <SequenceContainer name="TM(20,2)_parameter_value_report">
+             <EntryList>
+                 <ParameterRefEntry parameterRef="number_of_parameters" />
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="0" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="1" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="2" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="3" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="4" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="5" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="6" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="7" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="8" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+                 <ContainerRefEntry containerRef="id_value_pair">
+                     <IncludeCondition>
+                         <Comparison parameterRef="number_of_parameters" value="9" comparisonOperator=">" />
+                     </IncludeCondition>
+                 </ContainerRefEntry>
+             </EntryList>
+             <BaseContainer containerRef="/pus/packet_header_TM">
+                 <RestrictionCriteria>
+                     <ComparisonList>
+                         <Comparison value="20" parameterRef="/pus/service_type_ID_TM" />
+                         <Comparison value="2" parameterRef="/pus/message_subtype_ID_TM" />
+                     </ComparisonList>
+                 </RestrictionCriteria>
+             </BaseContainer>
+            </SequenceContainer>
+
+        </ContainerSet>
+    </xtce:TelemetryMetaData>
+    <CommandMetaData>
+        <MetaCommandSet>
+
+            <MetaCommand name="TC(20,1)_report_gyro_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="6" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="GyroscopeX" initialValue="1043" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="GyroscopeY" initialValue="1044" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="GyroscopeZ" initialValue="1045" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="GyroscopeXTemperature" initialValue="1089" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="GyroscopeYTemperature" initialValue="1090" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="GyroscopeZTemperature" initialValue="1091" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_gyro_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="GyroscopeX" />
+                        <ArgumentRefEntry argumentRef="GyroscopeY" />
+                        <ArgumentRefEntry argumentRef="GyroscopeZ" />
+                        <ArgumentRefEntry argumentRef="GyroscopeXTemperature" />
+                        <ArgumentRefEntry argumentRef="GyroscopeYTemperature" />
+                        <ArgumentRefEntry argumentRef="GyroscopeZTemperature" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_magnetometer_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="8" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerRawX" initialValue="1013" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerRawY" initialValue="1014" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerRawZ" initialValue="1015" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerFrequency" initialValue="1016" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerCycleCountX" initialValue="1017" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerCycleCountY" initialValue="1018" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerCycleCountZ" initialValue="1019" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MagnetometerSelfTest" initialValue="1020" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_magnetometer_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="MagnetometerRawX" />
+                        <ArgumentRefEntry argumentRef="MagnetometerRawY" />
+                        <ArgumentRefEntry argumentRef="MagnetometerRawZ" />
+                        <ArgumentRefEntry argumentRef="MagnetometerFrequency" />
+                        <ArgumentRefEntry argumentRef="MagnetometerCycleCountX" />
+                        <ArgumentRefEntry argumentRef="MagnetometerCycleCountY" />
+                        <ArgumentRefEntry argumentRef="MagnetometerCycleCountZ" />
+                        <ArgumentRefEntry argumentRef="MagnetometerSelfTest" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_mcu_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="7" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCBootCounter" initialValue="5004" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCSystick" initialValue="5015" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCMCUTemperature" initialValue="5002" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSMCUTemperature" initialValue="1218" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSMCUOnBoardTime" initialValue="1221" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSSystick" initialValue="1224" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSMCUBootCounter" initialValue="1220" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCOperationalMode" initialValue="5011" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCLastFailedEvent" initialValue="5014" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_mcu_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="OBCBootCounter" />
+                        <ArgumentRefEntry argumentRef="OBCSystick" />
+                        <ArgumentRefEntry argumentRef="OBCMCUTemperature" />
+                        <ArgumentRefEntry argumentRef="ADCSMCUTemperature" />
+                        <ArgumentRefEntry argumentRef="ADCSMCUOnBoardTime" />
+                        <ArgumentRefEntry argumentRef="ADCSSystick" />
+                        <ArgumentRefEntry argumentRef="ADCSMCUBootCounter" />
+                        <ArgumentRefEntry argumentRef="OBCOperationalMode" />
+                        <ArgumentRefEntry argumentRef="OBCLastFailedEvent" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_can_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="3" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="CANBusLoad1" initialValue="5016" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="CANBusLoad2" initialValue="5017" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ActiveCAN" initialValue="5018" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_can_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="CANBusLoad1" />
+                        <ArgumentRefEntry argumentRef="CANBusLoad2" />
+                        <ArgumentRefEntry argumentRef="ActiveCAN" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_timer_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="1" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCReconfigurationTimer" initialValue="5013" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCSpacecraftRefTime" initialValue="5009" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_timer_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="OBCReconfigurationTimer" />
+                        <ArgumentRefEntry argumentRef="OBCSpacecraftRefTime" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_board_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="4" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBDHBoardTemperature1" initialValue="5000" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBDHBoardTemperature2" initialValue="5001" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSBoardTemperature1" initialValue="1092" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSBoardTemperature2" initialValue="1093" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_board_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="OBDHBoardTemperature1" />
+                        <ArgumentRefEntry argumentRef="OBDHBoardTemperature2" />
+                        <ArgumentRefEntry argumentRef="ADCSBoardTemperature1" />
+                        <ArgumentRefEntry argumentRef="ADCSBoardTemperature2" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_memory_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="5" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="NANDLCLThreshold" initialValue="5021" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="MRAMLCLThreshold" initialValue="5022" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCNANDOn" initialValue="5023" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCMRAMOn" initialValue="5024" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OBCMemoryPartition" initialValue="5012" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSFlashInt" initialValue="1227" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="ADCSSRAMInt" initialValue="1228" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_memory_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="NANDLCLThreshold" />
+                        <ArgumentRefEntry argumentRef="MRAMLCLThreshold" />
+                        <ArgumentRefEntry argumentRef="OBCNANDOn" />
+                        <ArgumentRefEntry argumentRef="OBCMRAMOn" />
+                        <ArgumentRefEntry argumentRef="OBCMemoryPartition" />
+                        <ArgumentRefEntry argumentRef="ADCSFlashInt" />
+                        <ArgumentRefEntry argumentRef="ADCSSRAMInt" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_time_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="number_of_parameters" initialValue="1" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="OnBoardTime" initialValue="5010" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_time_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="number_of_parameters" />
+                        <ArgumentRefEntry argumentRef="OnBoardTime" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="TC(20,1)_report_custom_parameter_values">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="20" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/base-dt/uint16_t{1-10}" name="total_parameters" />
+                    <Argument argumentTypeRef="/dt/parameterIdArray_t" name="parameters" />
+                </ArgumentList>
+                <CommandContainer name="TC(20,1)_custom_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="total_parameters" />
+                        <ArgumentRefEntry argumentRef="parameters" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+
+        </MetaCommandSet>
+    </CommandMetaData>
+</SpaceSystem>

@@ -1,0 +1,63 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.view {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.465, 0.183, 0.153, 0.946);
+}
+
+.tc-view {
+  transform: translateX(100%);
+}
+
+.view-change .table-view {
+  overflow-y: hidden;
+  transform: translateX(-100%);
+}
+
+.view-change .tc-view {
+  transform: translateX(0);
+  position: inherit;
+}
+
+mat-cell { 
+  color:#34ff19; 
+  font-size:15px; 
+} 
+
+mat-cell:hover{
+  cursor: pointer;
+  background-color: dimgray;
+}
+
+.mat-mdc-table {
+    min-width: auto !important;
+    width: 100% !important;
+    
+}
+
+.name_column {
+  font-weight: bold;
+}
+
+mat-form-field {
+  margin-left: 1%;
+  margin-top: 0.5%;
+  margin-bottom: 0.5%;
+  display: flex;
+  direction: column; /* horizontally align inputs */
+}
+  
+mat-icon {
+  margin: 0 0.5em;
+  color: #34ff19;
+}

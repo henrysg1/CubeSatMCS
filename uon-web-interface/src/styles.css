@@ -1,0 +1,69 @@
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+html,
+body {
+  height: 100%;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+.mat-drawer-inner-container::-webkit-scrollbar {
+  display: none;
+}
+
+.mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: #2e98a3 !important;
+  /* color: red !important; */
+}
+
+.black-snackbar button {
+  color: #34ff19;
+}
+.material-icons {
+  font-family: "Material Icons" !important;
+}
+
+/* .mat-progress-bar-fill::after {
+  background-color: #2e98a3 !important;
+} */
+/*.mat-mdc-progress-spinner circle,
+.mat-mdc-progress-spinner circle {
+  stroke: #2e98a3 !important;
+} */
+
+.mat-select-panel#header-panel {
+  position: relative !important;
+  top: 40px;
+}
+
+ngx-mat-datetime-content button {
+  background-color: #424242;
+  color: #2e98a3;
+}
+.p-button{
+  background-color: rgba(255, 0, 0, 0) !important;
+  margin-left: 30% !important; 
+  border: none !important;
+  color: #34ff19 !important;
+}
+.p-button:hover{
+  color: #34ff198c !important;
+}
+
+.p-tooltip .p-tooltip-text { 
+  /* background-color: #36363600 !important;  */
+  color: #34ff19 !important; 
+  font-size: medium; 
+  border: none !important;
+}
+
+app-graph-item{
+  width: 100% !important;
+}

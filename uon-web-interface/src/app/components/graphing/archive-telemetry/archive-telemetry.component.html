@@ -1,0 +1,164 @@
+<mat-stepper linear #stepper>
+  <mat-step [completed]="firstStep">
+    <ng-template matStepLabel>Pick a folder</ng-template>
+    <table mat-table [dataSource]="folders">
+      <ng-container matColumnDef="folder">
+        <mat-header-cell *matHeaderCellDef>Folders.</mat-header-cell>
+        <mat-cell *matCellDef="let folder">
+          <button
+            class="stepper"
+            mat-button
+            (click)="logFolderRowData(folder, stepper)"
+          >
+            {{ folder }}
+          </button></mat-cell
+        >
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="folderCol"></mat-header-row>
+      <mat-row *matRowDef="let myRowData; columns: folderCol"> </mat-row>
+    </table>
+  </mat-step>
+  <mat-step [completed]="secondStep">
+    <ng-template matStepLabel>Pick a parameter</ng-template>
+    <div>
+      <button (click)="backNavigation()" mat-button matStepperPrevious>
+        <mat-icon> undo</mat-icon>
+        Back
+      </button>
+    </div>
+    <mat-form-field>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Filter"
+      /><mat-icon matPrefix> search</mat-icon>
+    </mat-form-field>
+    <table mat-table [dataSource]="tableDataSource">
+      <ng-container matColumnDef="telemetry">
+        <mat-header-cell *matHeaderCellDef>Telemetry.</mat-header-cell>
+        <mat-cell [title]="parameter.qualifiedName" *matCellDef="let parameter">
+          <button
+            class="stepper"
+            mat-button
+            (click)="logRowData(parameter, stepper)"
+          >
+            {{ parameter.name }}
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <mat-header-cell *matHeaderCellDef>Type.</mat-header-cell>
+        <mat-cell *matCellDef="let parameter">
+          <div *ngIf="parameter.type == undefined; else then">UNDEF</div>
+          <ng-template #then>{{
+            parameter.type.engType
+          }}</ng-template></mat-cell
+        >
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedCol"></mat-header-row>
+      <mat-row *matRowDef="let myRowData; columns: displayedCol"></mat-row>
+    </table>
+  </mat-step>
+  <mat-step [completed]="archiveTelemetryForm.valid">
+    <ng-template matStepLabel>Fill the form</ng-template>
+    <form id="1" [formGroup]="archiveTelemetryForm" (ngSubmit)="onSubmit()">
+      <mat-form-field
+        appearance="fill"
+        *ngFor="let form of formFillFields; let i = index"
+      >
+        <mat-label> {{ form }}</mat-label>
+
+        <input
+          matInput
+          *ngIf="i != 2"
+          [ngxMatDatetimePicker]="picker"
+          type="text"
+          [formControlName]="form"
+          required
+        /><mat-datepicker-toggle matSuffix [for]="$any(picker)">
+        </mat-datepicker-toggle>
+
+        <ngx-mat-datetime-picker
+          #picker
+          [showSpinners]="true"
+          [showSeconds]="false"
+        >
+        </ngx-mat-datetime-picker>
+
+        <input
+          *ngIf="i == 2"
+          [class.is-invalid]="
+            archiveTelemetryForm.get(form) &&
+            archiveTelemetryForm.get(form)?.touched
+          "
+          matInput
+          type="number"
+          step="100"
+          min="100"
+          [formControlName]="form"
+          required
+        />
+
+        <mat-error
+          *ngIf="this.archiveTelemetryForm.get(form)?.errors?.['required'] && this.archiveTelemetryForm.get(form)?.touched "
+          >{{ form }} is required</mat-error
+        >
+        <mat-hint *ngIf="i == 0">
+          First sample at: {{ this.starthint }}
+        </mat-hint>
+        <mat-hint *ngIf="i == 1">Last sample at: {{ this.stophint }} </mat-hint>
+        <mat-hint *ngIf="i == 2">e.g 500</mat-hint>
+      </mat-form-field>
+    </form>
+
+    <div>
+      <button
+        type="button"
+        (click)="backToparameter()"
+        mat-button
+        matStepperPrevious
+      >
+        <mat-icon> undo</mat-icon>
+        Back
+      </button>
+      <button
+        mat-button
+        type="button"
+        matStepperNext
+        (click)="changeToCorrectTime()"
+        [disabled]="this.archiveTelemetryForm.invalid"
+      >
+        <!-- -->
+        Next <mat-icon> forward</mat-icon>
+      </button>
+      <button
+        mat-button
+        class="help"
+        (click)="
+          openSnackBar(
+            'The calendar changes time to Western European Time (UTC)',
+            'Dismiss'
+          )
+        "
+      >
+        Help <mat-icon> help</mat-icon>
+      </button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Submit</ng-template>
+    <h1>Parameter: {{ parameterSendName }}</h1>
+    <h2 *ngFor="let form of formFillFields">
+      {{ form }}: {{ archiveTelemetryForm.get(form)!.value }}
+    </h2>
+
+    <button mat-button matStepperPrevious (click)="backToTime()">
+      <mat-icon> undo</mat-icon>
+      Back
+    </button>
+    <button mat-button form="1" type="submit">
+      <mat-icon>wifi_tethering</mat-icon> Submit Queries
+    </button>
+  </mat-step>
+</mat-stepper>

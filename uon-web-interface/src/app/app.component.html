@@ -1,0 +1,49 @@
+<div class="webpage-container">
+  <app-header></app-header>
+  <mat-drawer-container class="body-container" autosize>
+    <mat-drawer #drawer class="sidenav-drawer" mode="side" opened="true">
+      <app-sidenav></app-sidenav>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div class="toggle-sidenav-drawer">
+      </div>
+      <router-outlet></router-outlet>
+      <div *ngIf="this.homeUrl == true" class="welcome">
+        <h2 class="instructions">
+          Welcome to the Mission Control web application for the UoN JamSail Mission!
+          <mat-icon> rocket_launch</mat-icon>
+        </h2>
+      </div>
+
+      <div *ngIf="this.homeUrl == true" class="instance-button-group">
+        <div *ngIf="this.homeUrl == true">
+          <p class="instructions">Choose Instance To Load Data</p>
+        </div>
+        <div *ngIf="this.homeUrl == true" class="instance-buttons">
+          <button
+            *ngFor="let instance of instances?.instances"
+            mat-raised-button
+            (click)="onInstanceClick(instance.name)"
+          >
+            {{ instance.name }}
+          </button>
+        </div>
+      </div>
+
+      <button class="home" mat-button routerLink="">
+        <mat-icon>home</mat-icon>
+        Home
+      </button>
+      <button
+        class="graph"
+        mat-button
+        routerLink="/graphs"
+        routerLinkActive
+      >
+        <mat-icon> insights</mat-icon>
+        Graphs
+      </button>
+      <div class="board"></div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

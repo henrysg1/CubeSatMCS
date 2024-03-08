@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="obc-xtce" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <xtce:TelemetryMetaData>
+        <ParameterSet>
+             <!--OBC Parameters that will be used in the Enviromental Campaign-->
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="OBCUseRTT" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="OBCUseUART" />
+            <Parameter parameterTypeRef="/base-dt/bool_t" name="OBCUseCAN" />
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="OBCBootCounter" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCMCUTemperature" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCPCBBoardTemperature1" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCPCBBoardTemperature2" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="OBCMCUSysTick" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="OBCOnBoardTime" />
+            <Parameter parameterTypeRef="/obc-dt/OBCMemoryPartition_t" name="OBCMemoryPartition" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCCANBUSLoad1" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCCANBUSLoad2" />
+            <Parameter parameterTypeRef="/obc-dt/OBCCANBUSActive_t" name="OBCCANBUSActive" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCNANDFLASHLCLThreshold" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCMRAMLCLThreshold" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCNANDFLASHON" />
+            <Parameter parameterTypeRef="/base-dt/float_t" name="OBCMRAMON" />
+            <Parameter parameterTypeRef="/obc-dt/OBCSpacecraftTimeRef_t" name="OBCSpacecraftTimeRef" />
+            <Parameter parameterTypeRef="/obc-dt/OBCOperationalMode_t" name="OBCOperationalMode" />
+            <Parameter parameterTypeRef="/base-dt/uint32_t" name="OBCReconfigurationTimer" />
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="OBCLastFailedEvent" />
+
+        </ParameterSet>
+    </xtce:TelemetryMetaData>
+</SpaceSystem>

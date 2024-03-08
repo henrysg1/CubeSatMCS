@@ -1,0 +1,34 @@
+
+.container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.graph-container{
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+  width: 100%;
+}
+
+.btns {
+  display: flex;
+  justify-content: end;
+  align-items: end;
+  padding: 24px;
+  /* height: calc(100% - 72px); */
+  padding-bottom: 72px;
+}
+
+.view-btn {
+  background-color: #2e98a3;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background-color: dimgray;
+  cursor: pointer;
+}

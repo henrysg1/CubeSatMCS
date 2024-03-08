@@ -1,0 +1,83 @@
+{
+    "data": [
+        {
+            "type": "Housekeeping",
+            "name": "Battery_Temp1",
+            "series": [
+            {
+                "name": "13:01",
+                "value": 43
+            },
+            {
+                "name": "13:02",
+                "value": 45
+            },
+            {
+                
+                "name": "13:03",
+                "value": 43
+            },
+            {
+                
+                "name": "13:04",
+                "value": 42
+            },
+            {
+                
+                "name": "13:05",
+                "value": 40
+            },
+            {
+                
+                "name": "13:06",
+                "value": 37
+            },
+            {
+                
+                "name": "13:07",
+                "value": 34
+            }
+            ]
+        },
+        
+        {
+            "type": "Housekeeping",
+            "name": "Battery_Temp2",
+            "series": [
+            {
+                "name": "13:01",
+                "value": 24
+            },
+            {
+                "name": "13:02",
+                "value": 25
+            },
+            {
+                
+                "name": "13:03",
+                "value": 26
+            },
+            {
+                
+                "name": "13:04",
+                "value": 28
+            },
+            {
+                
+                "name": "13:05",
+                "value": 35
+            },
+            {
+                
+                "name": "13:06",
+                "value": 39
+            },
+            {
+                
+                "name": "13:07",
+                "value": 42
+            }
+            ]
+        }
+    ]
+}

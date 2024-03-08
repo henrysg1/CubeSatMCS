@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="writeable-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+    
+    <xtce:CommandMetaData>
+        <ArgumentTypeSet>
+
+        <!-- Writeable float -->
+
+            <EnumeratedArgumentType name="writableFloatParameters_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="5021" label="NANDLCLThreshold" />
+                    <Enumeration value="5022" label="MRAMLCLThreshold" />
+                    <Enumeration value="5023" label="OBCNANDOn" />
+                    <Enumeration value="5024" label="OBCMRAMOn" />
+                    <Enumeration value="1221" label="ADCSMCUOnBoardTime" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+             <AggregateArgumentType name="TC(20,3)_set_float_parameter_values_aggregate">
+                <MemberList>
+                    <Member typeRef="writableFloatParameters_t" name="float_parameter" />
+                    <Member typeRef="/base-dt/float_t" name="new_value" />
+                </MemberList>
+            </AggregateArgumentType>
+
+            <ArrayArgumentType arrayTypeRef="TC(20,3)_set_float_parameter_values_aggregate" name="writableFloatParameterArray">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <DynamicValue>
+                                <ArgumentInstanceRef argumentRef="number_of_parameters" />
+                                <LinearAdjustment intercept="-1" />
+                            </DynamicValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayArgumentType>
+
+            <!-- Writeable uint32 -->
+
+             <EnumeratedArgumentType name="writableUint32Parameters_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="5010" label="OBCOnBoardTime" />
+                    <Enumeration value="5013" label="OBCReconfigurationTimer" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <AggregateArgumentType name="TC(20,3)_set_uint32_parameter_values_aggregate">
+                <MemberList>
+                    <Member typeRef="writableUint32Parameters_t" name="uint32_parameter" />
+                    <Member typeRef="/base-dt/uint32_t" name="new_value" />
+                </MemberList>
+            </AggregateArgumentType>
+
+            <ArrayArgumentType arrayTypeRef="TC(20,3)_set_uint32_parameter_values_aggregate" name="writableUint32ParametersArray">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <DynamicValue>
+                                <ArgumentInstanceRef argumentRef="number_of_parameters" />
+                                <LinearAdjustment intercept="-1" />
+                            </DynamicValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayArgumentType>
+
+            <!-- Writeable uint64 -->
+
+            <EnumeratedArgumentType name="writableUint64Parameters_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="1224" label="ADCSSystick" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <!-- Writeable uint8 -->
+
+            <EnumeratedArgumentType name="writableUint8Parameters_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="1016" label="MagnetometerFrequency" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <!-- Writeable int8 -->
+
+            <EnumeratedArgumentType name="writableInt8Parameters_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="1017" label="MagnetometerCycleCountX" />
+                    <Enumeration value="1018" label="MagnetometerCycleCountY" />
+                    <Enumeration value="1019" label="MagnetometerCycleCountZ" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <AggregateArgumentType name="TC(20,3)_set_int8_parameter_values_aggregate">
+                <MemberList>
+                    <Member typeRef="writableInt8Parameters_t" name="int8_parameter" />
+                    <Member typeRef="/base-dt/int8_t" name="new_value" />
+                </MemberList>
+            </AggregateArgumentType>
+
+            <ArrayArgumentType arrayTypeRef="TC(20,3)_set_int8_parameter_values_aggregate" name="writableInt8ParametersArray">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <DynamicValue>
+                                <ArgumentInstanceRef argumentRef="number_of_parameters" />
+                                <LinearAdjustment intercept="-1" />
+                            </DynamicValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayArgumentType>
+
+            <!-- Writeable bool -->
+
+            <EnumeratedArgumentType name="writableBoolParameters_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="1158" label="MagnetometerSignX" />
+                    <Enumeration value="1159" label="MagnetometerSignY" />
+                    <Enumeration value="1160" label="MagnetometerSignZ" />
+                    <Enumeration value="1164" label="GyroSignX" />
+                    <Enumeration value="1165" label="GyroSignY" />
+                    <Enumeration value="1166" label="GyroSignZ" />
+                    <Enumeration value="1189" label="GyroBiasX" />
+                    <Enumeration value="1190" label="GyroBiasY" />
+                    <Enumeration value="1191" label="GyroBiasZ" />
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+            <AggregateArgumentType name="TC(20,3)_set_bool_parameter_values_aggregate">
+                <MemberList>
+                    <Member typeRef="writableBoolParameters_t" name="bool_parameter" />
+                    <Member typeRef="/base-dt/bool_t" name="new_value" />
+                </MemberList>
+            </AggregateArgumentType>
+
+            <ArrayArgumentType arrayTypeRef="TC(20,3)_set_bool_parameter_values_aggregate" name="writableBoolArray">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <DynamicValue>
+                                <ArgumentInstanceRef argumentRef="number_of_parameters" />
+                                <LinearAdjustment intercept="-1" />
+                            </DynamicValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayArgumentType>
+
+        </ArgumentTypeSet>
+    </xtce:CommandMetaData>
+</SpaceSystem>

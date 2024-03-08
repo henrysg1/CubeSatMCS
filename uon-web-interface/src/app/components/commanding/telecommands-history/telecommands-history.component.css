@@ -1,0 +1,17 @@
+mat-panel-title {
+  color: #34ff19;
+  cursor: pointer;
+}
+
+h3 {
+  color: #2e98a3;
+}
+
+mat-panel-title {
+  width: 33%;
+}
+
+div.time {
+  margin: auto;
+  color: #2e98a3;
+}
