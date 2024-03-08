@@ -16,3 +16,5 @@ uon-web-interface/node_modules
 uon-web-interface/.angular
 
 uon-yamcs-instance/__pycache__
+
+uon-yamcs-instance/target
