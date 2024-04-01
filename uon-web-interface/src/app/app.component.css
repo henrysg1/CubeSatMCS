@@ -1,12 +1,25 @@
 .webpage-container {
   width: 100%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
-.body-container {
-  height: 100vh;
+
+.mat-toolbar.mat-primary {
+  height: 60px;
 }
+
+.body-container {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 70px); /* Minus header height */
+}
+
+mat-drawer-content {
+  flex-grow: 1; /* Ensures it takes the remaining space */
+  display: flex;
+  flex-direction: column;
+}
+
 .toggle-sidenav-drawer {
   display: flex;
   align-items: baseline;
@@ -78,9 +91,19 @@ mat-drawer {
 }
 
 .welcome {
-  /* border: 3px solid #73AD21;  */
-  align-items: center;
-  z-index: -1;
+  text-align: center;
+  margin: 20px;
+  z-index: 1; /* Ensure welcome is not behind other elements */
+}
+
+.world-map-container { /* Assuming world-map is wrapped in this div for additional control */
+  flex-grow: 1;
+  position: relative; /* Makes it a positioning context for the map */
+}
+
+world-map { /* Direct styling if possible, otherwise ensure it's wrapped for more control */
+  height: 100%; /* This assumes world-map can take height directly. Adjust if it's within another container */
+  width: 100%; /* Ensures it fills the available width */
 }
 
 .graphs {

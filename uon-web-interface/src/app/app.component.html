@@ -11,24 +11,13 @@
       <div *ngIf="this.homeUrl == true" class="welcome">
         <h2 class="instructions">
           Welcome to the Mission Control web application for the UoN JamSail Mission!
-          <mat-icon> rocket_launch</mat-icon>
+          <mat-icon>rocket_launch</mat-icon>
         </h2>
       </div>
-
-      <div *ngIf="this.homeUrl == true" class="instance-button-group">
-        <div *ngIf="this.homeUrl == true">
-          <p class="instructions">Choose Instance To Load Data</p>
-        </div>
-        <div *ngIf="this.homeUrl == true" class="instance-buttons">
-          <button
-            *ngFor="let instance of instances?.instances"
-            mat-raised-button
-            (click)="onInstanceClick(instance.name)"
-          >
-            {{ instance.name }}
-          </button>
-        </div>
-      </div>
+      
+      <div *ngIf="this.homeUrl == true" class="world-map-container">
+        <world-map></world-map>
+      </div>      
 
       <button class="home" mat-button routerLink="">
         <mat-icon>home</mat-icon>

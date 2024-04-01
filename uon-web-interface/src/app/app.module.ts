@@ -7,6 +7,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { MaterialModule } from "./material/material.module";
 import { HeaderComponent } from "./components/header/header.component";
 import { SidenavComponent } from "./components/sidenav/sidenav.component";
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { MappingComponent } from "./components/mapping/mapping.component";
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { FormsModule } from "@angular/forms";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
@@ -54,6 +56,7 @@ import { AppRoutingModule } from "./app-routing.module";
     AppComponent,
     HeaderComponent,
     SidenavComponent,
+    MappingComponent,
     GraphsComponent,
     GraphItemComponent,
     TelemetryComponent,
@@ -95,6 +98,7 @@ import { AppRoutingModule } from "./app-routing.module";
     ButtonModule,
     FileUploadModule,
     TooltipModule,
+    LeafletModule,
   ],
   providers: [
     GraphItemComponent,
