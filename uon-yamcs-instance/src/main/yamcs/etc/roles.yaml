@@ -1,0 +1,13 @@
+Operator:
+  ReadParameter: [".*"]
+  WriteParameter: []
+  ReadPacket: [".*"]
+  Command: [".*"]
+  CommandHistory: [".*"]
+  System:
+    - ControlProcessor
+    - ModifyCommandHistory
+    - ControlCommandQueue
+    - GetMissionDatabase
+    - ControlAlarms
+    - ControlArchiving
