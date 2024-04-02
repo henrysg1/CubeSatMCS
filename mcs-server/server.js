@@ -35,15 +35,18 @@ exec("python3 simulator.py", (err, stdout, stderr) => {
   console.log(stdout);
 });
 
+/*
 process.chdir(frontendPath);
 
-exec("ng serve --open", (err, stdout, stderr) => {
+exec("npm start", (err, stdout, stderr) => {
   if (err) {
     console.error(err);
     return;
   }
   console.log(stdout);
 });
+
+*/
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
