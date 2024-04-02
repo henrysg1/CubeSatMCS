@@ -1,0 +1,39 @@
+/* Header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333; /* Dark background for the header */
+    color: #ffffff; /* Light text color */
+    padding: 10px 20px;
+  }
+  
+  .header div {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .header div:first-child {
+    text-align: left;
+  }
+  
+  .header div:last-child {
+    text-align: right;
+  }
+  
+  .header img.logo {
+    max-width: 100px;
+    max-height: 50px;
+    object-fit: cover;
+    transform: scale(3); /* Zoom in by 10% */
+  }
+  
+  /* Styling for the dropdown */
+  .header select {
+    padding: 5px 10px;
+    margin-left: 10px; /* Adds some space between the label and the dropdown */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
