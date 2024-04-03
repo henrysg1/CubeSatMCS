@@ -1,11 +1,13 @@
 /* Sidebar.css */
 .sidebar {
-  background-color: #444;
-  color: #ddd;
+  background-color: #42bdf9;
+  color: #ffffff;
   padding: 20px;
-  height: 100vh;
-  display: inline-block; /* Adjust width based on content */
+  height: calc(100vh - 114px); /* Adjusted height to account for the header */
+  display: inline-block;
+  overflow-y: auto; /* Makes the sidebar scrollable */
 }
+
 
 .sidebar ul {
   list-style: none;
@@ -23,6 +25,7 @@
   display: flex;
   align-items: center;
   box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+  font-size: 18px;
 }
 
 .active {

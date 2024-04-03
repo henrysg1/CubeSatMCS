@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333; /* Dark background for the header */
+    background-color: #00b7ff; /* Dark background for the header */
     color: #ffffff; /* Light text color */
     padding: 10px 20px;
   }
