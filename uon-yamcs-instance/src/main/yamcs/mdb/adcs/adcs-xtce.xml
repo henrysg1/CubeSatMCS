@@ -19,7 +19,7 @@
             <Parameter parameterTypeRef="/base-dt/int8_t" name="ADCSMagnetometerCycleCountY" />
             <Parameter parameterTypeRef="/base-dt/int8_t" name="ADCSMagnetometerCycleCountZ" />
             <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSMagnetometerSelfTest" />
-            <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSGyroscopeX" />
+            <Parameter parameterTypeRef="/adcs-dt/ADCSGyroscopeX_t" name="ADCSGyroscopeX" />
             <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSGyroscopeY" />
             <Parameter parameterTypeRef="/base-dt/uint32_t" name="ADCSGyroscopeZ" />
             <Parameter parameterTypeRef="/base-dt/bool_t" name="ADCSMagnetometerSignX" />
