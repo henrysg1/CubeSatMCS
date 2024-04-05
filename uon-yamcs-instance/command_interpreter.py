@@ -50,24 +50,40 @@ def initialize_sockets():
         raise
 
 def send_packet(data):
-    
     global CLIENT_CONN_OBC, CLIENT_CONN_ADCS
+    data_chunks = split_data_into_chunks(data)
+    total_chunks = len(data_chunks)
+    packet_number = 0
 
-    tm_secondary_header = create_tm_secondary_header(3, 25)
-    ccsds_header = create_ccsds_header(data, tm_secondary_header)
-    packet = combine_packet_information(ccsds_header, tm_secondary_header, data)
+    for i, chunk in enumerate(data_chunks):
+        # Set default sequence_flags for a single packet or adjust for multiple
+        if total_chunks == 1:  # Only one packet
+            sequence_flags = '11'
+        elif i == 0:  # First packet in a sequence
+            sequence_flags = '01'
+        elif i == total_chunks - 1:  # Last packet in a sequence
+            sequence_flags = '10'
+        else:  # Intermediate packet
+            sequence_flags = '00'
 
-    try:
-        if CLIENT_CONN_OBC:
-            CLIENT_CONN_OBC.send(packet)
-        if CLIENT_CONN_ADCS:
-            CLIENT_CONN_ADCS.send(packet)
-        SIMULATOR.tm_counter += 1
-    except (BrokenPipeError, ConnectionResetError) as e:
-        print("Connection lost. Attempting to reconnect...")
-        CLIENT_CONN_OBC = None  # Reset connection
-        CLIENT_CONN_ADCS = None  # Reset connection
-        reconnect()
+        packet_name = format(packet_number, '014b')
+        tm_secondary_header = create_tm_secondary_header(3, 25)
+        ccsds_header = create_ccsds_header(chunk, tm_secondary_header, sequence_flags, packet_name)
+        packet = combine_packet_information(ccsds_header, tm_secondary_header, chunk)
+
+        try:
+            if CLIENT_CONN_OBC:
+                CLIENT_CONN_OBC.send(packet)
+            if CLIENT_CONN_ADCS:
+                CLIENT_CONN_ADCS.send(packet)
+            SIMULATOR.tm_counter += 1
+        except (BrokenPipeError, ConnectionResetError) as e:
+            print("Connection lost. Attempting to reconnect...")
+            CLIENT_CONN_OBC = None  # Reset connection
+            CLIENT_CONN_ADCS = None  # Reset connection
+            reconnect()
+
+        packet_number += 1
 
 def reconnect():
 
@@ -159,17 +175,17 @@ def send_telemetry(simulator):
 
     return
 
-def create_ccsds_header(packet_data, tm_secondary_header):
+def split_data_into_chunks(data, chunk_size=242):
+    return [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
+
+def create_ccsds_header(data, tm_secondary_header, sequence_flags='11', packet_name='00000000000000'):
     packet_version_number = '000'
     packet_type = '0'
     secondary_header_flag = '1'
     apid = '00000000001'
-    sequence_flags = '11'
-    packet_name = '00000000000000'
-    packet_data_length = format(((len(packet_data) + len(tm_secondary_header)) // 8) - 1, 'b').zfill(16)
+    packet_data_length = format(((len(data) + len(tm_secondary_header)) // 8) - 1, '016b')
 
     ccsds_header = packet_version_number + packet_type + secondary_header_flag + apid + sequence_flags + packet_name + packet_data_length
-
     return ccsds_header
 
 def create_tm_secondary_header(service_type, service_subtype):
