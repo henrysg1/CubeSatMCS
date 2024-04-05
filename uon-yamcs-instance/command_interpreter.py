@@ -24,35 +24,62 @@ def scheduler():
         time.sleep(1)
 
 def initialize_sockets():
+    
     global CLIENT_CONN_OBC, CLIENT_CONN_ADCS
 
-    portOBC = 10015
-    tm_socket_OBC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tm_socket_OBC.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    tm_socket_OBC.bind((HOST, portOBC))
-    tm_socket_OBC.listen(1)
-    print(f"\nServer {portOBC} listening")
+    try:
+        portOBC = 10015
+        tm_socket_OBC = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        tm_socket_OBC.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        tm_socket_OBC.bind((HOST, portOBC))
+        tm_socket_OBC.listen(1)
+        print(f"\nServer {portOBC} listening")
 
-    portADCS = 10016
-    tm_socket_ADCS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    tm_socket_ADCS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    tm_socket_ADCS.bind((HOST, portADCS))
-    tm_socket_ADCS.listen(1)
-    print(f"Server {portADCS} listening")
+        portADCS = 10016
+        tm_socket_ADCS = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        tm_socket_ADCS.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        tm_socket_ADCS.bind((HOST, portADCS))
+        tm_socket_ADCS.listen(1)
+        print(f"Server {portADCS} listening")
 
-    CLIENT_CONN_OBC, _ = tm_socket_OBC.accept()
-    CLIENT_CONN_ADCS, _ = tm_socket_ADCS.accept()
+        CLIENT_CONN_OBC, _ = tm_socket_OBC.accept()
+        CLIENT_CONN_ADCS, _ = tm_socket_ADCS.accept()
+
+    except Exception as e:
+        print("Failed to initialize sockets:", str(e))
+        raise
 
 def send_packet(data):
     
+    global CLIENT_CONN_OBC, CLIENT_CONN_ADCS
+
     tm_secondary_header = create_tm_secondary_header(3, 25)
     ccsds_header = create_ccsds_header(data, tm_secondary_header)
     packet = combine_packet_information(ccsds_header, tm_secondary_header, data)
 
-    CLIENT_CONN_OBC.send(packet)
-    CLIENT_CONN_ADCS.send(packet) 
+    try:
+        if CLIENT_CONN_OBC:
+            CLIENT_CONN_OBC.send(packet)
+        if CLIENT_CONN_ADCS:
+            CLIENT_CONN_ADCS.send(packet)
+        SIMULATOR.tm_counter += 1
+    except (BrokenPipeError, ConnectionResetError) as e:
+        print("Connection lost. Attempting to reconnect...")
+        CLIENT_CONN_OBC = None  # Reset connection
+        CLIENT_CONN_ADCS = None  # Reset connection
+        reconnect()
 
-    SIMULATOR.tm_counter += 1
+def reconnect():
+
+    global CLIENT_CONN_OBC, CLIENT_CONN_ADCS
+
+    while CLIENT_CONN_OBC is None or CLIENT_CONN_ADCS is None:
+        try:
+            initialize_sockets()  # Attempt to reinitialize connections
+            print("Reconnected to the server.")
+        except socket.error as e:
+            print("Connection failed. Retrying in 5 seconds...")
+            time.sleep(5)
 
 def unimplemented_command(packet_data):
     print("Unimplemented command")
