@@ -138,7 +138,7 @@ def create_ccsds_header(packet_data, tm_secondary_header):
     secondary_header_flag = '1'
     apid = '00000000001'
     sequence_flags = '11'
-    packet_name = '00000000000010'
+    packet_name = '00000000000000'
     packet_data_length = format(((len(packet_data) + len(tm_secondary_header)) // 8) - 1, 'b').zfill(16)
 
     ccsds_header = packet_version_number + packet_type + secondary_header_flag + apid + sequence_flags + packet_name + packet_data_length

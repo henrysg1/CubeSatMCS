@@ -48,6 +48,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
         int apidseqcount = ByteBuffer.wrap(bytes).getInt(0); // first 4 bytes (0-3)
         int datalength = ByteBuffer.wrap(bytes).getShort(4) + 1; // get 2 bytes (4-5)
         int apid = (apidseqcount >> 16) & 0x07FF; // 11 bits 
+        int seqflag = (apidseqcount >> 14) & 0x3; // 2 bits
         int seqcount = (apidseqcount) & 0x3FFF; // 14 bits
         int packversion = (apidseqcount >> 29) & 0x7; // 3 bits
         int secheader = (apidseqcount >> 27) & 0x1; // 1 bit
@@ -63,7 +64,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
         StringBuilder stringBuilder = new StringBuilder();
         String newline = System.getProperty("line.separator");
         stringBuilder.append("New packet received!").append(newline);
-        if (((seqcount - oldseq) & 0x3FFF) != 2) {
+        if (seqflag != 3 && ((seqcount - oldseq) & 0x3FFF) != 2) {
             stringBuilder.append("Sequence count jump for APID: ").append(apid).append(" old seq: ").append(oldseq).append(" newseq: ").append(seqcount)
                     .append(newline);
             eventProducer.sendWarning("SEQ_COUNT_JUMP",
@@ -90,6 +91,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
                     "Wrong packet data length. Expected " + (bytes.length - 6) + " and got "
                             + datalength);
         }
+        stringBuilder.append("Sequence_flag:").append(seqflag).append(newline);
         stringBuilder.append("Sequence_count:").append(seqcount).append(newline);
         stringBuilder.append("APID:").append(apid).append(newline);
         stringBuilder.append("PUS:").append(pusversion).append(newline);
