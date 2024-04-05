@@ -5,6 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 
 import org.yamcs.TmPacket;
 import org.yamcs.YConfiguration;
@@ -13,10 +20,84 @@ import org.yamcs.tctm.AbstractPacketPreprocessor;
 import com.uoncubesat.file_handling.network.in.TMParser;
 
 public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
+
+    public class PacketKey {
+        private final int apid;
+        private final int serviceType;
+        private final int messageType;
+
+        public PacketKey(int apid, int serviceType, int messageType) {
+            this.apid = apid;
+            this.serviceType = serviceType;
+            this.messageType = messageType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            PacketKey packetKey = (PacketKey) o;
+            return apid == packetKey.apid &&
+                serviceType == packetKey.serviceType &&
+                messageType == packetKey.messageType;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(apid, serviceType, messageType);
+        }
+    }
+
+    private byte[] combinePackets(List<byte[]> packets) {
+        if (packets.isEmpty()) return null;
+
+        ByteArrayOutputStream combinedPayload = new ByteArrayOutputStream();
+
+        for (byte[] packet : packets) {
+            if (packet.length > 17) {
+                combinedPayload.write(packet, 17, packet.length - 17);
+            }
+        }
+
+        byte[] combinedPayloadBytes = combinedPayload.toByteArray();
+        byte[] lastPacketHeader = Arrays.copyOf(packets.get(packets.size() - 1), 17);
+
+        // Clear the first 4 bits of the first byte
+        lastPacketHeader[0] = (byte) (lastPacketHeader[0] & 0x0F);
+
+        // Set the 16th and 17th bits to '11'
+        lastPacketHeader[2] = (byte) ((lastPacketHeader[2] & 0x3F) | 0xC0);
+
+        // Correctly set the sequence count (bits 18 to 32) to 0
+        // Clear the remaining 2 bits of the 2nd byte (zero-based index) and all bits of the 3rd byte
+        lastPacketHeader[2] = (byte) (lastPacketHeader[2] & 0xC0); // Keep the first 2 bits as '11', clear the rest
+        lastPacketHeader[3] = (byte) 0; // Clear the 3rd byte completely
+
+        // Adjust payload length (+11 for the secondary header)
+        int adjustedPayloadLength = combinedPayloadBytes.length + 17;
+        lastPacketHeader[4] = (byte) ((adjustedPayloadLength >> 8) & 0xFF);
+        lastPacketHeader[5] = (byte) (adjustedPayloadLength & 0xFF);
+
+        Arrays.fill(lastPacketHeader, 9, 11, (byte) 0);
+
+        ByteArrayOutputStream combinedPacket = new ByteArrayOutputStream();
+
+        try {
+            combinedPacket.write(lastPacketHeader);
+            combinedPacket.write(combinedPayloadBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return combinedPacket.toByteArray();
+    }
+
+
     private static final Logger LOGGER = Logger.getLogger(MyPacketPreprocessor.class.getName());
 
     private final TMParser listener = new TMParser();
     private final Map<Integer, AtomicInteger> seqCounts = new HashMap<>();
+    private final Map<PacketKey, List<byte[]>> packetCache = new HashMap<>();
 
     // Constructor used when this preprocessor is used without YAML configuration
     public MyPacketPreprocessor(String yamcsInstance) {
@@ -32,7 +113,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
     @Override
     public TmPacket process(TmPacket packet) {
 
-        LOGGER.info("In process".toString());
+        //LOGGER.info("In process".toString());
 
         byte[] bytes = packet.getPacket();
 
@@ -64,7 +145,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
         StringBuilder stringBuilder = new StringBuilder();
         String newline = System.getProperty("line.separator");
         stringBuilder.append("New packet received!").append(newline);
-        if (seqflag != 3 && ((seqcount - oldseq) & 0x3FFF) != 2) {
+        if (seqflag != 3 && ((seqcount - oldseq) & 0x3FFF) != 1) {
             stringBuilder.append("Sequence count jump for APID: ").append(apid).append(" old seq: ").append(oldseq).append(" newseq: ").append(seqcount)
                     .append(newline);
             eventProducer.sendWarning("SEQ_COUNT_JUMP",
@@ -102,7 +183,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
         stringBuilder.append("MessageType:").append(messageType).append(newline);
         stringBuilder.append("Packet data length:").append(datalength).append(newline);
         stringBuilder.append("----").append(newline);
-        LOGGER.info(stringBuilder.toString());
+        // LOGGER.info(stringBuilder.toString());
         // Our custom packets don't include a secundary header with time information.
         // Use Yamcs-local time instead.
 
@@ -115,7 +196,38 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
             listener.parseFileSegmentPacket(packet.getPacket());
         packet.setGenerationTime(System.currentTimeMillis());
 
-        return packet;
+        PacketKey key = new PacketKey(apid, serviceType, messageType);
+        List<byte[]> packetList = packetCache.computeIfAbsent(key, k -> new ArrayList<>());
+
+        switch (seqflag) {
+            case 1: // Start of sequence
+                packetList.clear(); // Clear any existing packets for this APID
+                packetList.add(bytes);
+                LOGGER.info("Starting new sequence".toString());
+                break;
+            case 0: // Middle of sequence
+                packetList.add(bytes);
+                LOGGER.info("Continuing sequence".toString());
+                break;
+            case 2: // End of sequence
+                packetList.add(bytes);
+                byte[] combinedPacket = combinePackets(packetList);
+                long gentime = System.currentTimeMillis(); 
+                int seqCount = 0;
+
+                long rectime = System.currentTimeMillis();
+
+                TmPacket combinedTmPacket = new TmPacket(rectime, gentime, seqCount, combinedPacket);
+
+                packetCache.remove(key);
+                LOGGER.info("Finished sequence".toString());
+                return combinedTmPacket;
+            case 3: // Standalone packet
+                LOGGER.info("Coming through!".toString());
+                return packet;
+        }
+
+        return null;
 
     }
 

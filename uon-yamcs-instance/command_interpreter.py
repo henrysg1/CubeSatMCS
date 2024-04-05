@@ -9,6 +9,8 @@ CLIENT_CONN_OBC = None
 CLIENT_CONN_ADCS = None
 SIMULATOR = None
 
+PACKET_DATA_SIZE_BITS = 239*8
+
 def float_to_binary_32(num):
     return ''.join('{:0>8b}'.format(c) for c in struct.pack('!f', num))
 
@@ -66,9 +68,10 @@ def send_packet(data):
         else:  # Intermediate packet
             sequence_flags = '00'
 
-        packet_name = format(packet_number, '014b')
-        tm_secondary_header = create_tm_secondary_header(3, 25)
-        ccsds_header = create_ccsds_header(chunk, tm_secondary_header, sequence_flags, packet_name)
+        packet_name_ccsds = format(packet_number, '014b')
+        packet_name_secondary = format(packet_number, '016b')
+        tm_secondary_header = create_tm_secondary_header(3, 25, packet_name_secondary)
+        ccsds_header = create_ccsds_header(chunk, tm_secondary_header, sequence_flags, packet_name_ccsds)
         packet = combine_packet_information(ccsds_header, tm_secondary_header, chunk)
 
         try:
@@ -175,7 +178,7 @@ def send_telemetry(simulator):
 
     return
 
-def split_data_into_chunks(data, chunk_size=242):
+def split_data_into_chunks(data, chunk_size=PACKET_DATA_SIZE_BITS):
     return [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
 
 def create_ccsds_header(data, tm_secondary_header, sequence_flags='11', packet_name='00000000000000'):
@@ -188,12 +191,12 @@ def create_ccsds_header(data, tm_secondary_header, sequence_flags='11', packet_n
     ccsds_header = packet_version_number + packet_type + secondary_header_flag + apid + sequence_flags + packet_name + packet_data_length
     return ccsds_header
 
-def create_tm_secondary_header(service_type, service_subtype):
+def create_tm_secondary_header(service_type, service_subtype, packet_name='0000000000000000'):
     tm_packet_pus_version_number = '0010'
     spacecraft_time_reference_status = '0000'
     service_type = f'{service_type:08b}'
     service_subtype = f'{service_subtype:08b}'
-    message_type_counter = '0000000000000000'
+    message_type_counter = packet_name
     destination_ID = '0000000000000001'
 
     # Get the current time in seconds since the epoch
