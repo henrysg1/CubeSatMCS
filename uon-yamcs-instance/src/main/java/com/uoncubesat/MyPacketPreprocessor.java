@@ -113,7 +113,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
     @Override
     public TmPacket process(TmPacket packet) {
 
-        //LOGGER.info("In process".toString());
+        LOGGER.info("In process".toString());
 
         byte[] bytes = packet.getPacket();
 
@@ -183,7 +183,7 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
         stringBuilder.append("MessageType:").append(messageType).append(newline);
         stringBuilder.append("Packet data length:").append(datalength).append(newline);
         stringBuilder.append("----").append(newline);
-        // LOGGER.info(stringBuilder.toString());
+        LOGGER.info(stringBuilder.toString());
         // Our custom packets don't include a secundary header with time information.
         // Use Yamcs-local time instead.
 
@@ -203,11 +203,9 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
             case 1: // Start of sequence
                 packetList.clear(); // Clear any existing packets for this APID
                 packetList.add(bytes);
-                LOGGER.info("Starting new sequence".toString());
                 break;
             case 0: // Middle of sequence
                 packetList.add(bytes);
-                LOGGER.info("Continuing sequence".toString());
                 break;
             case 2: // End of sequence
                 packetList.add(bytes);
@@ -220,10 +218,8 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
                 TmPacket combinedTmPacket = new TmPacket(rectime, gentime, seqCount, combinedPacket);
 
                 packetCache.remove(key);
-                LOGGER.info("Finished sequence".toString());
                 return combinedTmPacket;
             case 3: // Standalone packet
-                LOGGER.info("Coming through!".toString());
                 return packet;
         }
 
