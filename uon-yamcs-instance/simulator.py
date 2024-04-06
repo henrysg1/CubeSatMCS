@@ -7,7 +7,8 @@ from struct import unpack_from
 from threading import Thread
 from time import sleep
 
-from command_interpreter import hex_to_command, send_telemetry
+from satellite_emulator.main import send_telemetry
+from satellite_emulator.commands import hex_to_command
 
 HOST = "localhost"
 
