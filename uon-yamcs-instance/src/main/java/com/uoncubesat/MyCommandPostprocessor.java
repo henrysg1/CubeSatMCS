@@ -1,11 +1,15 @@
 package com.uoncubesat;
 
+import java.util.Map;
+
 import org.yamcs.YConfiguration;
 import org.yamcs.cmdhistory.CommandHistoryPublisher;
 import org.yamcs.commanding.PreparedCommand;
 import org.yamcs.tctm.CcsdsSeqCountFiller;
 import org.yamcs.tctm.CommandPostprocessor;
 import org.yamcs.utils.ByteArrayUtils;
+
+import com.uoncubesat.file_handling.network.out.TCParser;
 
 /**
  * Component capable of modifying command binary before passing it to the link for further dispatch.
@@ -31,6 +35,8 @@ public class MyCommandPostprocessor implements CommandPostprocessor {
     private CcsdsSeqCountFiller seqFiller = new CcsdsSeqCountFiller();
     private CommandHistoryPublisher commandHistory;
 
+    private final TCParser tcparcer = new TCParser();
+
     // Constructor used when this postprocessor is used without YAML configuration
     public MyCommandPostprocessor(String yamcsInstance) {
         this(yamcsInstance, YConfiguration.emptyConfig());
@@ -53,9 +59,18 @@ public class MyCommandPostprocessor implements CommandPostprocessor {
     public byte[] process(PreparedCommand pc) {
         byte[] binary = pc.getBinary();
 
+        int serviceType = binary[7];
+        int messageType = binary[8];
+
         if ("/yamcs/cfdp/upload".equals(pc.getCmdName())) {
             binary = processCfdpCommand(binary);
         }
+
+        if (serviceType == 23 && messageType == 14) {
+            Map<String,String> paths = tcparcer.parseFileCopyPacket(binary);
+            tcparcer.processPaths(paths);
+        }
+
 
         binary = processRegularCommand(binary);
 
