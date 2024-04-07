@@ -19,7 +19,7 @@ import org.yamcs.tctm.AbstractPacketPreprocessor;
 
 import com.uoncubesat.file_handling.network.in.TMParser;
 
-public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
+public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
 
     public class PacketKey {
         private final int apid;
@@ -93,20 +93,20 @@ public class MyPacketPreprocessor extends AbstractPacketPreprocessor {
     }
 
 
-    private static final Logger LOGGER = Logger.getLogger(MyPacketPreprocessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CustomPacketPreprocessor.class.getName());
 
     private final TMParser listener = new TMParser();
     private final Map<Integer, AtomicInteger> seqCounts = new HashMap<>();
     private final Map<PacketKey, List<byte[]>> packetCache = new HashMap<>();
 
     // Constructor used when this preprocessor is used without YAML configuration
-    public MyPacketPreprocessor(String yamcsInstance) {
+    public CustomPacketPreprocessor(String yamcsInstance) {
         this(yamcsInstance, YConfiguration.emptyConfig());
     }
 
     // Constructor used when this preprocessor is used with YAML configuration
     // (packetPreprocessorClassArgs)
-    public MyPacketPreprocessor(String yamcsInstance, YConfiguration config) {
+    public CustomPacketPreprocessor(String yamcsInstance, YConfiguration config) {
         super(yamcsInstance, config);
     }
 

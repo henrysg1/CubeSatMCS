@@ -26,11 +26,11 @@ import com.uoncubesat.file_handling.network.out.TCParser;
  *     stream: tc_realtime
  *     host: localhost
  *     port: 10025
- *     commandPostprocessorClassName: com.UoNCubeSat.MyCommandPostprocessor
+ *     commandPostprocessorClassName: com.UoNCubeSat.CustomCommandPostprocessor
  * ...
  * </pre>
  */
-public class MyCommandPostprocessor implements CommandPostprocessor {
+public class CustomCommandPostprocessor implements CommandPostprocessor {
 
     private CcsdsSeqCountFiller seqFiller = new CcsdsSeqCountFiller();
     private CommandHistoryPublisher commandHistory;
@@ -38,13 +38,13 @@ public class MyCommandPostprocessor implements CommandPostprocessor {
     private final TCParser tcparcer = new TCParser();
 
     // Constructor used when this postprocessor is used without YAML configuration
-    public MyCommandPostprocessor(String yamcsInstance) {
+    public CustomCommandPostprocessor(String yamcsInstance) {
         this(yamcsInstance, YConfiguration.emptyConfig());
     }
 
     // Constructor used when this postprocessor is used with YAML configuration
     // (commandPostprocessorClassArgs)
-    public MyCommandPostprocessor(String yamcsInstance, YConfiguration config) {
+    public CustomCommandPostprocessor(String yamcsInstance, YConfiguration config) {
     }
 
     // Called by Yamcs during initialization

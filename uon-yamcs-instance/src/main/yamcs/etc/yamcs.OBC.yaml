@@ -67,7 +67,7 @@ dataLinks:
     stream: tm_realtime
     host: localhost
     port: 10015
-    packetPreprocessorClassName: com.uoncubesat.MyPacketPreprocessor
+    packetPreprocessorClassName: com.uoncubesat.CustomPacketPreprocessor
     packetInputStreamClassName: org.yamcs.tctm.GenericPacketInputStream
     packetInputStreamArgs: 
         maxPacketLength: 65536
@@ -83,7 +83,7 @@ dataLinks:
     stream: tc_realtime
     host: localhost
     port: 10025
-    commandPostprocessorClassName: com.uoncubesat.MyCommandPostprocessor
+    commandPostprocessorClassName: com.uoncubesat.CustomCommandPostprocessor
 
 mdb:
   # Configuration of the active loaders
@@ -114,6 +114,10 @@ mdb:
   spec: "mdb/adcs/adcs-dt.xml"
 - type: xtce
   spec: "mdb/adcs/adcs-xtce.xml"
+- type: xtce
+  spec: "mdb/comms/comms-dt.xml"
+- type: xtce
+  spec: "mdb/comms/comms-xtce.xml"
 - type: xtce
   spec: "mdb/services/ST[01].xml"
 - type: xtce
