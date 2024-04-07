@@ -15,6 +15,9 @@ dataDir: yamcs-data
 instances:
   - OBC
   - ADCS
+  - COMMS
+  - JAM
+  - SAIL
 
 # Secret key unique to a particular Yamcs installation.
 # This is used to provide cryptographic signing.
