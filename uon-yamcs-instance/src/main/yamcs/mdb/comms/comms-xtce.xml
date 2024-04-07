@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="comms-xtce" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+	shortDescription="This is a bogus satellite telemetry and telecommand database."
+	operationalStatus="unittest">
+    <xtce:TelemetryMetaData>
+        <ParameterSet>
+
+            <!-- COMMS Parameters will be used in the Environmental Campaign -->
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSUHFPATemperature"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSSBandPATemperature"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSPCBTemperature"/>
+
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSADMStatus_t" name="COMMSantennaDeploymentStatus"/>
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSTXSampleRate_t" name="COMMSsampleRateUHFTX"/>
+                                                                     
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSTXSampleRate_t" name="COMMSsampleRateSBandTX"/>
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSTXSymbolRateSBand_t" name="COMMSsymbolRateSBandTX"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMScwInterval"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMSgmskBeaconInterval"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSUHFBandTXPower"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSSBandTXPower"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSchannelNumberUHF"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSchannelNumberSBand"/>
+
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSLNAGain_t" name="COMMSLNAGain"/>
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSPAGain_t" name="COMMSpowerAmplifierUHF"/>
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSPAGain_t" name="COMMSpowerAmplifierSBand"/>
+
+            <xtce:Parameter parameterTypeRef="/base-dt/uint8_t" name="COMMSvariableGainAmplifier"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSreceivedSignalStrengthIndicator"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/bool_t" name="COMMSuhfBandTX"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/bool_t" name="COMMSuhfBandRX"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/bool_t" name="COMMSsBandTX"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMSnumberOfPackagesRejected"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMSinvalidHMAC"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMSinvalidPacketStructure"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMSinvalidSpacecraftID"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMStcFrameSequenceCounter"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSPCBTemperature1"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSPCBTemperature2"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSMCUTemperature"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/float_t" name="COMMSMCUInputVoltage"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSMCUBootCounter"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSonBoardTime"/>
+
+            <xtce:Parameter parameterTypeRef="/comms-dt/COMMSMemoryPartition_t" name="COMMSnandUsedMemoryPartition"/>
+
+            <xtce:Parameter parameterTypeRef="/base-dt/uint16_t" name="COMMSlastFailedEvent"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSMCUSystick"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSFLASHInt"/>
+            <xtce:Parameter parameterTypeRef="/base-dt/uint32_t" name="COMMSSRAMInt"/>
+
+        </ParameterSet>
+    </xtce:TelemetryMetaData>
+
+    <xtce:CommandMetaData>
+        <MetaCommandSet>
+
+            <MetaCommand name="Send_Radio_Command">
+                <ArgumentList>
+                    <Argument argumentTypeRef="/comms-dt/command_type_t" name="command_type" />
+                    <Argument argumentTypeRef="/base-dt/string_t" name="data" />
+                </ArgumentList>
+                <CommandContainer name="Send_Radio_Command">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="command_type" />
+                        <ArgumentRefEntry argumentRef="data" />
+                    </EntryList>
+                </CommandContainer>
+            </MetaCommand>
+
+        </MetaCommandSet>
+    </xtce:CommandMetaData>
+
+</SpaceSystem>
