@@ -22,7 +22,7 @@ services:
         warmupTime: 60
 
 dataLinks:
-  - name: ADCS-UART
+  - name: ADCS
     class: org.yamcs.tctm.TcpTmDataLink
     stream: tm_realtime
     host: localhost
@@ -30,24 +30,11 @@ dataLinks:
     packetPreprocessorClassName: com.uoncubesat.CustomPacketPreprocessor
     packetInputStreamClassName: org.yamcs.tctm.GenericPacketInputStream
     packetInputStreamArgs: 
-        # Potentially update to:
-        #maxPacketLength: 264
-        #lengthFieldOffset: 10 
-        #lengthFieldLength: 2 
-        #lengthAdjustment: 11
-        #initialBytesToStrip: 6
         maxPacketLength: 65536
         lengthFieldOffset: 4 
         lengthFieldLength: 2 
         lengthAdjustment: 7
         initialBytesToStrip: 0
-
-  - name: tcp-out
-    class: org.yamcs.tctm.TcpTcDataLink
-    stream: tc_realtime
-    host: localhost
-    port: 10025
-    commandPostprocessorClassName: com.uoncubesat.CustomCommandPostprocessor
 
 mdb:
   # Configuration of the active loaders
