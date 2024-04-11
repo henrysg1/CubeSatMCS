@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="ST[08]" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is the function management database."
+    operationalStatus="unittest">
+
+    <xtce:CommandMetaData>
+        <MetaCommandSet>
+
+            <MetaCommand name="TC(8,1)_perform_function">
+                <BaseMetaCommand metaCommandRef="/pus/Header_TC">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="service_type_ID" argumentValue="8" />
+                        <ArgumentAssignment argumentName="message_subtype_ID" argumentValue="1" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <ArgumentList>
+                    <Argument argumentTypeRef="/dt/string_32" name="function_ID" />
+                    <Argument argumentTypeRef="/dt/string_32" name="function_arguments" />
+                </ArgumentList>
+                <CommandContainer name="TC(8,1)_container">
+                    <EntryList>
+                        <ArgumentRefEntry argumentRef="function_ID" />
+                        <ArgumentRefEntry argumentRef="function_arguments" />
+                    </EntryList>
+                    <BaseContainer containerRef="/pus/Header_TC" />
+                </CommandContainer>
+            </MetaCommand>
+            
+        </MetaCommandSet>
+    </xtce:CommandMetaData>
+</SpaceSystem>

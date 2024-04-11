@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="pus" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+    <xtce:TelemetryMetaData>
+    
+        <!-- TM header parameters -->
+        <ParameterSet>
+
+            <Parameter parameterTypeRef="/base-dt/packet_version_number" name="packet_version_number"
+                initialValue="0">
+                <LongDescription>
+                    The packet version number is set to 0 and identifies it as a space packet defined
+                    by CCSDS 133. 0-B-1. A space packet is also referred to as a version 1 CCSDS packet.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/packet_type" name="packet_type">
+                <LongDescription>
+                    The packet type bit distinguishes between telemetry packets,
+                    for which this bit is
+                    set to 0, and telecommand packets, for which this bit is set to 1.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/secondary_header_flag" name="secondary_header_flag">
+                <LongDescription>
+                    The secondary header flag indicates the presence or absence of the packet
+                    secondary header. Except spacecraft time packets (refer to clause
+                    6.9.4), all telemetry packets defined in this Standard have a packet secondary
+                    header field. Except CPDU command packets (refer to clause
+                    9.3.1), all telecommand packets defined in this Standard have a packet
+                    secondary header field.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/application_process_ID" name="application_process_ID">
+                <LongDescription>
+                    The application process ID uniquely identifies the on-board application process
+                    that is source of the telemetry packet and destination of the telecommand
+                    packet. Some values of the application process ID field are reserved by the
+                    CCSDS standard, making them unavailable for use by PUS services.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/sequence_flags" name="sequence_flags">
+                <LongDescription>
+                    The sequence flags are defined by CCSDS but not used by the space packet protocol.
+                    This Standard uses the binary value "11" for the sequence flags, to indicate a
+                    standalone packet. All telemetry packets and telecommand packets defined within
+                    this Standard are standalone packets.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/packet_sequence_count_or_packet_name" name="packet_sequence_count_or_packet_name">
+                <LongDescription>
+                    The packet sequence count is used for telemetry packets. It is incremented by 1
+                    whenever the source application process releases a packet. The packet sequence
+                    count wraps around from 2 14 -1 to zero.The telecommand packets carry either a
+                    packet sequence count or a packet name to identify them within the same communication
+                    session. For the purpose of this Standard, the telecommand packet sequence count
+                    or packet name field carries an identifier that used in combination with the source
+                    identifier specified in clause 7.4.4.1, uniquely identify the telecommand packet.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/packet_data_length" name="packet_data_length">
+                <LongDescription>
+                    The packet data length field specifies the length of the packet data field. The value
+                    of the unsigned integer in the packet data length field is one less than the
+                    number of octets contained within the packet data field. The length of the
+                    entire packet, including the packet primary header, is 6 octets more than the length of
+                    the packet data field.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint4_t" name="PUS_version_number">
+                <LongDescription>
+                    The TM packet PUS version number reflects the different versions of this Standard.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint4_t" name="spacecraft_time_reference_status">
+                <LongDescription>
+                    Each application process that provides the capability to report the
+                    spacecraft time reference status used when time tagging telemetry
+                    packets shall set the spacecraft time reference status field of each
+                    telemetry packet it generates to the status of the on-board time reference
+                    used when time tagging that telemetry packet.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint8_t" name="service_type_ID_TM">
+                <LongDescription>
+                    The service type identifier of the service type that contains that message type.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint8_t" name="message_subtype_ID_TM">
+                <LongDescription>
+                    A message subtype identifier that uniquely identifies that message type within that service type.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="message_type_counter">
+                <LongDescription>
+                    For each report that it generates, each application process that provides the
+                    capability to count the type of generated messages per destination and report
+                    the corresponding message type counter shall set the message type counter of the
+                    related telemetry packet to the value of the related counter.
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/uint16_t" name="destination_ID">
+                <LongDescription>
+                    Each application process shall set the destination ID field of each
+                    telemetry packet it generates to the application process user identifier of
+                    the application process addressed by the related report
+                </LongDescription>
+            </Parameter>
+
+            <Parameter parameterTypeRef="/base-dt/generation_time" name="time">
+                <LongDescription>
+                    Each application process shall set the time field of each telemetry packet
+                    it generates to the time tag of the related report.
+                </LongDescription>
+            </Parameter>
+            
+        </ParameterSet>
+
+        <!-- TM header containers-->
+
+        <ContainerSet>
+            <xtce:SequenceContainer name="packet_header_TM">
+                <xtce:EntryList>
+                    <xtce:ContainerRefEntry containerRef="secondary_header_TM"/>
+                </xtce:EntryList>
+                <xtce:BaseContainer containerRef="primary_header_TM"/>
+            </xtce:SequenceContainer>    
+
+            <xtce:SequenceContainer name="primary_header_TM">
+                <xtce:EntryList>
+                    <xtce:ParameterRefEntry parameterRef="/pus/packet_version_number"/>
+                    <xtce:ParameterRefEntry parameterRef="/pus/packet_type"/>
+                    <xtce:ParameterRefEntry parameterRef="/pus/secondary_header_flag"/>
+                    <xtce:ParameterRefEntry parameterRef="/pus/application_process_ID"/>
+                    <xtce:ParameterRefEntry parameterRef="/pus/sequence_flags"/>
+                    <xtce:ParameterRefEntry parameterRef="/pus/packet_sequence_count_or_packet_name"/>
+                    <xtce:ParameterRefEntry parameterRef="/pus/packet_data_length"/>
+                </xtce:EntryList>
+            </xtce:SequenceContainer>
+
+            <SequenceContainer name="secondary_header_TM">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="/pus/PUS_version_number" />
+                    <ParameterRefEntry parameterRef="/pus/spacecraft_time_reference_status" />
+                    <ParameterRefEntry parameterRef="/pus/service_type_ID_TM" />
+                    <ParameterRefEntry parameterRef="/pus/message_subtype_ID_TM" />
+                    <ParameterRefEntry parameterRef="/pus/message_type_counter" />
+                    <ParameterRefEntry parameterRef="/pus/destination_ID" />
+                    <ParameterRefEntry parameterRef="/pus/time" />
+                </EntryList>
+            </SequenceContainer>
+        </ContainerSet>
+    </xtce:TelemetryMetaData>
+
+    <!-- TC headers and verifiers -->
+
+    <xtce:CommandMetaData>  
+        <MetaCommandSet>
+
+            <MetaCommand name="header" abstract="true">
+                <ArgumentList>
+                    <!-- Primary Header -->
+                    <Argument argumentTypeRef="/base-dt/packet_version_number" name="packet_version_number" />
+                    <Argument argumentTypeRef="/base-dt/packet_type" name="packet_type" />
+                    <Argument argumentTypeRef="/base-dt/secondary_header_flag" name="secondary_header_flag" />
+                    <Argument argumentTypeRef="/base-dt/application_process_ID" name="application_process_ID" initialValue="OBC" />
+                    <Argument argumentTypeRef="/base-dt/sequence_flags" name="sequence_flags" />
+                    <!-- Secondary Header -->
+                    <Argument argumentTypeRef="/base-dt/uint4_t" name="PUS_version_number" />
+                    <Argument argumentTypeRef="/base-dt/completion_ack" name="completion_ack" initialValue="completion_ack" />
+                    <Argument argumentTypeRef="/base-dt/progress_of_execution_ack" name="progress_of_execution_ack" initialValue="progress_of_execution_ack" />
+                    <Argument argumentTypeRef="/base-dt/start_of_execution_ack" name="start_of_execution_ack" initialValue="start_of_execution_ack" />
+                    <Argument argumentTypeRef="/base-dt/acceptance_ack" name="acceptance_ack" initialValue="acceptance_ack" />
+                    <Argument argumentTypeRef="/base-dt/uint8_t" name="service_type_ID" />
+                    <Argument argumentTypeRef="/base-dt/uint8_t" name="message_subtype_ID" />
+                    <Argument argumentTypeRef="/base-dt/uint16_t" name="source_ID" />
+                </ArgumentList>
+                <CommandContainer name="packet_header_TC">
+                    <EntryList>
+                        <!-- Primary Header -->
+                        <ArgumentRefEntry argumentRef="packet_version_number" />
+                        <ArgumentRefEntry argumentRef="packet_type" />
+                        <ArgumentRefEntry argumentRef="secondary_header_flag" />
+                        <ArgumentRefEntry argumentRef="application_process_ID" />
+                        <ArgumentRefEntry argumentRef="sequence_flags" />
+                        <FixedValueEntry name="packet_sequence_count_or_packet_name" binaryValue="0000" sizeInBits="14" />
+                        <FixedValueEntry name="packet_data_length" binaryValue="0000" sizeInBits="16" />
+                        <!-- Secondary Header -->
+                        <ArgumentRefEntry argumentRef="PUS_version_number" />
+                        <ArgumentRefEntry argumentRef="completion_ack" />
+                        <ArgumentRefEntry argumentRef="progress_of_execution_ack" />
+                        <ArgumentRefEntry argumentRef="start_of_execution_ack" />
+                        <ArgumentRefEntry argumentRef="acceptance_ack" />
+                        <ArgumentRefEntry argumentRef="service_type_ID" />
+                        <ArgumentRefEntry argumentRef="message_subtype_ID" />
+                        <ArgumentRefEntry argumentRef="source_ID" />
+                    </EntryList>
+                </CommandContainer>
+            </MetaCommand>
+
+            <MetaCommand name="Header_TC" abstract="true">
+                <BaseMetaCommand metaCommandRef="header">
+                    <ArgumentAssignmentList>
+                        <ArgumentAssignment argumentName="packet_version_number" argumentValue="0" />
+                        <ArgumentAssignment argumentName="packet_type" argumentValue="TC" />
+                        <ArgumentAssignment argumentName="secondary_header_flag" argumentValue="1" />
+                        <ArgumentAssignment argumentName="sequence_flags" argumentValue="3" />
+                        <ArgumentAssignment argumentName="PUS_version_number" argumentValue="2" />
+                        <ArgumentAssignment argumentName="source_ID" argumentValue="5" />
+                    </ArgumentAssignmentList>
+                </BaseMetaCommand>
+                <CommandContainer name="Header_TC">
+                    <EntryList />
+                    <BaseContainer containerRef="packet_header_TC" />
+                </CommandContainer>
+                <VerifierSet>
+                    <ReceivedVerifier name="TC_receival">
+                        <CustomAlgorithm name="receival_algorithm">
+                            <AncillaryDataSet>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentSeq
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdSeq
+								</AncillaryData>
+                            </AncillaryDataSet>
+                            <AlgorithmText language="JavaScript">
+								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+                                    if(subtype.value == 1){
+                                        return true;
+                                    }else if(subtype.value == 2){
+                                        return errorCode.value;
+                                    }
+                                }else{
+                                    return false;
+								}
+							</AlgorithmText>
+                            <InputSet>
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
+                                <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/AcceptanceErrorType" inputName="errorCode" />
+                            </InputSet>
+                        </CustomAlgorithm>
+                        <CheckWindow timeToStopChecking="PT5S" />
+                    </ReceivedVerifier>
+                    <ExecutionVerifier name="TC_start_of_execution">
+                        <CustomAlgorithm name="start_of_execution_algorithm">
+                            <AncillaryDataSet>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentSeq
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdSeq
+								</AncillaryData>
+                            </AncillaryDataSet>
+                            <AlgorithmText language="JavaScript">
+								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+                                    if(subtype.value == 3){
+                                        return true;
+                                    }else if(subtype.value == 4){
+                                        return errorCode.value;
+                                    }
+								}else{
+								    return false;
+								}
+							</AlgorithmText>
+                            <InputSet>
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
+                                <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/ExecutionStartErrorType" inputName="errorCode" />
+                            </InputSet>
+                        </CustomAlgorithm>
+                        <CheckWindow timeToStopChecking="PT5S"
+                            timeWindowIsRelativeTo="commandRelease" />
+                    </ExecutionVerifier>
+                    <ExecutionVerifier name="TC_execution_progress">
+                        <CustomAlgorithm name="execution_progress_algorithm">
+                            <AncillaryDataSet>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentSeq
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdSeq
+								</AncillaryData>
+                            </AncillaryDataSet>
+                            <AlgorithmText language="JavaScript">
+								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+                                    if(subtype.value == 5){
+                                        return step.value;
+                                    }else if(subtype.value == 6){
+                                        return errorCode.value;
+                                    }
+								}else{
+								    return false;
+								}
+							</AlgorithmText>
+                            <InputSet>
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
+                                <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/stepID" inputName="step" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/ExecutionProgressErrorType" inputName="errorCode" />
+                            </InputSet>
+                        </CustomAlgorithm>
+                        <CheckWindow timeToStopChecking="PT15S" timeWindowIsRelativeTo="commandRelease" />
+                    </ExecutionVerifier>
+                    <CompleteVerifier name="TC_completion">
+                        <CustomAlgorithm name="completion_algorithm">
+                            <AncillaryDataSet>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									sentSeq
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdApid
+								</AncillaryData>
+                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
+									rcvdSeq
+								</AncillaryData>
+                            </AncillaryDataSet>
+                            <AlgorithmText language="JavaScript">
+								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+                                    if(subtype.value == 7){
+                                        return true;
+                                    }else if(subtype.value == 8){
+                                        return errorCode.value;
+                                    }
+								}else{
+								    return false;
+								}
+							</AlgorithmText>
+                            <InputSet>
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
+                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
+                                <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
+                                <InputParameterInstanceRef parameterRef="/ST[01]/ExecutionCompletionErrorType" inputName="errorCode" />
+                            </InputSet>
+                        </CustomAlgorithm>
+                        <CheckWindow timeToStopChecking="PT15S"
+                            timeWindowIsRelativeTo="commandRelease" />
+                    </CompleteVerifier>
+                </VerifierSet>
+            </MetaCommand>
+
+        </MetaCommandSet>
+    </xtce:CommandMetaData>
+
+</SpaceSystem>

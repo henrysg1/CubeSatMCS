@@ -1,0 +1,111 @@
+services:
+  - class: org.yamcs.archive.XtceTmRecorder
+  - class: org.yamcs.archive.ParameterRecorder
+  - class: org.yamcs.archive.AlarmRecorder
+  - class: org.yamcs.archive.EventRecorder
+  - class: org.yamcs.archive.ReplayServer
+  - class: org.yamcs.parameter.SystemParametersService
+    args:
+      provideJvmVariables: true
+      provideFsVariables: true
+  - class: org.yamcs.ProcessorCreatorService
+    args:
+      name: "realtime"
+      type: "realtime"
+  - class: org.yamcs.archive.CommandHistoryRecorder
+  - class: org.yamcs.parameterarchive.ParameterArchive
+    args:
+      realtimeFiller:
+        enabled: true
+      backFiller:
+        enabled: false
+        warmupTime: 60
+
+dataLinks:
+  - name: COMMS-UART
+    class: org.yamcs.tctm.TcpTmDataLink
+    stream: tm_realtime
+    host: localhost
+    port: 10013
+    packetPreprocessorClassName: com.uoncubesat.CustomPacketPreprocessor
+    packetInputStreamClassName: org.yamcs.tctm.GenericPacketInputStream
+    packetInputStreamArgs: 
+        maxPacketLength: 65536
+        lengthFieldOffset: 4 
+        lengthFieldLength: 2 
+        lengthAdjustment: 7
+        initialBytesToStrip: 0
+
+  - name: tcp-out
+    class: org.yamcs.tctm.TcpTcDataLink
+    stream: tc_realtime
+    host: localhost
+    port: 10025
+    commandPostprocessorClassName: com.uoncubesat.CustomCommandPostprocessor
+
+mdb:
+  # Configuration of the active loaders
+  # Valid loaders are: sheet, xtce or fully qualified name of the class
+- type: xtce
+  spec: "mdb/common/dt/base-dt.xml"
+- type: xtce
+  spec: "mdb/common/dt/writeable-dt.xml"
+- type: xtce
+  spec: "mdb/common/dt/file-handling-dt.xml"
+- type: xtce
+  spec: "mdb/common/dt/time-based-dt.xml"
+- type: xtce
+  spec: "mdb/common/dt/ST[01]-dt.xml"
+- type: xtce
+  spec: "mdb/common/pus/pus.xml"
+- type: xtce
+  spec: "mdb/common/dt/dt.xml"
+- type: xtce
+  spec: "mdb/frames/frames-dt.xml"
+- type: xtce
+  spec: "mdb/frames/frames.xml"
+- type: xtce
+  spec: "mdb/obc/obc-dt.xml"
+- type: xtce
+  spec: "mdb/obc/obc-xtce.xml"
+- type: xtce
+  spec: "mdb/adcs/adcs-dt.xml"
+- type: xtce
+  spec: "mdb/adcs/adcs-xtce.xml"
+- type: xtce
+  spec: "mdb/comms/comms-dt.xml"
+- type: xtce
+  spec: "mdb/comms/comms-xtce.xml"
+- type: xtce
+  spec: "mdb/services/ST[01].xml"
+- type: xtce
+  spec: "mdb/services/ST[03].xml"
+- type: xtce
+  spec: "mdb/services/ST[04].xml"
+- type: xtce
+  spec: "mdb/services/ST[11].xml"
+- type: xtce
+  spec: "mdb/services/ST[17].xml"
+- type: xtce
+  spec: "mdb/services/ST[20,3]-set-values.xml"
+- type: xtce
+  spec: "mdb/services/ST[20]-reporting.xml"
+- type: xtce
+  spec: "mdb/services/ST[06]-ST[23].xml"
+- type: xtce
+  spec: "mdb/services/Logger.xml"
+
+
+
+# Configuration for streams created at server startup
+streamConfig:
+  tm:
+    - name: "tm_realtime"
+    - name: "tm_dump"
+  cmdHist: ["cmdhist_realtime", "cmdhist_dump"]
+  event: ["events_realtime", "events_dump"]
+  param: ["pp_realtime", "sys_param", "proc_param"]
+  parameterAlarm: ["alarms_realtime"]
+  tc:
+    - name: "tc_realtime"
+      processor: "realtime"

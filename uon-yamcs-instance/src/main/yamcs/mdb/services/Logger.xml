@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="Logger" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+    
+    <xtce:TelemetryMetaData>    
+        <ParameterSet>  
+            <!-- Parameter used in TM(128,128) -->
+            <Parameter name="message_logs" parameterTypeRef="/base-dt/string1_t" />
+        </ParameterSet>
+
+        <ContainerSet>
+            <SequenceContainer name="TM(128,128)_log_messages">
+                <EntryList>
+                    <ParameterRefEntry parameterRef="message_logs" />
+                </EntryList>
+                <BaseContainer containerRef="/pus/packet_header_TM">
+                    <RestrictionCriteria>
+                        <ComparisonList>
+                            <Comparison value="128" parameterRef="/pus/service_type_ID_TM" />
+                            <Comparison value="128" parameterRef="/pus/message_subtype_ID_TM" />
+                        </ComparisonList>
+                    </RestrictionCriteria>
+                </BaseContainer>
+            </SequenceContainer>
+        </ContainerSet>
+    </xtce:TelemetryMetaData>
+
+</SpaceSystem>

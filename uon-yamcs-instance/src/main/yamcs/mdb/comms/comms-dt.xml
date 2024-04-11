@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="comms-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+	shortDescription="This is a bogus satellite telemetry and telecommand database."
+	operationalStatus="unittest">
+
+    <!-- Contains COMMS' non-primitive parameters and arguments -->
+
+    <xtce:TelemetryMetaData>
+
+        <ParameterTypeSet>
+
+            <EnumeratedParameterType name="COMMSADMStatus_t">
+                <IntegerDataEncoding sizeInBits="16" encoding="unsigned"/>
+                <EnumerationList>
+                    <Enumeration value="45056" label="NotDeployed"/>
+                    <Enumeration value="725265" label="Deployed"/>
+                    <Enumeration value="720897" label="Element1NotDeployed"/>
+                    <Enumeration value="720913" label="Elements12NotDeployed"/>
+                    <Enumeration value="721153" label="Elements13NotDeployed "/>
+                    <Enumeration value="724993" label="Elements14NotDeployed "/>
+                    <Enumeration value="721169" label="Elements123NotDeployed "/>
+                    <Enumeration value="725009" label="Elements124NotDeployed "/>
+                    <Enumeration value="725249" label="Elements134NotDeployed "/>
+                    <Enumeration value="720912" label="Element2NotDeployed "/>
+                    <Enumeration value="721168" label="Elements23NotDeployed "/>
+                    <Enumeration value="725008" label="Elements24NotDeployed "/>
+                    <Enumeration value="725264" label="Elements234NotDeployed "/>
+                    <Enumeration value="721152" label="Element3NotDeployed "/>
+                    <Enumeration value="725248" label="Elements34NotDeployed "/>
+                    <Enumeration value="724992" label="Element4NotDeployed  "/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="COMMSPAGain_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8"/>
+                <EnumerationList>
+                    <Enumeration value="0" label="NoReduction "/>
+                    <Enumeration value="1" label="Reduction1dB " />
+                    <Enumeration value="2" label="Reduction2dB " />
+                    <Enumeration value="3" label="Reduction3dB " />
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="COMMSTXSampleRate_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8"/>
+                <EnumerationList>
+                    <Enumeration value="1" label="Case4000KHz "/>
+                    <Enumeration value="2" label="Case2000KHz "/>
+                    <Enumeration value="3" label="Case1333KHz "/>
+                    <Enumeration value="4" label="Case1000KHz "/>
+                    <Enumeration value="5" label="Case800KHz "/>
+                    <Enumeration value="6" label="Case666KHz "/>
+                    <Enumeration value="8" label="Case500KHz "/>
+                    <Enumeration value="10" label="Case400KHz "/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="COMMSTXSymbolRateSBand_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8"/>
+                <EnumerationList>
+                    <Enumeration value="1" label="Case50KHz  " />
+                    <Enumeration value="2" label="Case100KHz  " />
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <EnumeratedParameterType name="COMMSMemoryPartition_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="8"/>
+                <EnumerationList>
+                    <Enumeration value="0" label="FirstPartition " />
+                    <Enumeration value="1" label="SecondPartition " />
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+
+            <EnumeratedParameterType name="AllCOMMSParameters">
+                <EnumerationList>
+                    <Enumeration value="2000" label="COMMSUHFPATemperature"/>
+                    <Enumeration value="2001" label="COMMSSBandPATemperature"/>
+                    <Enumeration value="2002" label="COMMSPCBTemperature"/>
+                    <Enumeration value="2003" label="COMMSantennaDeploymentStatus"/>
+                    <Enumeration value="2004" label="COMMSsampleRateUHFTX"/>
+                    <Enumeration value="2005" label="COMMSsampleRateSBandTX"/>
+                    <Enumeration value="2006" label="COMMSsymbolRateSBandTX"/>
+                    <Enumeration value="2007" label="COMMScwInterval"/>
+                    <Enumeration value="2008" label="COMMSgmskBeaconInterval"/>
+                    <Enumeration value="2009" label="COMMSUHFBandTXPower"/>
+                    <Enumeration value="2010" label="COMMSSBandTXPower"/>
+                    <Enumeration value="2011" label="COMMSchannelNumberUHF"/>
+                    <Enumeration value="2012" label="COMMSchannelNumberSBand"/>
+                    <Enumeration value="2013" label="COMMSLNAGain"/>
+                    <Enumeration value="2014" label="COMMSpowerAmplifierUHF"/>
+                    <Enumeration value="2015" label="COMMSpowerAmplifierSBand"/>
+                    <Enumeration value="2016" label="COMMSvariableGainAmplifier"/>
+                    <Enumeration value="2017" label="COMMSreceivedSignalStrengthIndicator"/>
+                    <Enumeration value="2018" label="COMMSuhfBandTX"/>
+                    <Enumeration value="2019" label="COMMSuhfBandRX"/>
+                    <Enumeration value="2020" label="COMMSsBandTX"/>
+                    <Enumeration value="2021" label="COMMSnumberOfPackagesRejected"/>
+                    <Enumeration value="2022" label="COMMSinvalidHMAC"/>
+                    <Enumeration value="2023" label="COMMSinvalidPacketStructure"/>
+                    <Enumeration value="2024" label="COMMSinvalidSpacecraftID"/>
+                    <Enumeration value="2025" label="COMMStcFrameSequenceCounter"/>
+                    <Enumeration value="2026" label="COMMSPCBTemperature1"/>
+                    <Enumeration value="2027" label="COMMSPCBTemperature2"/>
+                    <Enumeration value="2028" label="COMMSMCUTemperature"/>
+                    <Enumeration value="2029" label="COMMSMCUInputVoltage"/>
+                    <Enumeration value="2030" label="COMMSMCUBootCounter"/>
+                    <Enumeration value="2031" label="COMMSonBoardTime"/>
+                    <Enumeration value="2032" label="COMMSnandUsedMemoryPartition"/>
+                    <Enumeration value="2033" label="COMMSlastFailedEvent"/>
+                    <Enumeration value="2034" label="COMMSMCUSystick"/>
+                    <Enumeration value="2035" label="COMMSFLASHInt"/>
+                    <Enumeration value="2036" label="COMMSSRAMInt"/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+            <!-- not used in the Comms Board Campaign -->
+
+            <EnumeratedParameterType name="COMMSLNAGain_t">
+                <IntegerDataEncoding encoding="unsigned" sizeInBits="16"/>
+                <EnumerationList>
+                    <Enumeration value="16" label="OnBoardComputer"/>
+                    <Enumeration value="17" label="STR"/>
+                    <Enumeration value="18" label="ADCS"/>
+                </EnumerationList>
+            </EnumeratedParameterType>
+
+        </ParameterTypeSet>
+    </xtce:TelemetryMetaData>
+
+    <xtce:CommandMetaData>
+        <ArgumentTypeSet>
+
+            <EnumeratedArgumentType name="command_type_t">
+                <IntegerDataEncoding sizeInBits="16" />
+                <EnumerationList>
+                    <Enumeration value="4097" label="No-Op" />
+                    <Enumeration value="4098" label="Reset" />
+                    <Enumeration value="4099" label="Transmit" />
+                    <Enumeration value="4101" label="Get Transceiver Configuration" />
+                    <Enumeration value="4102" label="Set Transceiver Configuration" />
+                    <Enumeration value="4103" label="Telemetry" />
+                    <Enumeration value="4104" label="Write Flash" />
+                    <Enumeration value="4105" label="RF Configure" />
+                    <Enumeration value="4112" label="Beacon Data" />
+                    <Enumeration value="4113" label="Beacon Configure" />
+                    <Enumeration value="4114" label="Read Firmware Rev" />
+                    <Enumeration value="4115" label="DIO Key Write" />
+                    <Enumeration value="4116" label="Firmware Update" />
+                    <Enumeration value="4117" label="Firmware Packet" />
+
+                </EnumerationList>
+            </EnumeratedArgumentType>
+
+        </ArgumentTypeSet>
+    </xtce:CommandMetaData>
+</SpaceSystem>

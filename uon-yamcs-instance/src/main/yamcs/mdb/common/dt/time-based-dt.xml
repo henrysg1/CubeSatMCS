@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="time-based-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <xtce:TelemetryMetaData>
+        <ParameterTypeSet>
+
+            <AggregateParameterType name="time_based_scheduling_report_summary_structure" shortDescription="Time Based Scheduling Summary Structure">
+                <MemberList>
+                    <Member name="releaseTime" typeRef="/base-dt/generation_time" />
+                    <Member name="sourceID" typeRef="/base-dt/uint16_t" />
+                    <Member name="applicationProcessId" typeRef="/base-dt/application_process_ID" />
+                    <Member name="sequenceCount" typeRef="/base-dt/packet_sequence_count_or_packet_name" />
+                </MemberList>
+            </AggregateParameterType>
+
+            <ArrayParameterType name="time_based_scheduling_report_summary_array" arrayTypeRef="time_based_scheduling_report_summary_structure">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <FixedValue>0</FixedValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayParameterType>
+
+            <AggregateParameterType name="time_based_scheduling_report_structure" shortDescription="Time Based Scheduling Report Structure">
+                <MemberList>
+                    <Member name="releaseTime" typeRef="/base-dt/generation_time" />
+                    <Member name="request" typeRef="/base-dt/string_t" />
+                </MemberList>
+            </AggregateParameterType>
+
+            <ArrayParameterType name="time_based_scheduling_report_array" arrayTypeRef="time_based_scheduling_report_structure">
+                <DimensionList>
+                    <Dimension>
+                        <StartingIndex>
+                            <FixedValue>0</FixedValue>
+                        </StartingIndex>
+                        <EndingIndex>
+                            <FixedValue>0</FixedValue>
+                        </EndingIndex>
+                    </Dimension>
+                </DimensionList>
+            </ArrayParameterType>
+
+        </ParameterTypeSet>
+    </xtce:TelemetryMetaData>
+
+</SpaceSystem>

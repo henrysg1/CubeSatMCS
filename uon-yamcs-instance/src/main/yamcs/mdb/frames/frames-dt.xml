@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="frames-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+    shortDescription="This is a bogus satellite telemetry and telecommand database."
+    operationalStatus="unittest">
+
+    <xtce:TelemetryMetaData>
+        <ParameterTypeSet>
+
+            <!--Transfer Frame Header-->
+
+             <xtce:AggregateParameterType name="transfer_frame_header" shortDescription="The Transfer Frame Header">
+                <xtce:MemberList>
+                    <xtce:Member name="transfer_frame_version_number" typeRef="transfer_frame_version_number"/>
+                    <xtce:Member name="spacecraft_ID" typeRef="spacecraft_ID"/>
+                    <xtce:Member name="virtual_channel_ID" typeRef="virtual_channel_ID"/>
+                    <xtce:Member name="ocf_flag" typeRef="flag"/>
+                    <xtce:Member name="master_channel_frame_count" typeRef="channel_frame_count"/>
+                    <xtce:Member name="virtual_channel_frame_count" typeRef="channel_frame_count"/>
+                    <xtce:Member name="transfer_frame_secondary_header_flag" typeRef="flag"/>
+                    <xtce:Member name="synchronization_flag" typeRef="flag"/>
+                    <xtce:Member name="packet_order_flag" typeRef="flag"/>
+                    <xtce:Member name="segment_length_ID" typeRef="segment_length_ID"/>
+                    <xtce:Member name="first_header_pointer" typeRef="first_header_pointer"/>
+                </xtce:MemberList>
+            </xtce:AggregateParameterType>    
+
+            <xtce:IntegerParameterType name="transfer_frame_version_number" signed="false">
+                <xtce:IntegerDataEncoding sizeInBits="2"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="spacecraft_ID">
+                <xtce:IntegerDataEncoding sizeInBits="10"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="virtual_channel_ID" signed="false">
+                <xtce:IntegerDataEncoding sizeInBits="3"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="flag">
+                <xtce:IntegerDataEncoding sizeInBits="1"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="channel_frame_count" signed="false">
+                <xtce:IntegerDataEncoding sizeInBits="8"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="segment_length_ID">
+                <xtce:IntegerDataEncoding sizeInBits="2"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="first_header_pointer">
+                <xtce:IntegerDataEncoding sizeInBits="11"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="transfer_frame_secondary_header_length">
+                <xtce:IntegerDataEncoding sizeInBits="6"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="transfer_frame_secondary_header_data_field">
+                <xtce:IntegerDataEncoding sizeInBits="63"/>
+            </xtce:IntegerParameterType>
+            <!--Operetional Control Field-->
+            <!--This field is normally 32 bits long, but the first 2 bits are flags, so the remainder is 30 bits long -->
+            <xtce:IntegerParameterType name="operational_control">
+                <xtce:IntegerDataEncoding sizeInBits="30"/>
+            </xtce:IntegerParameterType>
+
+            <!--CLCW field-->
+
+            <xtce:AggregateParameterType name="communications_link_control_word" shortDescription="CLCW">
+                <xtce:MemberList>
+                    <xtce:Member name="control_word_type" typeRef="control_word_type"/>
+                    <xtce:Member name="ClCW_version_number" typeRef="ClCW_version_number"/>
+                    <xtce:Member name="status_field" typeRef="status_field"/>
+                    <xtce:Member name="COP_in_effect" typeRef="COP_in_effect"/>
+                    <xtce:Member name="virtual_channel_ID_CLCW" typeRef="virtual_channel_ID_CLCW"/>
+                    <xtce:Member name="reserved_spare" typeRef="reserved_spare"/>
+                    <xtce:Member name="no_RF_available_flag" typeRef="flag"/>
+                    <xtce:Member name="no_bit_log_flag" typeRef="flag"/>
+                    <xtce:Member name="lockout_flag" typeRef="flag"/>
+                    <xtce:Member name="wait_flag" typeRef="flag"/>
+                    <xtce:Member name="retransmit_flag" typeRef="flag"/>
+                    <xtce:Member name="FARMB_counter" typeRef="FARMB_counter"/>
+                    <xtce:Member name="reserved_spare_2" typeRef="reserved_spare_2"/>
+                    <xtce:Member name="report_value" typeRef="report_value"/>
+                </xtce:MemberList>
+            </xtce:AggregateParameterType>
+
+            <xtce:IntegerParameterType name="control_word_type">
+                <xtce:IntegerDataEncoding sizeInBits="1"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="ClCW_version_number">
+                <xtce:IntegerDataEncoding sizeInBits="2"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="status_field">
+                <xtce:IntegerDataEncoding sizeInBits="3"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="COP_in_effect">
+                <xtce:IntegerDataEncoding sizeInBits="2"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="virtual_channel_ID_CLCW">
+                <xtce:IntegerDataEncoding sizeInBits="6"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="reserved_spare">
+                <xtce:IntegerDataEncoding sizeInBits="2"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="FARMB_counter">
+                <xtce:IntegerDataEncoding sizeInBits="2"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="reserved_spare_2">
+                <xtce:IntegerDataEncoding sizeInBits="1"/>
+            </xtce:IntegerParameterType>
+
+            <xtce:IntegerParameterType name="report_value">
+                <xtce:IntegerDataEncoding sizeInBits="8"/>
+            </xtce:IntegerParameterType>
+
+            <!--Frame Error Control Field-->
+
+            <xtce:IntegerParameterType name="frame_error_control">
+                <xtce:IntegerDataEncoding sizeInBits="16"/>
+            </xtce:IntegerParameterType>
+
+        </ParameterTypeSet>
+
+    </xtce:TelemetryMetaData>
+
+</SpaceSystem>

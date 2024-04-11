@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpaceSystem name="adcs-dt" xmlns:xtce="http://www.omg.org/spec/XTCE/20180204"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.omg.org/spec/XTCE/20180204 https://www.omg.org/spec/XTCE/20180204/SpaceSystem.xsd"
+	shortDescription="This is a bogus satellite telemetry and telecommand database."
+	operationalStatus="unittest">
+
+    <!-- Contains OBC's non primitive parameters and arguments -->
+
+    <xtce:TelemetryMetaData>
+
+        <ParameterTypeSet>
+
+            <IntegerParameterType name="ADCSGyroscopeX_t" signed="false">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="32" />
+                <DefaultAlarm>
+                    <StaticAlarmRanges>
+                        <WarningRange minInclusive="100000" maxInclusive="900000" />
+                        <CriticalRange minInclusive="10000" maxInclusive="990000" />
+                    </StaticAlarmRanges>
+                </DefaultAlarm>
+			</IntegerParameterType>
+
+        </ParameterTypeSet>        
+    </xtce:TelemetryMetaData>
+
+</SpaceSystem>
