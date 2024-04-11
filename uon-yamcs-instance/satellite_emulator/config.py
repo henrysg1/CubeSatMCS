@@ -1,5 +1,8 @@
 HOST = "localhost"
 
+CLIENT_CONN_SAIL = None
+CLIENT_CONN_JAM = None
+CLIENT_CONN_COMMS = None
 CLIENT_CONN_OBC = None
 CLIENT_CONN_ADCS = None
 
