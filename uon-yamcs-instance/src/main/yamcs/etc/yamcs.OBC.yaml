@@ -62,7 +62,7 @@ services:
 
 
 dataLinks:
-  - name: tm-in
+  - name: OBC
     class: org.yamcs.tctm.TcpTmDataLink
     stream: tm_realtime
     host: localhost
@@ -71,13 +71,11 @@ dataLinks:
     packetInputStreamClassName: org.yamcs.tctm.GenericPacketInputStream
     packetInputStreamArgs: 
         maxPacketLength: 65536
-        lengthFieldOffset: 4   # where to read the length from 
-        lengthFieldLength: 2   # the number of the bytes that contain the packet length
-        # adjust the length read from the offset defined above by this number of bytes. 
-        # we use 2 here because the simulator sets the length of the packet without the length itself
+        lengthFieldOffset: 4  
+        lengthFieldLength: 2 
         lengthAdjustment: 7
-        initialBytesToStrip: 0 # number of bytes to remove from the beginning
-      
+        initialBytesToStrip: 0
+
   - name: tcp-out
     class: org.yamcs.tctm.TcpTcDataLink
     stream: tc_realtime
@@ -138,8 +136,6 @@ mdb:
   spec: "mdb/services/ST[06]-ST[23].xml"
 - type: xtce
   spec: "mdb/services/Logger.xml"
-
-
 
 
 # Configuration for streams created at server startup
