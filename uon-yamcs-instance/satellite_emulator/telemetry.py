@@ -36,7 +36,7 @@ def Housekeeping_OBC_1():
 
     data = enum_type + obc_pcb_board_temperature_1 + obc_pcb_board_temperature_2 + obc_mcu_temperature + obc_boot_counter + obc_memory_partition + obc_mcu_sys_tick + obc_can_bus_load_1 + obc_can_bus_load_2 + obc_can_bus_active + obc_nand_flash_lcl_threshold + obc_mram_lcl_threshold + obc_nand_flash_on + obc_mram_on + available_heap + obc_use_can + obc_use_uart + obc_use_rtt 
 
-    send_packet(data)
+    send_packet(data, 3, 25)
 
 def Housekeeping_OBC_3():
     enum_type = '00000001'
@@ -52,7 +52,7 @@ def Housekeeping_OBC_3():
 
     data = enum_type + obc_pcb_board_temperature_1 + obc_pcb_board_temperature_2 + obc_spacecraft_time_ref + obc_operational_mode + obc_memory_partition + obc_reconfiguration_timer + obc_last_failed_event + obc_mcu_sys_tick
 
-    send_packet(data)
+    send_packet(data, 3, 25)
 
 def Housekeeping_ADCS_0_01():
     # Create data for the TM packet    
@@ -67,7 +67,7 @@ def Housekeeping_ADCS_0_01():
 
     data = enum_type + adcs_magnetometer_raw_x + adcs_magnetometer_raw_y + adcs_magnetometer_raw_z + adcs_gyroscope_x + adcs_gyroscope_y + adcs_gyroscope_z
 
-    send_packet(data)
+    send_packet(data, 3, 25)
 
 def Housekeeping_ADCS_3():
     # Create data for the TM packet    
@@ -90,7 +90,7 @@ def Housekeeping_ADCS_3():
 
     data = enum_type + adcs_magnetometer_frequency + adcs_magnetometer_cycle_count_x + adcs_magnetometer_cycle_count_y + adcs_magnetometer_cycle_count_z + adcs_magnetometer_self_test + adcs_gyroscope_x_temperature + adcs_gyroscope_y_temperature + adcs_gyroscope_z_temperature + adcs_board_temperature_1 + adcs_board_temperature_2 + adcs_mcu_temperature + adcs_boot_counter + adcs_mcu_on_board_time + adcs_systick
 
-    send_packet(data)
+    send_packet(data, 3, 25)
 
 def Housekeeping_ADCS_5():
     enum_type = '00000101'
@@ -109,4 +109,4 @@ def Housekeeping_ADCS_5():
 
     data = enum_type + adcs_magnetometer_sign_x + adcs_magnetometer_sign_y + adcs_magnetometer_sign_z + adcs_gyroscope_sign_x + adcs_gyroscope_sign_y + adcs_gyroscope_sign_z + adcs_gyroscope_bias_x + adcs_gyroscope_bias_y + adcs_gyroscope_bias_z + adcs_flash_int + adcs_sram_int
 
-    send_packet(data)
+    send_packet(data, 3, 25)

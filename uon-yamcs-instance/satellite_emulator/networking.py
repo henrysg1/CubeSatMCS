@@ -55,7 +55,7 @@ def initialize_sockets():
         print("Failed to initialize sockets:", str(e))
         raise
 
-def send_packet(data):
+def send_packet(data, type, sub_type):
     global CLIENT_CONN_OBC, CLIENT_CONN_ADCS, CLIENT_CONN_SAIL, CLIENT_CONN_JAM, CLIENT_CONN_COMMS
     data_chunks = split_data_into_chunks(data)
     total_chunks = len(data_chunks)
@@ -74,7 +74,7 @@ def send_packet(data):
 
         packet_name_ccsds = format(packet_number, '014b')
         packet_name_secondary = format(packet_number, '016b')
-        tm_secondary_header = create_tm_secondary_header(3, 25, packet_name_secondary)
+        tm_secondary_header = create_tm_secondary_header(type, sub_type, packet_name_secondary)
         ccsds_header = create_ccsds_header(chunk, tm_secondary_header, sequence_flags, packet_name_ccsds)
         packet = combine_packet_information(ccsds_header, tm_secondary_header, chunk)
 
