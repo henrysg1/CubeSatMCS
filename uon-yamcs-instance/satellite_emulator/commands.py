@@ -1,4 +1,5 @@
 from satellite_emulator.telemetry import *
+from satellite_emulator.networking import send_packet
 
 def unimplemented_command(packet_data):
     print("Unimplemented command")
@@ -52,5 +53,7 @@ def hex_to_command(data):
 
     command_key = (service_type, service_subtype)
     command_function = command_map.get(command_key, unimplemented_command)
+
+    send_packet('00011000000000011100000000000001', 1, 1)
 
     command_function(packet_data)

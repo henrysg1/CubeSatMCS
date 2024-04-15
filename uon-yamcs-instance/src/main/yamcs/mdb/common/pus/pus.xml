@@ -235,17 +235,11 @@
 									sentApid
 								</AncillaryData>
                                 <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									sentSeq
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
 									rcvdApid
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									rcvdSeq
 								</AncillaryData>
                             </AncillaryDataSet>
                             <AlgorithmText language="JavaScript">
-								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+								if(rcvdApid.value == sentApid.value){
                                     if(subtype.value == 1){
                                         return true;
                                     }else if(subtype.value == 2){
@@ -257,10 +251,8 @@
 							</AlgorithmText>
                             <InputSet>
                                 <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
-                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
                                 <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
-                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/AcceptanceErrorType" inputName="errorCode" />
                             </InputSet>
                         </CustomAlgorithm>
@@ -273,17 +265,11 @@
 									sentApid
 								</AncillaryData>
                                 <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									sentSeq
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
 									rcvdApid
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									rcvdSeq
 								</AncillaryData>
                             </AncillaryDataSet>
                             <AlgorithmText language="JavaScript">
-								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+								if(rcvdApid.value == sentApid.value){
                                     if(subtype.value == 3){
                                         return true;
                                     }else if(subtype.value == 4){
@@ -295,10 +281,8 @@
 							</AlgorithmText>
                             <InputSet>
                                 <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
-                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
                                 <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
-                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/ExecutionStartErrorType" inputName="errorCode" />
                             </InputSet>
                         </CustomAlgorithm>
@@ -312,17 +296,11 @@
 									sentApid
 								</AncillaryData>
                                 <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									sentSeq
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
 									rcvdApid
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									rcvdSeq
 								</AncillaryData>
                             </AncillaryDataSet>
                             <AlgorithmText language="JavaScript">
-								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+								if(rcvdApid.value == sentApid.value){
                                     if(subtype.value == 5){
                                         return step.value;
                                     }else if(subtype.value == 6){
@@ -334,11 +312,9 @@
 							</AlgorithmText>
                             <InputSet>
                                 <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
-                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
                                 <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/stepID" inputName="step" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
-                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/ExecutionProgressErrorType" inputName="errorCode" />
                             </InputSet>
                         </CustomAlgorithm>
@@ -351,17 +327,11 @@
 									sentApid
 								</AncillaryData>
                                 <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									sentSeq
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
 									rcvdApid
-								</AncillaryData>
-                                <AncillaryData name="Yamcs:AlgorithmMandatoryInput">
-									rcvdSeq
 								</AncillaryData>
                             </AncillaryDataSet>
                             <AlgorithmText language="JavaScript">
-								if(rcvdApid.value == sentApid.value &#38;&#38; rcvdSeq.value == sentSeq.value){
+								if(rcvdApid.value == sentApid.value){
                                     if(subtype.value == 7){
                                         return true;
                                     }else if(subtype.value == 8){
@@ -373,10 +343,8 @@
 							</AlgorithmText>
                             <InputSet>
                                 <InputParameterInstanceRef parameterRef="/yamcs/cmd/arg/application_process_ID" inputName="sentApid" />
-                                <InputParameterInstanceRef parameterRef="/yamcs/cmdHist/packet_sequence_count_or_packet_name" inputName="sentSeq" />
                                 <InputParameterInstanceRef parameterRef="/pus/message_subtype_ID_TM" inputName="subtype" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/source_application_process_ID" inputName="rcvdApid" />
-                                <InputParameterInstanceRef parameterRef="/ST[01]/source_packet_sequence_count" inputName="rcvdSeq" />
                                 <InputParameterInstanceRef parameterRef="/ST[01]/ExecutionCompletionErrorType" inputName="errorCode" />
                             </InputSet>
                         </CustomAlgorithm>
