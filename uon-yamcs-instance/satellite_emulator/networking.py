@@ -105,6 +105,26 @@ def send_packet(data, type, sub_type):
 
         packet_number += 1
 
+def send_received_ack(ccsds_header):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 1)
+
+def send_start_of_execution(ccsds_header):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 3)
+
+def send_execution_progress(ccsds_header, value):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 5)
+
+def send_completion_ack(ccsds_header):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 7)
+
 def reconnect():
 
     global CLIENT_CONN_OBC, CLIENT_CONN_ADCS, CLIENT_CONN_SAIL, CLIENT_CONN_JAM, CLIENT_CONN_COMMS

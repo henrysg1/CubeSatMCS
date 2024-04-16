@@ -17,7 +17,7 @@
             <Parameter parameterTypeRef="/base-dt/packet_sequence_count_or_packet_name" name="source_packet_sequence_count" />
             <Parameter parameterTypeRef="/ST[01]-dt/AcceptanceErrorType_t" name="AcceptanceErrorType" />
             <Parameter parameterTypeRef="/ST[01]-dt/ExecutionStartErrorType_t" name="ExecutionStartErrorType" />
-            <Parameter parameterTypeRef="/base-dt/uint8_t" name="stepID" />
+            <Parameter parameterTypeRef="/ST[01]-dt/StepIDType_t" name="stepID" />
             <Parameter parameterTypeRef="/ST[01]-dt/ExecutionProgressErrorType_t" name="ExecutionProgressErrorType" />
             <Parameter parameterTypeRef="/ST[01]-dt/ExecutionCompletionErrorType_t" name="ExecutionCompletionErrorType" />
             <Parameter parameterTypeRef="/ST[01]-dt/RoutingErrorType_t" name="RoutingErrorType" />

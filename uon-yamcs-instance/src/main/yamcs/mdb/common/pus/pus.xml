@@ -302,7 +302,7 @@
                             <AlgorithmText language="JavaScript">
 								if(rcvdApid.value == sentApid.value){
                                     if(subtype.value == 5){
-                                        return step.value;
+                                        return true;
                                     }else if(subtype.value == 6){
                                         return errorCode.value;
                                     }

@@ -2,13 +2,16 @@ import random
 
 from satellite_emulator.structures import PARAMETER_REPORT_STRUCTURES
 from satellite_emulator.data_processing import float_to_binary_32
-from satellite_emulator.networking import send_packet
+from satellite_emulator.networking import send_packet, send_start_of_execution, send_execution_progress, send_completion_ack
 
-def TC_3_27_generate_a_one_shot_report_for_housekeeping_parameter_report_structures(packet_data):
+def TC_3_27_generate_a_one_shot_report_for_housekeeping_parameter_report_structures(ccsds_header, secondary_header, packet_data):
 
+    send_start_of_execution(ccsds_header)
     # Use the first byte to determine the loop count
     loop_count = packet_data[0]
 
+    send_execution_progress(ccsds_header, 1)
+    send_completion_ack(ccsds_header)
     # Iterate over the remaining data, one byte at a time
     for i in range(1, 1 + loop_count):
         PARAMETER_REPORT_STRUCTURES[packet_data[i]]()
