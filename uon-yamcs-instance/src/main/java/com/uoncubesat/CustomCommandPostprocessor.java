@@ -62,6 +62,9 @@ public class CustomCommandPostprocessor implements CommandPostprocessor {
         int serviceType = binary[7];
         int messageType = binary[8];
 
+        // Set CCSDS sequence count
+        int seqCount = seqFiller.fill(binary);
+
         if ("/yamcs/cfdp/upload".equals(pc.getCmdName())) {
             binary = processCfdpCommand(binary);
         }
@@ -73,9 +76,6 @@ public class CustomCommandPostprocessor implements CommandPostprocessor {
 
 
         binary = processRegularCommand(binary);
-
-        // Set CCSDS sequence count
-        int seqCount = seqFiller.fill(binary);
 
         // Publish the sequence count and updated binary to Command History
         commandHistory.publish(pc.getCommandId(), "ccsds-seqcount", seqCount);
