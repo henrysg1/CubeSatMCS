@@ -36,10 +36,10 @@ def create_tm_secondary_header(service_type, service_subtype, packet_name='00000
 
 def combine_packet_information(ccsds_header, tm_secondary_header, packet_data):
 
-    if config.LITHIUM_CONNECTED:
-        packet_bits = create_lithium_packets(ccsds_header + tm_secondary_header + packet_data)
-    else:
-        packet_bits = ccsds_header + tm_secondary_header + packet_data
+    #if config.LITHIUM_CONNECTED:
+    packet_bits = create_lithium_packets(ccsds_header + tm_secondary_header + packet_data)
+    #else:
+    #    packet_bits = ccsds_header + tm_secondary_header + packet_data
 
     expected_hex_length = (len(packet_bits) // 8) * 2
 
@@ -48,6 +48,38 @@ def combine_packet_information(ccsds_header, tm_secondary_header, packet_data):
     tm_packet_hex_padded = tm_packet.zfill(expected_hex_length)
 
     tm_packet_bytes = bytes.fromhex(tm_packet_hex_padded)
+
+    print("=====================================================")
+    print("NEW TM PACKET RECEIVED")
+    print("=====================================================")
+    print("Lithium Header Data: ")
+    print("=====================================================")
+    print("Sync Characters: ", "0x4865")
+    print("Command Type: ", "0x1003")
+    print("Payload Length: ", int(packet_bits[32:48], 2))
+    print("Header Checksum: ", hex(int(packet_bits[48:64], 2)))
+    print("Payload Checksum: ", hex(int(packet_bits[-16:], 2)))
+    print("=====================================================")
+    print("CCSDS Primary Header Data: ")
+    print("=====================================================")
+    print("Packet Version Number: ", int(ccsds_header[:3], 2))
+    print("Packet Type: ", "TC" if ccsds_header[3] == '1' else "TM")
+    print("Secondary Header Flag: ", ccsds_header[4])
+    print("APID: ", int(ccsds_header[5:16], 2))
+    print("Sequence Flags: ", ccsds_header[16:18])
+    print("Packet Name: ", int(ccsds_header[18:32], 2))
+    print("Packet Data Length: ", int(ccsds_header[32:48], 2))
+    print("=====================================================")
+    print("CCSDS Secondary Header Data: ")
+    print("=====================================================")
+    print("PUS Version Number: ", int(tm_secondary_header[0:4], 2))
+    print("Spacecraft Time Reference Status: ", tm_secondary_header[4:8])
+    print("Service Type ID: ", int(tm_secondary_header[8:16], 2))
+    print("Message Subtype ID: ", int(tm_secondary_header[16:24], 2))
+    print("Message Type Counter: ", int(tm_secondary_header[24:40], 2))
+    print("Destination ID: ", int(tm_secondary_header[40:56], 2))
+    print("Send Time: ", int(tm_secondary_header[56:88], 2))
+    print("=====================================================")
 
     return tm_packet_bytes
 

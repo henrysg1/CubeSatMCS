@@ -56,13 +56,52 @@ def hex_to_command(data):
     if last_11_bits == '00000100100':
         process_cfdp_tc(data[40:-4])
         return
+    
+    data_bytes = bytes.fromhex(ccsds_primary_header)
+    header_int = int.from_bytes(data_bytes, 'big')
+    binary_string = bin(header_int)[2:].zfill(48)
 
     tc_packet_secondary_header = data[28:38]
+
+    tc_packet_secondary_header_bytes = bytes.fromhex(tc_packet_secondary_header)
+    tc_packet_secondary_header_int = int.from_bytes(tc_packet_secondary_header_bytes, 'big')
+    tc_packet_secondary_header_binary = bin(tc_packet_secondary_header_int)[2:].zfill(40)
 
     packet_data = bytes.fromhex(data[38:-4])
 
     service_type = int(tc_packet_secondary_header[2:4], 16)
     service_subtype = int(tc_packet_secondary_header[4:6], 16)
+
+    print("=====================================================")
+    print("NEW TC PACKET RECEIVED")
+    print("=====================================================")
+    print("Lithium Header Data: ")
+    print("=====================================================")
+    print("Sync Characters: ", "4865")
+    print("Command Type: ", "2004")
+    print("Payload Length: ", int(radio_header_bytes[8:12], 16))
+    print("Header Checksum: ", radio_header_bytes[12:16])
+    print("Payload Checksum: ", radio_footer_bytes[:4])
+    print("=====================================================")
+    print("CCSDS Primary Header Data: ")
+    print("=====================================================")
+    print("Packet Version Number: ", int(binary_string[:3], 2))
+    print("Packet Type: ", "TC" if binary_string[3] == '1' else "TM")
+    print("Secondary Header Flag: ", binary_string[4])
+    print("APID: ", int(binary_string[5:16], 2))
+    print("Sequence Flags: ", binary_string[16:18])
+    print("Packet Name: ", int(binary_string[18:32], 2))
+    print("Packet Data Length: ", int(binary_string[32:48], 2))
+    print("=====================================================")
+    print("CCSDS Secondary Header Data: ")
+    print("=====================================================")
+    print("PUS Version Number: ", int(tc_packet_secondary_header[0], 4))
+    print("Acknowledgement flags: ", tc_packet_secondary_header_binary[4:8])
+    print("Service Type ID: ", service_type)
+    print("Message Subtype ID: ", service_subtype)
+    print("Source ID: ", int(tc_packet_secondary_header[8:16], 32))
+    print("=====================================================")
+
 
     command_key = (service_type, service_subtype)
     command_function = command_map.get(command_key, unimplemented_command)

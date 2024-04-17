@@ -15,6 +15,7 @@ def scheduler():
         current_time = time.time()
         for task in SCHEDULE:
             if (current_time - task["last_executed"]) >= task["interval"]:
-                task["function"]()
-                task["last_executed"] = current_time
+                #task["function"]()
+                pass
+                #task["last_executed"] = current_time
         time.sleep(1)
