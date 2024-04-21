@@ -50,24 +50,6 @@ public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
         }
     }
 
-    public class EnvLoader {
-        public static void load(String filename) {
-            try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] parts = line.split("=", 2);
-                    if (parts.length == 2) {
-                        String key = parts[0].trim();
-                        String value = parts[1].trim();
-                        System.setProperty(key, value);  // You can also use System.getenv().put(key, value) with reflections or other ways if needed
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private byte[] combinePackets(List<byte[]> packets) {
         if (packets.isEmpty()) return null;
 
@@ -119,9 +101,6 @@ public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
     private final Map<Integer, AtomicInteger> seqCounts = new HashMap<>();
     private final Map<PacketKey, List<byte[]>> packetCache = new HashMap<>();
 
-    EnvLoader.load(".env");
-    private String radioType = System.getenv("RADIO_TYPE"); // Retrieve the RADIO_TYPE environment variable
-
     // Constructor used when this preprocessor is used without YAML configuration
     public CustomPacketPreprocessor(String yamcsInstance) {
         this(yamcsInstance, YConfiguration.emptyConfig());
@@ -139,6 +118,7 @@ public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
         LOGGER.info("In process".toString());
 
         byte[] bytes = packet.getPacket();
+        String radioType = System.getenv("RADIO_TYPE"); // Retrieve the RADIO_TYPE environment variable
 
         // Check if the RADIO_TYPE is "lithium2" and adjust the byte array accordingly
         if ("lithium2".equals(radioType)) {
@@ -219,7 +199,7 @@ public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
         stringBuilder.append("Packet data length:").append(datalength).append(newline);
         stringBuilder.append("----").append(newline);
         LOGGER.info(stringBuilder.toString());
-        // Our custom packets don't include a secundary header with time information.
+        // Our custom packets don't include a secondary header with time information.
         // Use Yamcs-local time instead.
 
 

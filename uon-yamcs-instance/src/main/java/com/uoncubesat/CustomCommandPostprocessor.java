@@ -37,27 +37,6 @@ public class CustomCommandPostprocessor implements CommandPostprocessor {
 
     private final TCParser tcparcer = new TCParser();
 
-    public class EnvLoader {
-        public static void load(String filename) {
-            try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    String[] parts = line.split("=", 2);
-                    if (parts.length == 2) {
-                        String key = parts[0].trim();
-                        String value = parts[1].trim();
-                        System.setProperty(key, value);  // You can also use System.getenv().put(key, value) with reflections or other ways if needed
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    EnvLoader.load(".env");
-    private String radioType = System.getenv("RADIO_TYPE");
-
     // Constructor used when this postprocessor is used without YAML configuration
     public CustomCommandPostprocessor(String yamcsInstance) {
         this(yamcsInstance, YConfiguration.emptyConfig());
@@ -79,6 +58,7 @@ public class CustomCommandPostprocessor implements CommandPostprocessor {
     @Override
     public byte[] process(PreparedCommand pc) {
         byte[] binary = pc.getBinary();
+        String radioType = System.getenv("RADIO_TYPE");
 
         int serviceType = binary[7];
         int messageType = binary[8];
@@ -96,17 +76,9 @@ public class CustomCommandPostprocessor implements CommandPostprocessor {
         }
 
         if ("lithium2".equals(radioType)) {
-            if (bytes.length >= 10) { // Ensure there are enough bytes to remove
-                byte[] newBytes = new byte[bytes.length - 10];
-                System.arraycopy(bytes, 8, newBytes, 0, bytes.length - 10); // Copy everything except the first 8 and last 2 bytes
-                bytes = newBytes; // Use the new byte array for further processing
-            } else {
-                LOGGER.warning("Packet is too short to process for RADIO_TYPE 'lithium2'");
-                return null; // Return null if the packet does not meet the minimum length requirement
-            }
+            binary = processRegularCommand(binary);
         }
-        binary = processRegularCommand(binary);
-
+        
         // Publish the sequence count and updated binary to Command History
         commandHistory.publish(pc.getCommandId(), "ccsds-seqcount", seqCount);
         commandHistory.publish(pc.getCommandId(), PreparedCommand.CNAME_BINARY, binary);

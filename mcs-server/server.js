@@ -3,10 +3,9 @@ const { exec, execSync } = require("child_process");
 const path = require("path");
 const app = express();
 const os = require("os");
-require('dotenv').config();
 
 // Determine the base command depending on the environment
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === "DEV";
 const baseCommand = isDevelopment ? "mvn yamcs:run" : "authbind --deep mvn yamcs:run";
 
 // Determine the system type

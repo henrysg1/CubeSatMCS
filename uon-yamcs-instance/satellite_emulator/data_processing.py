@@ -2,9 +2,6 @@ import struct
 import time
 import satellite_emulator.config as config
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
 
 def split_data_into_chunks(data, chunk_size=config.PACKET_DATA_SIZE_BITS):
     return [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
@@ -49,6 +46,8 @@ def combine_packet_information(ccsds_header, tm_secondary_header, packet_data):
     tm_packet = hex(int(packet_bits, 2))[2:]
 
     tm_packet_hex_padded = tm_packet.zfill(expected_hex_length)
+
+    print(tm_packet_hex_padded)
 
     tm_packet_bytes = bytes.fromhex(tm_packet_hex_padded)
 
