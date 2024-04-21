@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.io.*;
+import java.util.*;
 
 
 import org.yamcs.TmPacket;
@@ -45,6 +47,24 @@ public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
         @Override
         public int hashCode() {
             return Objects.hash(apid, serviceType, messageType);
+        }
+    }
+
+    public class EnvLoader {
+        public static void load(String filename) {
+            try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts = line.split("=", 2);
+                    if (parts.length == 2) {
+                        String key = parts[0].trim();
+                        String value = parts[1].trim();
+                        System.setProperty(key, value);  // You can also use System.getenv().put(key, value) with reflections or other ways if needed
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -99,6 +119,9 @@ public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
     private final Map<Integer, AtomicInteger> seqCounts = new HashMap<>();
     private final Map<PacketKey, List<byte[]>> packetCache = new HashMap<>();
 
+    EnvLoader.load(".env");
+    private String radioType = System.getenv("RADIO_TYPE"); // Retrieve the RADIO_TYPE environment variable
+
     // Constructor used when this preprocessor is used without YAML configuration
     public CustomPacketPreprocessor(String yamcsInstance) {
         this(yamcsInstance, YConfiguration.emptyConfig());
@@ -116,6 +139,18 @@ public class CustomPacketPreprocessor extends AbstractPacketPreprocessor {
         LOGGER.info("In process".toString());
 
         byte[] bytes = packet.getPacket();
+
+        // Check if the RADIO_TYPE is "lithium2" and adjust the byte array accordingly
+        if ("lithium2".equals(radioType)) {
+            if (bytes.length >= 10) { // Ensure there are enough bytes to remove
+                byte[] newBytes = new byte[bytes.length - 10];
+                System.arraycopy(bytes, 8, newBytes, 0, bytes.length - 10); // Copy everything except the first 8 and last 2 bytes
+                bytes = newBytes; // Use the new byte array for further processing
+            } else {
+                LOGGER.warning("Packet is too short to process for RADIO_TYPE 'lithium2'");
+                return null; // Return null if the packet does not meet the minimum length requirement
+            }
+        }
 
         // Expect at least the length of CCSDS primary and secondary header
         if (bytes.length < 17) {

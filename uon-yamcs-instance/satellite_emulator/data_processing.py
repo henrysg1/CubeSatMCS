@@ -1,7 +1,10 @@
 import struct
 import time
-
 import satellite_emulator.config as config
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def split_data_into_chunks(data, chunk_size=config.PACKET_DATA_SIZE_BITS):
     return [data[i:i+chunk_size] for i in range(0, len(data), chunk_size)]
@@ -36,7 +39,7 @@ def create_tm_secondary_header(service_type, service_subtype, packet_name='00000
 
 def combine_packet_information(ccsds_header, tm_secondary_header, packet_data):
 
-    if config.LITHIUM_CONNECTED:
+    if os.getenv('RADIO_TYPE') == 'lithium2':
         packet_bits = create_lithium_packets(ccsds_header + tm_secondary_header + packet_data)
     else:
         packet_bits = ccsds_header + tm_secondary_header + packet_data
