@@ -55,7 +55,7 @@ def initialize_sockets():
         print("Failed to initialize sockets:", str(e))
         raise
 
-def send_packet(data):
+def send_packet(data, type, sub_type):
     global CLIENT_CONN_OBC, CLIENT_CONN_ADCS, CLIENT_CONN_SAIL, CLIENT_CONN_JAM, CLIENT_CONN_COMMS
     data_chunks = split_data_into_chunks(data)
     total_chunks = len(data_chunks)
@@ -74,7 +74,7 @@ def send_packet(data):
 
         packet_name_ccsds = format(packet_number, '014b')
         packet_name_secondary = format(packet_number, '016b')
-        tm_secondary_header = create_tm_secondary_header(3, 25, packet_name_secondary)
+        tm_secondary_header = create_tm_secondary_header(type, sub_type, packet_name_secondary)
         ccsds_header = create_ccsds_header(chunk, tm_secondary_header, sequence_flags, packet_name_ccsds)
         packet = combine_packet_information(ccsds_header, tm_secondary_header, chunk)
 
@@ -104,6 +104,26 @@ def send_packet(data):
             reconnect()
 
         packet_number += 1
+
+def send_received_ack(ccsds_header):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 1)
+
+def send_start_of_execution(ccsds_header):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 3)
+
+def send_execution_progress(ccsds_header, value):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 5)
+
+def send_completion_ack(ccsds_header):
+    ack_data = ''.join(f'{int(b, 16):08b}' for b in (ccsds_header[i:i+2] for i in range(0, len(ccsds_header[0:4]), 2)))
+
+    send_packet(ack_data, 1, 7)
 
 def reconnect():
 

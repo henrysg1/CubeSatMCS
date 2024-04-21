@@ -4,6 +4,7 @@ services:
   - class: org.yamcs.archive.AlarmRecorder
   - class: org.yamcs.archive.EventRecorder
   - class: org.yamcs.archive.ReplayServer
+  - class: org.yamcs.timeline.TimelineService
   - class: org.yamcs.parameter.SystemParametersService
     args:
       provideJvmVariables: true

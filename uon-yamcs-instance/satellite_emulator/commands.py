@@ -1,6 +1,8 @@
 from satellite_emulator.telemetry import *
+from satellite_emulator.networking import send_received_ack
+from satellite_emulator.cfdp import process_cfdp_tc
 
-def unimplemented_command(packet_data):
+def unimplemented_command(ccsds_primary_header, tc_packet_secondary_header, packet_data):
     print("Unimplemented command")
 
 def hex_to_command(data):
@@ -37,11 +39,23 @@ def hex_to_command(data):
         (23,3): unimplemented_command,
     }
 
-        # Numbers are hex characters (2 per byte)
+    # Numbers are hex characters (2 per byte)
     radio_header_bytes = data[0:16]
     radio_footer_bytes = data[-4:0]
 
-    ccsds_primary_bytes = data[16:28]
+    ccsds_primary_header = data[16:28]
+
+    data_bytes = bytes.fromhex(ccsds_primary_header[:4])
+
+    header_int = int.from_bytes(data_bytes, 'big')
+
+    binary_string = bin(header_int)[2:].zfill(16)
+
+    last_11_bits = binary_string[-11:]
+
+    if last_11_bits == '00000100100':
+        process_cfdp_tc(data[40:-4])
+        return
 
     tc_packet_secondary_header = data[28:38]
 
@@ -53,4 +67,6 @@ def hex_to_command(data):
     command_key = (service_type, service_subtype)
     command_function = command_map.get(command_key, unimplemented_command)
 
-    command_function(packet_data)
+    send_received_ack(ccsds_primary_header)
+
+    command_function(ccsds_primary_header, tc_packet_secondary_header, packet_data)

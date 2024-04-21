@@ -21,6 +21,14 @@
 				</EnumerationList>
 			</EnumeratedParameterType>
 
+			<EnumeratedParameterType name="StepIDType_t">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+				<EnumerationList>
+					<Enumeration value="0" label="In Progress" />
+					<Enumeration value="1" label="Complete" />
+				</EnumerationList>
+			</EnumeratedParameterType>
+
 			<EnumeratedParameterType name="ExecutionStartErrorType_t">
 				<IntegerDataEncoding encoding="unsigned" sizeInBits="16" />
 				<EnumerationList>

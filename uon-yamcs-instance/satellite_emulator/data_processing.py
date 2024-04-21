@@ -35,7 +35,11 @@ def create_tm_secondary_header(service_type, service_subtype, packet_name='00000
     return tm_secondary_header
 
 def combine_packet_information(ccsds_header, tm_secondary_header, packet_data):
-    packet_bits = ccsds_header + tm_secondary_header + packet_data
+
+    if config.LITHIUM_CONNECTED:
+        packet_bits = create_lithium_packets(ccsds_header + tm_secondary_header + packet_data)
+    else:
+        packet_bits = ccsds_header + tm_secondary_header + packet_data
 
     expected_hex_length = (len(packet_bits) // 8) * 2
 
@@ -47,5 +51,42 @@ def combine_packet_information(ccsds_header, tm_secondary_header, packet_data):
 
     return tm_packet_bytes
 
+def create_lithium_packets(data, command_type=0x1003):
+    
+    # Constants
+    SYNC_CHARS = 0x4865
+
+    # Convert data to bytes for checksum calculation
+    data_bytes = bin_to_bytes(data)
+    payload_length = len(data_bytes)
+
+    # Calculate header excluding checksum
+    header_without_checksum = struct.pack(">HHH", SYNC_CHARS, command_type, payload_length)
+    header_checksum = calculate_checksum(header_without_checksum)
+    header = header_without_checksum + struct.pack("BB", *header_checksum)
+
+    # Calculate payload checksum
+    payload_checksum = calculate_checksum(data_bytes)
+    payload_checksum_bytes = struct.pack("BB", *payload_checksum)
+    
+    # Convert all parts to binary string
+    header_bits = ''.join(bin(byte)[2:].zfill(8) for byte in header)
+    payload_checksum_bits = ''.join(bin(byte)[2:].zfill(8) for byte in payload_checksum_bytes)
+
+    # Final binary string concatenation
+    return header_bits + data + payload_checksum_bits
+
 def float_to_binary_32(num):
     return ''.join('{:0>8b}'.format(c) for c in struct.pack('!f', num))
+
+def calculate_checksum(buffer):
+    CK_A = 0
+    CK_B = 0
+    for byte in buffer:
+        CK_A = (CK_A + byte) % 255  # Ensure CK_A stays within 8-bit range
+        CK_B = (CK_B + CK_A) % 255  # Ensure CK_B stays within 8-bit range
+    return CK_A, CK_B
+
+# Helper to convert binary string to bytes
+def bin_to_bytes(bin_str):
+    return bytes(int(bin_str[i:i+8], 2) for i in range(0, len(bin_str), 8))
