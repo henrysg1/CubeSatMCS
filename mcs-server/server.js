@@ -1,53 +1,63 @@
 const express = require("express");
 const { exec, execSync } = require("child_process");
-const cors = require("cors");
 const path = require("path");
 const app = express();
+const os = require("os");
+require('dotenv').config();
 
-app.use(
-  cors({
-    origin: "http://localhost:4200",
-  })
-);
+// Determine the base command depending on the environment
+const isDevelopment = process.env.NODE_ENV === "development";
+const baseCommand = isDevelopment ? "mvn yamcs:run" : "authbind --deep mvn yamcs:run";
 
-const homeDirectory = execSync("echo ~").toString().trim();
-const yamcsPath = execSync("find ~ -type d -name  uon-yamcs-instance")
-  .toString()
-  .trim();
-const frontendPath = execSync("find ~ -type d -name  uon-web-interface")
-  .toString()
-  .trim();
+// Determine the system type
+const platform = process.platform;
+
+// Define the base directory to start the search
+const baseDir = platform === "win32" ? "P:\\Documents\\CubeSatMCS" : "~/Documents/CubeSatMCS";
+
+// Adjust the path-finding command based on OS
+let findCommand;
+if (platform === "win32") {
+    findCommand = `dir /S /B "${path.join(baseDir, 'uon-yamcs-instance')}"`;
+} else {
+    findCommand = `find ${baseDir} -type d -name uon-yamcs-instance`;
+}
+
+// Execute the find command and handle errors
+let yamcsPath;
+try {
+    yamcsPath = execSync(findCommand).toString().trim();
+} catch (err) {
+    console.error("Failed to find the uon-yamcs-instance directory:", err);
+    process.exit(1); // Exit if the directory is not found
+}
 
 process.chdir(yamcsPath);
-exec("mvn yamcs:run", (err, stdout, stderr) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log(stdout);
-});
 
+// Execute the base command depending on OS
+if (platform === "win32") {
+    exec(`cmd /c "${baseCommand}"`, commandCallback);
+} else {
+    exec(baseCommand, commandCallback);
+}
+
+function commandCallback(err, stdout, stderr) {
+    if (err) {
+        console.error("Command execution error:", err);
+        return;
+    }
+    console.log("Command output:", stdout);
+}
+
+// Run a separate Python simulator
 exec("python3 simulator.py", (err, stdout, stderr) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log(stdout);
+    if (err) {
+        console.error("Simulator error:", err);
+        return;
+    }
+    console.log("Simulator output:", stdout);
 });
-
-/*
-process.chdir(frontendPath);
-
-exec("npm start", (err, stdout, stderr) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log(stdout);
-});
-
-*/
 
 app.listen(3000, () => {
-  console.log("Server is listening on port 3000");
+    console.log("Server is listening on port 3000");
 });
