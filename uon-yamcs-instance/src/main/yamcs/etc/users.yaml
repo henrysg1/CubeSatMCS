@@ -1,0 +1,14 @@
+guest:
+  password: guest
+  displayName: Guest
+  roles: [ Guest ]
+
+admin:
+  password: admin
+  superuser: true
+
+satellite-team:
+  displayName: Satellite Team
+  password: password
+  roles: [ Operator ]
+

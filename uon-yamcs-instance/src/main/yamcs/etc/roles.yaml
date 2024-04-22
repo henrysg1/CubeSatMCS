@@ -1,0 +1,37 @@
+Operator:
+  ReadParameter: [".*"]
+  WriteParameter: []
+  ReadPacket: [".*"]
+  ReadBucket: [".*"]
+  ManageBucket: [".*"]
+  Command: [".*"]
+  CommandHistory: [".*"]
+  System:
+    - ControlProcessor
+    - ModifyCommandHistory
+    - ControlCommandQueue
+    - CommandOptions
+    - GetMissionDatabase
+    - ReadAlarms
+    - ControlAlarms
+    - ControlArchiving
+    - ReadLinks
+    - ControlLinks
+    - ControlServices
+    - ManageAnyBucket
+    - ReadEvents
+    - WriteEvents
+    - WriteTables
+    - ReadTables
+    - ReadTimeline
+    - ControlTimeline
+    - ControlFileTransfers
+    - ReadFileTransfers
+
+Guest:
+  ReadParameter: [".*"]
+  WriteParameter: []
+  ReadPacket: [".*"]
+  Command: []
+  CommandHistory: []
+  System: []
