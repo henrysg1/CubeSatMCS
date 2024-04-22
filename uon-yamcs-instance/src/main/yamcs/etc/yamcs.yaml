@@ -26,3 +26,11 @@ secretKey: changeme
 buckets:
   - name: cfdpUp
     path: ../../cfdpUp
+
+yamcs-web:
+  tag: JamSail
+  logo: etc/logo.png
+  siteLinks:
+    - label: Missions
+      url: https://www.nottingham.ac.uk/aerospace/space/student-space-programme/missions/index.aspx
+      external: true
