@@ -64,9 +64,9 @@ def Housekeeping_ADCS_0_01():
     adcs_magnetometer_raw_x = format(random.randint(0, 100), '08b')
     adcs_magnetometer_raw_y = format(random.randint(0, 100), '08b')
     adcs_magnetometer_raw_z = format(random.randint(0, 100), '08b')
-    adcs_gyroscope_x = format(random.randint(0, 1000000), '032b')
-    adcs_gyroscope_y = format(random.randint(0, 1000000), '032b')
-    adcs_gyroscope_z = format(random.randint(0, 1000000), '032b')
+    adcs_gyroscope_x = format(random.randint(0, 45), '032b')
+    adcs_gyroscope_y = format(random.randint(0, 45), '032b')
+    adcs_gyroscope_z = format(random.randint(0, 45), '032b')
 
     data = enum_type + adcs_magnetometer_raw_x + adcs_magnetometer_raw_y + adcs_magnetometer_raw_z + adcs_gyroscope_x + adcs_gyroscope_y + adcs_gyroscope_z
 

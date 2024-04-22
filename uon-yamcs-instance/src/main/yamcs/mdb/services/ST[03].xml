@@ -277,6 +277,7 @@
                     </EntryList>
                     <BaseContainer containerRef="/pus/Header_TC" />
                 </CommandContainer>
+                <DefaultSignificance consequenceLevel="watch" />
             </MetaCommand>
 
             <MetaCommand name="custom_TC(3,27)_generate_a_one_shot_report_for_housekeeping_parameter_report_structures">

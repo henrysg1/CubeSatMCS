@@ -11,15 +11,32 @@
 
         <ParameterTypeSet>
 
-            <IntegerParameterType name="ADCSGyroscopeX_t" signed="false">
+            <IntegerParameterType name="ADCSGyroscope_t" signed="false">
 				<IntegerDataEncoding encoding="unsigned" sizeInBits="32" />
+                <UnitSet>
+					<Unit> &#176;/s </Unit>
+				</UnitSet>
                 <DefaultAlarm>
                     <StaticAlarmRanges>
-                        <WarningRange minInclusive="100000" maxInclusive="900000" />
-                        <CriticalRange minInclusive="10000" maxInclusive="990000" />
+                        <WarningRange maxInclusive="35" />
+                        <CriticalRange maxInclusive="40" />
                     </StaticAlarmRanges>
                 </DefaultAlarm>
 			</IntegerParameterType>
+
+            <IntegerParameterType name="MagnetometerFreq_t" signed="false">
+				<IntegerDataEncoding encoding="unsigned" sizeInBits="8" />
+                <UnitSet>
+					<Unit> &#176;/s </Unit>
+				</UnitSet>
+			</IntegerParameterType>
+
+            <FloatParameterType name="Temp_t" signed="false">
+				<FloatDataEncoding sizeInBits="32" />
+                <UnitSet>
+					<Unit> &#176;C </Unit>
+				</UnitSet>
+			</FloatParameterType>
 
         </ParameterTypeSet>        
     </xtce:TelemetryMetaData>
