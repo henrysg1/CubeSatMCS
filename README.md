@@ -1,4 +1,4 @@
-# UoN CubeSat Repository
+# Mission Control Software Framework for CubeSats
 
 This repository holds the source code for the Yamcs application, basic web interface and back-end server to run the CubeSat MCS.
 
